@@ -13,7 +13,11 @@ import List from "@material-ui/core/List";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { Link } from "react-router-dom";
 import Routes from "./Routes";
 import DrawerItem from "./DrawerItem";
 
@@ -59,15 +63,28 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     textDecoration: "none"
+  },
+  title: {
+    flexGrow: 1
   }
 }));
 
 function App() {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleMenu = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   const drawer = (
@@ -76,6 +93,7 @@ function App() {
       <Divider />
       <List>
         <DrawerItem text="Home" linkTo="/" />
+        <DrawerItem text="Log in" linkTo="/login" />
         <DrawerItem text="Register" linkTo="/register" />
       </List>
     </div>
@@ -95,9 +113,33 @@ function App() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
+            <Typography className={classes.title} variant="h6" noWrap>
               Jobs Finder
             </Typography>
+            <IconButton color="inherit" onClick={handleMenu}>
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem component={Link} to="/login" onClick={handleClose}>
+                Login
+              </MenuItem>
+              <MenuItem component={Link} to="/register" onClick={handleClose}>
+                Register
+              </MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer}>
