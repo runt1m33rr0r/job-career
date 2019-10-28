@@ -3,10 +3,11 @@ image: node:12.13.0
 pages:
   cache:
     paths:
-      - ./node_modules/
+      - jobseeker-ui/node_modules/
  
   stage: deploy
   script:
+    - cd jobseeker-ui
     - npm install
     - npm run build
     - mv build/* public/
