@@ -1,14 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import "typeface-roboto";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <BrowserRouter>
-    <CssBaseline />
     <App />
   </BrowserRouter>,
   document.getElementById("root")
