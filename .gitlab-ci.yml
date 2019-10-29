@@ -1,5 +1,8 @@
 image: node:12.13.0
- 
+
+variables:
+    PUBLIC_URL: "/job-career"
+
 pages:
   cache:
     paths:
@@ -12,8 +15,10 @@ pages:
     - npm run build
     - mv public/* ../public
     - mv build/* ../public
+    - cp public/index.html public/404.html
   artifacts:
     paths:
       - public
   only:
     - development-ui
+    
