@@ -7,12 +7,13 @@ pages:
  
   stage: deploy
   script:
+    - mkdir public
     - cd jobseeker-ui
     - npm install
     - npm run build
     - mv build/* public/
   artifacts:
     paths:
-      - jobseeker-ui/public
+      - public
   only:
     - development-ui
