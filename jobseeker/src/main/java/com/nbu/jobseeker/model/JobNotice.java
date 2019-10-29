@@ -1,7 +1,5 @@
 package com.nbu.jobseeker.model;
 
-import org.springframework.data.annotation.CreatedDate;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -25,9 +23,8 @@ public class JobNotice {
     @JoinColumn(name = "CATEGORY_ID", nullable = false)
     private JobCategory category;
 
-    @CreatedDate
-    @Column(name = "CREATED_AT")
-    private Date creationDate;
+    @Column(name = "UPDATED_AT")
+    private Date lastModified;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -70,14 +67,6 @@ public class JobNotice {
         this.category = category;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -92,5 +81,21 @@ public class JobNotice {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

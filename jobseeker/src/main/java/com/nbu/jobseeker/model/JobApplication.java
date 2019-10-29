@@ -34,4 +34,68 @@ public class JobApplication {
 
     @Column(name = "DELETED")
     private boolean isDeleted = false;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public JobNotice getJobNotice() {
+        return jobNotice;
+    }
+
+    public void setJobNotice(JobNotice jobNotice) {
+        this.jobNotice = jobNotice;
+    }
+
+    public String getMotivationalLetter() {
+        return motivationalLetter;
+    }
+
+    public void setMotivationalLetter(String motivationalLetter) {
+        this.motivationalLetter = motivationalLetter;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 }
