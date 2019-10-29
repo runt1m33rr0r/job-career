@@ -7,7 +7,10 @@ function AuthButton(props) {
 
   const handleUserTypeChange = event => {
     setUserType(event.target.value);
-    props.onUserTypeChange(event.target.value);
+
+    if (props.onUserTypeChange) {
+      props.onUserTypeChange(event.target.value);
+    }
   };
 
   return (
