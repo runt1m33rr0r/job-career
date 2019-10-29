@@ -102,8 +102,6 @@ function App() {
       <Divider />
       <List>
         <DrawerItem text="Home" linkTo="/" />
-        <DrawerItem text="Log in" linkTo="/login" />
-        <DrawerItem text="Register" linkTo="/register" />
       </List>
     </div>
   );
