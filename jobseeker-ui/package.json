@@ -1,5 +1,6 @@
 {
   "name": "jobseeker-ui",
+  "homepage": "https://nbu-team1-2019-20.gitlab.io/job-career",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
