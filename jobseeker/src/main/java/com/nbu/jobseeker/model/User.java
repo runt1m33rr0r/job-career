@@ -16,6 +16,9 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
+    @Column(name = "DELETED")
+    private boolean isDeleted = false;
+
     public long getId() {
         return id;
     }

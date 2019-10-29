@@ -13,4 +13,7 @@ public class JobCategory {
 
     @Column(name = "CATEGORY_NAME")
     private String name;
+
+    @Column(name = "DELETED")
+    private boolean isDeleted = false;
 }

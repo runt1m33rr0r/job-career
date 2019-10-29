@@ -3,9 +3,9 @@ package com.nbu.jobseeker.model;
 public enum JobNoticeStatus {
 
     OPEN ("OPEN"),
-    SUBMITTED("SUBMITTED"),
-    CLOSED("CLOSED"),
-    DELETED("DELETED");
+    PENDING("PENDING"),
+    DENIED("DENIED"),
+    CLOSED("CLOSED");
 
     private final String status;
 

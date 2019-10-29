@@ -31,4 +31,7 @@ public class JobApplication {
 
     @Column(name = "UPDATED_AT")
     private Date lastModified;
+
+    @Column(name = "DELETED")
+    private boolean isDeleted = false;
 }

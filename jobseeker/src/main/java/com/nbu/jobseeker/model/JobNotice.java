@@ -35,6 +35,9 @@ public class JobNotice {
     @Column(name = "TITLE")
     private String title;
 
+    @Column(name = "DELETED")
+    private boolean isDeleted = false;
+
     public long getId() {
         return id;
     }
