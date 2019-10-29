@@ -33,7 +33,8 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex"
+    display: "flex",
+    height: "100%"
   },
   drawer: {
     [theme.breakpoints.up("sm")]: {
@@ -57,9 +58,17 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     width: drawerWidth
   },
+  main: {
+    flexGrow: 1
+  },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing(3)
+    overflow: "auto",
+    height: `calc(100% - ${64}px)`,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    justifyItems: "center"
   },
   link: {
     textDecoration: "none"
@@ -171,9 +180,11 @@ function App() {
             </Drawer>
           </Hidden>
         </nav>
-        <main className={classes.content}>
+        <main className={classes.main}>
           <div className={classes.toolbar} />
-          <Routes />
+          <div className={classes.content}>
+            <Routes />
+          </div>
         </main>
       </div>
     </ThemeProvider>

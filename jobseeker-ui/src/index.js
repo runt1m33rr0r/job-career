@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import "typeface-roboto";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
+import "./index.css";
 
 ReactDOM.render(
   <BrowserRouter basename={process.env.PUBLIC_URL}>
