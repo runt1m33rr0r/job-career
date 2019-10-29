@@ -1,6 +1,7 @@
 package com.nbu.jobseeker.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "JOB_APPLICATIONS")
@@ -21,4 +22,13 @@ public class JobApplication {
 
     @Column(name = "MOTIVATIONAL_LETTER")
     private String motivationalLetter;
+
+    @Column(name = "CONTACT_NUMBER")
+    private String number;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "UPDATED_AT")
+    private Date lastModified;
 }

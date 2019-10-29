@@ -4,6 +4,7 @@ public enum JobNoticeStatus {
 
     OPEN ("OPEN"),
     SUBMITTED("SUBMITTED"),
+    CLOSED("CLOSED"),
     DELETED("DELETED");
 
     private final String status;
