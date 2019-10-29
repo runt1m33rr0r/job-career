@@ -4,14 +4,14 @@ pages:
   cache:
     paths:
       - jobseeker-ui/node_modules/
- 
   stage: deploy
   script:
     - mkdir public
     - cd jobseeker-ui
     - npm install
     - npm run build
-    - mv build/* public/
+    - mv public/* ../public
+    - mv build/* ../public
   artifacts:
     paths:
       - public
