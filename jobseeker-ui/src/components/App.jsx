@@ -18,6 +18,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Link } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
 import Routes from "./Routes";
 import DrawerItem from "./DrawerItem";
 
@@ -62,13 +63,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   content: {
-    overflow: "auto",
-    height: `calc(100% - ${64}px)`,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    justifyItems: "center"
+    minHeight: `calc(100% - ${64}px)`
   },
   link: {
     textDecoration: "none"
@@ -180,9 +175,15 @@ function App() {
         </nav>
         <main className={classes.main}>
           <div className={classes.toolbar} />
-          <div className={classes.content}>
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            className={classes.content}
+          >
             <Routes />
-          </div>
+          </Grid>
         </main>
       </div>
     </ThemeProvider>
