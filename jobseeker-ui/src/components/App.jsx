@@ -97,6 +97,7 @@ function App() {
       <Divider />
       <List>
         <DrawerItem text="Home" linkTo="/" />
+        <DrawerItem text="Notices" linkTo="/notices" />
       </List>
     </div>
   );
@@ -177,12 +178,13 @@ function App() {
           <div className={classes.toolbar} />
           <Grid
             container
-            direction="column"
             justify="center"
             alignItems="center"
             className={classes.content}
           >
-            <Routes />
+            <Grid item container justify="center" alignItems="center">
+              <Routes />
+            </Grid>
           </Grid>
         </main>
       </div>

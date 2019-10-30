@@ -2,7 +2,7 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "./AuthTextField";
 
-function AuthButton(props) {
+function AuthSelectMenu(props) {
   const [userType, setUserType] = React.useState("Person");
 
   const handleUserTypeChange = event => {
@@ -29,4 +29,4 @@ function AuthButton(props) {
   );
 }
 
-export default AuthButton;
+export default AuthSelectMenu;
