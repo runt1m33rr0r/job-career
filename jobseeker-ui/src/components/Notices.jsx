@@ -5,8 +5,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import TablePagination from "@material-ui/core/TablePagination";
-import Grid from "@material-ui/core/Grid";
-
 import NoticeEditor from "./NoticeEditor";
 
 const notices = [
