@@ -1,5 +1,6 @@
 import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
+import PropTypes from "prop-types";
 import TextField from "./AuthTextField";
 
 function AuthSelectMenu(props) {
@@ -28,5 +29,10 @@ function AuthSelectMenu(props) {
     </TextField>
   );
 }
+
+AuthSelectMenu.propTypes = {
+  onUserTypeChange: PropTypes.func,
+  userTypes: PropTypes.arrayOf(PropTypes.string).isRequired
+};
 
 export default AuthSelectMenu;
