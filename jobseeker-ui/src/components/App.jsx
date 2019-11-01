@@ -98,6 +98,7 @@ function App() {
       <List>
         <DrawerItem text="Home" linkTo="/" />
         <DrawerItem text="Notices" linkTo="/notices" />
+        <DrawerItem text="Applications" linkTo="/applications" />
       </List>
     </div>
   );

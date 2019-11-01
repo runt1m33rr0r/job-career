@@ -4,6 +4,7 @@ import Home from "./Home";
 import Register from "./Auth/Register";
 import Login from "./Auth/Login";
 import Notices from "./Notices";
+import Applications from "./Applications";
 
 const Routes = () => (
   <Switch>
@@ -11,6 +12,7 @@ const Routes = () => (
     <Route path="/register" component={Register} />
     <Route path="/login" component={Login} />
     <Route path="/notices" component={Notices} />
+    <Route path="/applications" component={Applications} />
   </Switch>
 );
 
