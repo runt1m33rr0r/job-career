@@ -1,5 +1,5 @@
 import React from "react";
-import NoticeEditor from "./NoticeEditor";
+import ApplicationEditor from "./ApplicationEditor";
 import ItemsList from "./ItemsList";
 import ApplicationListItem from "./ApplicationListItem";
 
@@ -45,7 +45,7 @@ const applications = [
 const Applications = () => (
   <ItemsList
     items={applications}
-    editorElement={NoticeEditor}
+    editorElement={ApplicationEditor}
     listItemElement={ApplicationListItem}
   />
 );
