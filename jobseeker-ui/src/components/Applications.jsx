@@ -1,5 +1,5 @@
 import React from "react";
-import ApplicationEditor from "./ApplicationEditor";
+import ApplicationModal from "./ApplicationModal";
 import ItemsList from "./ItemsList";
 import ApplicationListItem from "./ApplicationListItem";
 
@@ -45,7 +45,7 @@ const applications = [
 const Applications = () => (
   <ItemsList
     items={applications}
-    editorElement={ApplicationEditor}
+    popupElement={ApplicationModal}
     listItemElement={ApplicationListItem}
   />
 );

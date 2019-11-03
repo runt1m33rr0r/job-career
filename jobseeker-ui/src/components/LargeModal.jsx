@@ -11,13 +11,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Editor(props) {
+function LargeModal(props) {
   const classes = useStyles();
 
   return (
     <Dialog
-      open={props.isEditorOpen}
-      onClose={props.onEditorClose}
+      open={props.isOpen}
+      onClose={props.onClose}
       fullWidth={true}
       maxWidth="xl"
     >
@@ -38,9 +38,9 @@ function Editor(props) {
   );
 }
 
-Editor.propTypes = {
-  isEditorOpen: PropTypes.bool.isRequired,
-  onEditorClose: PropTypes.func.isRequired
+LargeModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
 };
 
-export default Editor;
+export default LargeModal;

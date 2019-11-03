@@ -1,5 +1,5 @@
 import React from "react";
-import NoticeEditor from "./NoticeEditor";
+import NoticeModal from "./NoticeModal";
 import NoticeListItem from "./NoticeListItem";
 import ItemsList from "./ItemsList";
 
@@ -39,7 +39,7 @@ const notices = [
 const Notices = () => (
   <ItemsList
     items={notices}
-    editorElement={NoticeEditor}
+    popupElement={NoticeModal}
     listItemElement={NoticeListItem}
   />
 );

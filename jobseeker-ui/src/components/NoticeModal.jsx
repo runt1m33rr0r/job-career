@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ReactMarkdown from "react-markdown/with-html";
 import Input from "./Input";
-import Editor from "./Editor";
+import LargeModal from "./LargeModal";
 
 const categories = ["category1", "category2", "category3"];
 
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function NoticeEditor(props) {
+function NoticeModal(props) {
   const classes = useStyles();
   const [category, setCategory] = useState(categories[0]);
   const [markdown, setMarkdown] = useState("");
@@ -33,7 +33,7 @@ function NoticeEditor(props) {
   const handleDescriptionButtonPress = () => setIsEditing(!isEditing);
 
   return (
-    <Editor {...props}>
+    <LargeModal {...props}>
       <Grid container item justify="center" alignItems="center" spacing={3}>
         <Grid item>
           <TextField label="job title" margin="dense" />
@@ -122,14 +122,14 @@ function NoticeEditor(props) {
           <Button
             className={classes.button}
             variant="contained"
-            onClick={props.onEditorClose}
+            onClick={props.onClose}
           >
             Back
           </Button>
         </Grid>
       </Grid>
-    </Editor>
+    </LargeModal>
   );
 }
 
-export default NoticeEditor;
+export default NoticeModal;

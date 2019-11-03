@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import Editor from "./Editor";
+import LargeModal from "./LargeModal";
+import NoticeModal from "./NoticeModal";
 
 const useStyles = makeStyles(theme => ({
   description: {
@@ -12,11 +13,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function NoticeEditor(props) {
+function ApplicationModal(props) {
   const classes = useStyles();
+  const [isJobDetailsOpen, setIsJobDetails] = useState(false);
+
+  const handleJobDetailsClose = () => setIsJobDetails(false);
+  const handleJobDetailsOpen = () => setIsJobDetails(true);
 
   return (
-    <Editor {...props}>
+    <LargeModal {...props}>
+      <NoticeModal isOpen={isJobDetailsOpen} onClose={handleJobDetailsClose} />
       <Grid container item justify="center" alignItems="center" spacing={3}>
         <Grid item>
           <TextField label="job title" margin="dense" />
@@ -40,19 +46,21 @@ function NoticeEditor(props) {
       </Grid>
       <Grid container justify="center" alignItems="center" item spacing={3}>
         <Grid item>
-          <Button variant="contained">Application details</Button>
+          <Button variant="contained" onClick={handleJobDetailsOpen}>
+            Job details
+          </Button>
         </Grid>
         <Grid item>
           <Button variant="contained">Delete</Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" onClick={props.onEditorClose}>
+          <Button variant="contained" onClick={props.onClose}>
             Back
           </Button>
         </Grid>
       </Grid>
-    </Editor>
+    </LargeModal>
   );
 }
 
-export default NoticeEditor;
+export default ApplicationModal;

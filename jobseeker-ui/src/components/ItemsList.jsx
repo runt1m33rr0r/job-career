@@ -23,25 +23,22 @@ const useStyles = makeStyles(() => ({
 
 function ItemsList(props) {
   const classes = useStyles();
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const handleEditorClose = () => setIsEditorOpen(false);
-  const handleEditorOpen = () => setIsEditorOpen(true);
+  const handlePopupClose = () => setIsPopupOpen(false);
+  const handlePopupOpen = () => setIsPopupOpen(true);
 
   const listItems = props.items.map(item => (
     <props.listItemElement
       key={item.id}
       item={item}
-      handleClick={handleEditorOpen}
+      handleClick={handlePopupOpen}
     />
   ));
 
   return (
     <Paper className={classes.container}>
-      <props.editorElement
-        isEditorOpen={isEditorOpen}
-        onEditorClose={handleEditorClose}
-      />
+      <props.popupElement isOpen={isPopupOpen} onClose={handlePopupClose} />
       <List>{listItems}</List>
       <div className={classes.paginationContainer}>
         <TablePagination
@@ -58,8 +55,8 @@ function ItemsList(props) {
 }
 
 ItemsList.propTypes = {
-  editorElement: PropTypes.element.isRequired,
-  listItemElement: PropTypes.element.isRequired,
+  popupElement: PropTypes.func.isRequired,
+  listItemElement: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
