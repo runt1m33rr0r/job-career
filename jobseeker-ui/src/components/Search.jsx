@@ -102,9 +102,8 @@ function Search() {
         </Grid>
         <Grid container item xs={12} spacing={1}>
           {keywords.map(keyword => (
-            <Grid item>
+            <Grid item key={keyword}>
               <Chip
-                key={keyword}
                 label={keyword}
                 variant="outlined"
                 onDelete={handleKeywordRemove(keyword)}

@@ -6,6 +6,7 @@ import Login from "./Auth/Login";
 import Notices from "./Notices";
 import Applications from "./Applications";
 import Search from "./Search";
+import Categories from "./Categories";
 
 const Routes = () => (
   <Switch>
@@ -15,6 +16,7 @@ const Routes = () => (
     <Route path="/notices" component={Notices} />
     <Route path="/applications" component={Applications} />
     <Route path="/search" component={Search} />
+    <Route path="/categories" component={Categories} />
   </Switch>
 );
 

@@ -100,6 +100,7 @@ function App() {
         <DrawerItem text="Notices" linkTo="/notices" />
         <DrawerItem text="Company applications" linkTo="/applications" />
         <DrawerItem text="Search" linkTo="/search" />
+        <DrawerItem text="Categories" linkTo="/categories" />
       </List>
     </div>
   );
