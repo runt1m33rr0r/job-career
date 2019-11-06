@@ -2,7 +2,8 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles(theme => ({
@@ -13,6 +14,8 @@ const useStyles = makeStyles(theme => ({
 
 function LargeModal(props) {
   const classes = useStyles();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Dialog
@@ -20,6 +23,7 @@ function LargeModal(props) {
       onClose={props.onClose}
       fullWidth={true}
       maxWidth="xl"
+      fullScreen={fullScreen}
     >
       <DialogContent>
         <div className={classes.container}>

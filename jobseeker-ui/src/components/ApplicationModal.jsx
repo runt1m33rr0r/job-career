@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import LargeModal from "./LargeModal";
 import NoticeModal from "./NoticeModal";
 
@@ -24,11 +25,35 @@ function ApplicationModal(props) {
     <LargeModal {...props}>
       <NoticeModal isOpen={isJobDetailsOpen} onClose={handleJobDetailsClose} />
       <Grid container item justify="center" alignItems="center" spacing={3}>
-        <Grid item>
-          <TextField label="job title" margin="dense" />
+        <Grid container item xs={12} spacing={3} justify="center">
+          <Grid item>
+            <Typography variant="h6" gutterBottom>
+              job title
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="h6" gutterBottom>
+              company name
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container item xs={12} spacing={3} justify="center">
+          <Grid item>
+            <Typography variant="h6" gutterBottom>
+              first name
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="h6" gutterBottom>
+              last name
+            </Typography>
+          </Grid>
         </Grid>
         <Grid item>
-          <TextField label="company name" margin="dense" />
+          <TextField label="phone number" margin="dense" />
+        </Grid>
+        <Grid item>
+          <TextField label="e-mail" margin="dense" />
         </Grid>
       </Grid>
       <Grid item className={classes.description}>
