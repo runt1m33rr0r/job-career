@@ -98,7 +98,7 @@ function App() {
       <List>
         <DrawerItem text="Home" linkTo="/" />
         <DrawerItem text="Notices" linkTo="/notices" />
-        <DrawerItem text="Company applications" linkTo="/applications" />
+        <DrawerItem text="Applications" linkTo="/applications" />
         <DrawerItem text="Search" linkTo="/search" />
         <DrawerItem text="Categories" linkTo="/categories" />
       </List>
@@ -144,6 +144,9 @@ function App() {
               </MenuItem>
               <MenuItem component={Link} to="/register" onClick={handleClose}>
                 Register
+              </MenuItem>
+              <MenuItem component={Link} to="/profile" onClick={handleClose}>
+                Profile
               </MenuItem>
             </Menu>
           </Toolbar>

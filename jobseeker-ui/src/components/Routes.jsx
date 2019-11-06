@@ -7,12 +7,14 @@ import Notices from "./Notices";
 import Applications from "./Applications";
 import Search from "./Search";
 import Categories from "./Categories";
+import Profile from "./Auth/Profile";
 
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
     <Route path="/register" component={Register} />
     <Route path="/login" component={Login} />
+    <Route path="/profile" component={Profile} />
     <Route path="/notices" component={Notices} />
     <Route path="/applications" component={Applications} />
     <Route path="/search" component={Search} />

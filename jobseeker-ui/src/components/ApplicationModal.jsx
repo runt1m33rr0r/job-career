@@ -51,6 +51,9 @@ function ApplicationModal(props) {
           </Button>
         </Grid>
         <Grid item>
+          <Button variant="contained">Send</Button>
+        </Grid>
+        <Grid item>
           <Button variant="contained">Delete</Button>
         </Grid>
         <Grid item>
