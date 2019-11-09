@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Home from "./Home";
-import Register from "./Auth/Register";
-import Login from "./Auth/Login";
-import Notices from "./Notices";
-import Applications from "./Applications";
-import Search from "./Search";
-import Categories from "./Categories";
-import Profile from "./Auth/Profile";
+import Home from "../home/Home";
+import Register from "../auth/Register";
+import Login from "../auth/Login";
+import Notices from "../notices/Notices";
+import Applications from "../applications/Applications";
+import Search from "../search/Search";
+import Categories from "../categories/Categories";
+import Profile from "../auth/Profile";
 
 const Routes = () => (
   <Switch>

@@ -4,8 +4,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import LargeModal from "./LargeModal";
-import NoticeModal from "./NoticeModal";
+import LargeModal from "../common/LargeModal";
+import NoticeModal from "../notices/NoticeModal";
 
 const useStyles = makeStyles(theme => ({
   description: {

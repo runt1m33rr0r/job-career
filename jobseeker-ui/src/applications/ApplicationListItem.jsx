@@ -1,7 +1,7 @@
 import React from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import PropTypes from "prop-types";
-import BasicListItem from "./BasicListItem";
+import BasicListItem from "../common/BasicListItem";
 
 const ApplicationListItem = ({ item, handleClick }) => (
   <BasicListItem onClick={handleClick}>
