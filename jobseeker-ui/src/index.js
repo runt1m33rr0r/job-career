@@ -1,15 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+import { configureStore } from "redux-starter-kit";
+import { Provider } from "react-redux";
 import "typeface-roboto";
 import App from "./app/App";
+import rootReducer from "./reducers";
 import * as serviceWorker from "./serviceWorker";
 import "./index.css";
 
+const store = configureStore({
+  reducer: rootReducer
+});
+
 ReactDOM.render(
-  <BrowserRouter basename={process.env.PUBLIC_URL}>
-    <App />
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <App />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );
 

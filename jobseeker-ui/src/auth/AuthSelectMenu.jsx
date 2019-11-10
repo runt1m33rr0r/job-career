@@ -2,37 +2,28 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import PropTypes from "prop-types";
 import TextField from "./AuthTextField";
+import { userTypes } from "../common/constants";
 
-function AuthSelectMenu(props) {
-  const [userType, setUserType] = React.useState("Person");
-
-  const handleUserTypeChange = event => {
-    setUserType(event.target.value);
-
-    if (props.onUserTypeChange) {
-      props.onUserTypeChange(event.target.value);
-    }
-  };
-
-  return (
-    <TextField
-      select
-      label="Select user type"
-      value={userType}
-      onChange={handleUserTypeChange}
-    >
-      {props.userTypes.map(option => (
-        <MenuItem key={option} value={option}>
-          {option}
-        </MenuItem>
-      ))}
-    </TextField>
-  );
-}
+const AuthSelectMenu = props => (
+  <TextField
+    name={props.name}
+    select
+    label="Select user type"
+    value={props.userType}
+    onChange={props.onChange}
+  >
+    {userTypes.map(option => (
+      <MenuItem key={option} value={option}>
+        {option}
+      </MenuItem>
+    ))}
+  </TextField>
+);
 
 AuthSelectMenu.propTypes = {
-  onUserTypeChange: PropTypes.func,
-  userTypes: PropTypes.arrayOf(PropTypes.string).isRequired
+  name: PropTypes.string.isRequired,
+  userType: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 export default AuthSelectMenu;

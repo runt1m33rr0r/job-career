@@ -1,20 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import Button from "./AuthButton";
 import TextField from "./AuthTextField";
 import SelectMenu from "./AuthSelectMenu";
 import Form from "./AuthForm";
+import { userTypes } from "../common/constants";
 
-const userTypes = ["Person", "Company", "Admin"];
+function Login({ loginRequest }) {
+  const [formData, setFormData] = useState({
+    eMail: "",
+    password: "",
+    userType: userTypes[0]
+  });
 
-function Login() {
+  const handleFieldChange = event =>
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    });
+
+  const handleLoginClick = () => loginRequest(formData);
+
   return (
     <Form>
-      <TextField label="e-mail" />
-      <TextField label="password" type="password" />
-      <SelectMenu userTypes={userTypes} />
-      <Button>Log in</Button>
+      <TextField name="eMail" label="e-mail" onChange={handleFieldChange} />
+      <TextField
+        name="password"
+        label="password"
+        type="password"
+        onChange={handleFieldChange}
+      />
+      <SelectMenu
+        name="userType"
+        onChange={handleFieldChange}
+        userType={formData.userType}
+      />
+      <Button onClick={handleLoginClick}>Log in</Button>
     </Form>
   );
 }
+
+Login.propTypes = {
+  loginRequest: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
+};
 
 export default Login;
