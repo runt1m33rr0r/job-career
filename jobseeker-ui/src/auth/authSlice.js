@@ -31,6 +31,15 @@ const authSlice = createSlice({
     },
     registerFailure: state => {
       state.isAuthenticated = false;
+    },
+    profileChangeRequest: state => {
+      state.isAuthenticated = true;
+    },
+    profileChangeSuccess: state => {
+      state.isAuthenticated = true;
+    },
+    profileChangeFailure: state => {
+      state.isAuthenticated = true;
     }
   }
 });
@@ -42,6 +51,9 @@ export const {
   registerRequest,
   registerSuccess,
   registerFailure,
+  profileChangeRequest,
+  profileChangeSuccess,
+  profileChangeFailure,
   logout
 } = authSlice.actions;
 

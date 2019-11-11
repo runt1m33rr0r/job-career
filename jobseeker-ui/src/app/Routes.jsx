@@ -8,7 +8,7 @@ import Notices from "../notices/Notices";
 import Applications from "../applications/Applications";
 import Search from "../search/Search";
 import Categories from "../categories/Categories";
-import Profile from "../auth/Profile";
+import Profile from "../auth/ProfileContainer";
 
 const Routes = ({ isLoggedIn }) => (
   <Switch>
@@ -17,7 +17,9 @@ const Routes = ({ isLoggedIn }) => (
       {isLoggedIn ? <Redirect to="/" /> : <Register />}
     </Route>
     <Route path="/login">{isLoggedIn ? <Redirect to="/" /> : <Login />}</Route>
-    <Route path="/profile" component={Profile} />
+    <Route path="/profile" component={Profile}>
+      {!isLoggedIn ? <Redirect to="/" /> : <Profile />}
+    </Route>
     <Route path="/notices" component={Notices} />
     <Route path="/applications" component={Applications} />
     <Route path="/search" component={Search} />
