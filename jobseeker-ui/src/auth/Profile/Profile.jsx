@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Button from "./AuthButton";
-import TextField from "./AuthTextField";
-import Form from "./AuthForm";
-import RepeatedTextField from "./RepeatedTextField";
+import Button from "../AuthButton";
+import TextField from "../AuthTextField";
+import Form from "../AuthForm";
+import RepeatedTextField from "../RepeatedTextField";
 
 function Profile({ profileChangeRequest }) {
   const [formData, setFormData] = useState({

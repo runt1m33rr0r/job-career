@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import Login from "../components/Login";
+import Login from "./Login";
 import { loginRequest } from "../data/authSlice";
 
 const mapDispatchToProps = { loginRequest };

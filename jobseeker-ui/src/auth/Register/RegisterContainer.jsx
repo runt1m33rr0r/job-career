@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import Register from "../components/Register";
+import Register from "./Register";
 import { registerRequest } from "../data/authSlice";
 
 const mapDispatchToProps = { registerRequest };

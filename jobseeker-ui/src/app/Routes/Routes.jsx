@@ -1,14 +1,13 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import Home from "../home/components/Home";
-import Register from "../auth/containers/RegisterContainer";
-import Login from "../auth/containers/LoginContainer";
-import Notices from "../notices/components/Notices";
-import Applications from "../applications/Applications";
-import Search from "../search/components/Search";
-import Categories from "../categories/components/Categories";
-import Profile from "../auth/containers/ProfileContainer";
+import Home from "../../home/Home";
+import Register from "../../auth/Register";
+import Login from "../../auth/Login";
+import Notices from "../../notices/Notices";
+import Applications from "../../applications/Applications";
+import Search from "../../search/Search";
+import Categories from "../../categories/Categories";
+import Profile from "../../auth/Profile";
 
 const Routes = ({ isLoggedIn }) => (
   <Switch>
@@ -27,8 +26,4 @@ const Routes = ({ isLoggedIn }) => (
   </Switch>
 );
 
-const mapStateToProps = state => ({
-  isLoggedIn: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps)(Routes);
+export default Routes;

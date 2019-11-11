@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Button from "./AuthButton";
-import TextField from "./AuthTextField";
-import SelectMenu from "./AuthSelectMenu";
-import Form from "./AuthForm";
+import Button from "../AuthButton";
+import TextField from "../AuthTextField";
+import SelectMenu from "../AuthSelectMenu";
+import Form from "../AuthForm";
 
 const userTypes = ["user", "company", "admin"];
 

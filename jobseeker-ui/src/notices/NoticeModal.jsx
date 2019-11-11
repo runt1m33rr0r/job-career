@@ -6,8 +6,8 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ReactMarkdown from "react-markdown/with-html";
 import Input from "./Input";
-import LargeModal from "../../common/LargeModal";
-import ApplicationModal from "../../applications/ApplicationModal";
+import LargeModal from "../common/LargeModal";
+import ApplicationModal from "../applications/ApplicationModal";
 
 const categories = ["category1", "category2", "category3"];
 
