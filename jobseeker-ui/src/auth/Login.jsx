@@ -4,7 +4,8 @@ import Button from "./AuthButton";
 import TextField from "./AuthTextField";
 import SelectMenu from "./AuthSelectMenu";
 import Form from "./AuthForm";
-import { userTypes } from "../common/constants";
+
+const userTypes = ["user", "company", "admin"];
 
 function Login({ loginRequest }) {
   const [formData, setFormData] = useState({
@@ -34,6 +35,7 @@ function Login({ loginRequest }) {
         name="userType"
         onChange={handleFieldChange}
         userType={formData.userType}
+        userTypes={userTypes}
       />
       <Button onClick={handleLoginClick}>Log in</Button>
     </Form>
@@ -41,8 +43,7 @@ function Login({ loginRequest }) {
 }
 
 Login.propTypes = {
-  loginRequest: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  loginRequest: PropTypes.func.isRequired
 };
 
 export default Login;

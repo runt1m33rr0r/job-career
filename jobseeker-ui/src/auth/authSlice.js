@@ -22,9 +22,9 @@ const authSlice = createSlice({
     loginFailure: state => {
       state.isAuthenticated = false;
     },
-    logout: state => initialState,
+    logout: () => initialState,
     registerRequest: state => {
-      state.isAuthenticated = false;
+      state.isAuthenticated = true;
     },
     registerSuccess: state => {
       state.isAuthenticated = true;

@@ -2,15 +2,14 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import PropTypes from "prop-types";
 import TextField from "./AuthTextField";
-import { userTypes } from "../common/constants";
 
-const AuthSelectMenu = props => (
+const AuthSelectMenu = ({ name, userType, userTypes, onChange }) => (
   <TextField
-    name={props.name}
+    name={name}
     select
     label="Select user type"
-    value={props.userType}
-    onChange={props.onChange}
+    value={userType}
+    onChange={onChange}
   >
     {userTypes.map(option => (
       <MenuItem key={option} value={option}>

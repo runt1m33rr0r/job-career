@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import Home from "../home/Home";
-import Register from "../auth/Register";
+import Register from "../auth/RegisterContainer";
 import Login from "../auth/LoginContainer";
 import Notices from "../notices/Notices";
 import Applications from "../applications/Applications";
