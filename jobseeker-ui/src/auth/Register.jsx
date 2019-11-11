@@ -9,8 +9,13 @@ const userTypes = ["user", "company"];
 
 function Register({ registerRequest }) {
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    companyName: "",
     eMail: "",
+    repeatEmail: "",
     password: "",
+    repeatPassword: "",
     userType: userTypes[0]
   });
 
@@ -20,29 +25,80 @@ function Register({ registerRequest }) {
       [event.target.name]: event.target.value
     });
 
-  const handleRegisterClick = () => registerRequest(formData);
+  const handleRegisterClick = () => {
+    registerRequest({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      companyName: formData.companyName,
+      eMail: formData.eMail,
+      password: formData.password,
+      userType: formData.userType
+    });
+  };
+
+  const isEmailValid = () =>
+    formData.eMail && formData.eMail === formData.repeatEmail;
+
+  const isPasswordValid = () =>
+    formData.password && formData.password === formData.repeatPassword;
+
+  const isUserDataValid = () =>
+    formData.userType === "user"
+      ? formData.firstName && formData.lastName
+      : formData.companyName;
 
   return (
     <Form>
-      {formData.userType === "person" ? (
+      {formData.userType === "user" ? (
         <Fragment>
-          <TextField label="first name" />
-          <TextField label="last name" />
+          <TextField
+            name="firstName"
+            label="first name"
+            onChange={handleFieldChange}
+          />
+          <TextField
+            name="lastName"
+            label="last name"
+            onChange={handleFieldChange}
+          />
         </Fragment>
       ) : (
-        <TextField label="company name" />
+        <TextField
+          name="companyName"
+          label="company name"
+          onChange={handleFieldChange}
+        />
       )}
-      <TextField label="e-mail" />
-      <TextField label="repeat e-mail" />
-      <TextField label="password" type="password" />
-      <TextField label="repeat password" type="password" />
+      <TextField name="eMail" label="e-mail" onChange={handleFieldChange} />
+      <TextField
+        name="repeatEmail"
+        label="repeat e-mail"
+        onChange={handleFieldChange}
+      />
+      <TextField
+        name="password"
+        label="password"
+        type="password"
+        onChange={handleFieldChange}
+      />
+      <TextField
+        name="repeatPassword"
+        label="repeat password"
+        type="password"
+        onChange={handleFieldChange}
+      />
       <SelectMenu
         name="userType"
         onChange={handleFieldChange}
         userType={formData.userType}
         userTypes={userTypes}
       />
-      <Button onClick={handleRegisterClick}>Register</Button>
+      <Button
+        disabled={!isEmailValid() || !isPasswordValid() || !isUserDataValid()}
+        onClick={handleRegisterClick}
+      >
+        Register
+      </Button>
     </Form>
   );
 }
