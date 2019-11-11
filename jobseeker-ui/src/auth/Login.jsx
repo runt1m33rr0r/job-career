@@ -37,7 +37,12 @@ function Login({ loginRequest }) {
         userType={formData.userType}
         userTypes={userTypes}
       />
-      <Button onClick={handleLoginClick}>Log in</Button>
+      <Button
+        disabled={!formData.eMail || !formData.password}
+        onClick={handleLoginClick}
+      >
+        Log in
+      </Button>
     </Form>
   );
 }
