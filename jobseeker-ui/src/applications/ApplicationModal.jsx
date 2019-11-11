@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LargeModal from "../common/LargeModal";
-import NoticeModal from "../notices/NoticeModal";
+import NoticeModal from "../notices/components/NoticeModal";
 
 const useStyles = makeStyles(theme => ({
   description: {

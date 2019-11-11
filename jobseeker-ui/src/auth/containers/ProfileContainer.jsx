@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
-import Profile from "./Profile";
-import { profileChangeRequest } from "./authSlice";
+import Profile from "../components/Profile";
+import { profileChangeRequest } from "../data/authSlice";
 
 const mapDispatchToProps = { profileChangeRequest };
 
