@@ -4,6 +4,7 @@ import Button from "./AuthButton";
 import TextField from "./AuthTextField";
 import SelectMenu from "./AuthSelectMenu";
 import Form from "./AuthForm";
+import RepeatedTextField from "./RepeatedTextField";
 
 const userTypes = ["user", "company"];
 
@@ -13,34 +14,34 @@ function Register({ registerRequest }) {
     lastName: "",
     companyName: "",
     eMail: "",
-    repeatEmail: "",
     password: "",
-    repeatPassword: "",
     userType: userTypes[0]
   });
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
 
-  const handleFieldChange = event =>
+  const setDataField = (fieldName, value) =>
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value
+      [fieldName]: value
     });
+
+  const handleFieldChange = event =>
+    setDataField(event.target.name, event.target.value);
 
   const handleRegisterClick = () => {
-    registerRequest({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      companyName: formData.companyName,
-      eMail: formData.eMail,
-      password: formData.password,
-      userType: formData.userType
-    });
+    registerRequest(formData);
   };
 
-  const isEmailValid = () =>
-    formData.eMail && formData.eMail === formData.repeatEmail;
+  const handleEmailValidation = ({ value, isValid }) => {
+    setDataField("eMail", value);
+    setIsEmailValid(isValid);
+  };
 
-  const isPasswordValid = () =>
-    formData.password && formData.password === formData.repeatPassword;
+  const handlePasswordValidation = ({ value, isValid }) => {
+    setDataField("password", value);
+    setIsPasswordValid(isValid);
+  };
 
   const isUserDataValid = () =>
     formData.userType === "user"
@@ -69,23 +70,11 @@ function Register({ registerRequest }) {
           onChange={handleFieldChange}
         />
       )}
-      <TextField name="eMail" label="e-mail" onChange={handleFieldChange} />
-      <TextField
-        name="repeatEmail"
-        label="repeat e-mail"
-        onChange={handleFieldChange}
-      />
-      <TextField
-        name="password"
+      <RepeatedTextField label="e-mail" onValidation={handleEmailValidation} />
+      <RepeatedTextField
         label="password"
         type="password"
-        onChange={handleFieldChange}
-      />
-      <TextField
-        name="repeatPassword"
-        label="repeat password"
-        type="password"
-        onChange={handleFieldChange}
+        onValidation={handlePasswordValidation}
       />
       <SelectMenu
         name="userType"
@@ -94,7 +83,7 @@ function Register({ registerRequest }) {
         userTypes={userTypes}
       />
       <Button
-        disabled={!isEmailValid() || !isPasswordValid() || !isUserDataValid()}
+        disabled={!isEmailValid || !isPasswordValid || !isUserDataValid()}
         onClick={handleRegisterClick}
       >
         Register

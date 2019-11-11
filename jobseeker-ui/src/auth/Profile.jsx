@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Button from "./AuthButton";
 import TextField from "./AuthTextField";
 import Form from "./AuthForm";
+import RepeatedTextField from "./RepeatedTextField";
 
 function Profile({ profileChangeRequest }) {
   const [formData, setFormData] = useState({
@@ -13,14 +14,35 @@ function Profile({ profileChangeRequest }) {
     eMail: "",
     password: ""
   });
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
 
-  const handleFieldChange = event =>
+  const setDataField = (fieldName, value) =>
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value
+      [fieldName]: value
     });
 
+  const handleFieldChange = event =>
+    setFormData(event.target.name, event.target.value);
+
+  const handleEmailValidation = ({ value, isValid }) => {
+    setDataField("eMail", value);
+    setIsEmailValid(isValid);
+  };
+
+  const handlePasswordValidation = ({ value, isValid }) => {
+    setDataField("password", value);
+    setIsPasswordValid(isValid);
+  };
+
   const handleSave = () => profileChangeRequest(formData);
+
+  const isFormValid = () =>
+    formData.firstName &&
+    formData.lastName &&
+    formData.companyName &&
+    formData.phoneNumber;
 
   return (
     <Form>
@@ -44,8 +66,12 @@ function Profile({ profileChangeRequest }) {
         label="phone number"
         onChange={handleFieldChange}
       />
-      <TextField name="eMail" label="e-mail" onChange={handleFieldChange} />
-      <TextField label="repeat e-mail" />
+      <RepeatedTextField label="e-mail" onValidation={handleEmailValidation} />
+      <RepeatedTextField
+        label="password"
+        type="password"
+        onValidation={handlePasswordValidation}
+      />
       <TextField
         name="password"
         label="password"
@@ -53,7 +79,12 @@ function Profile({ profileChangeRequest }) {
         onChange={handleFieldChange}
       />
       <TextField label="repeat password" type="password" />
-      <Button onClick={handleSave}>Save</Button>
+      <Button
+        disabled={!isPasswordValid || !isEmailValid || !isFormValid}
+        onClick={handleSave}
+      >
+        Save
+      </Button>
     </Form>
   );
 }
