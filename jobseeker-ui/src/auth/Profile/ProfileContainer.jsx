@@ -4,7 +4,4 @@ import { profileChangeRequest } from "../data/authSlice";
 
 const mapDispatchToProps = { profileChangeRequest };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Profile);
+export default connect(null, mapDispatchToProps)(Profile);

@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 import Home from "../../home/Home";
 import Register from "../../auth/Register";
 import Login from "../../auth/Login";
@@ -16,7 +17,7 @@ const Routes = ({ isLoggedIn }) => (
       {isLoggedIn ? <Redirect to="/" /> : <Register />}
     </Route>
     <Route path="/login">{isLoggedIn ? <Redirect to="/" /> : <Login />}</Route>
-    <Route path="/profile" component={Profile}>
+    <Route path="/profile">
       {!isLoggedIn ? <Redirect to="/" /> : <Profile />}
     </Route>
     <Route path="/notices" component={Notices} />
@@ -25,5 +26,9 @@ const Routes = ({ isLoggedIn }) => (
     <Route path="/categories" component={Categories} />
   </Switch>
 );
+
+Routes.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired
+};
 
 export default Routes;

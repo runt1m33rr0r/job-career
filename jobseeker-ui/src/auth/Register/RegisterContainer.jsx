@@ -4,7 +4,4 @@ import { registerRequest } from "../data/authSlice";
 
 const mapDispatchToProps = { registerRequest };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Register);
+export default connect(null, mapDispatchToProps)(Register);
