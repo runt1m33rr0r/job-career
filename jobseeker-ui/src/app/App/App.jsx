@@ -74,7 +74,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function App({ isLoggedIn, requestLogout }) {
+function App({
+  userType,
+  firstName,
+  lastName,
+  companyName,
+  eMail,
+  isAuthenticated,
+  requestLogout
+}) {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -95,6 +103,20 @@ function App({ isLoggedIn, requestLogout }) {
   const handleLogoutPress = () => {
     requestLogout();
     handleClose();
+  };
+
+  const getUserName = () => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    if (userType === "user") {
+      return `${firstName} ${lastName}`;
+    } else if (userType === "company") {
+      return companyName;
+    } else {
+      return eMail;
+    }
   };
 
   const drawer = (
@@ -128,6 +150,7 @@ function App({ isLoggedIn, requestLogout }) {
             <Typography className={classes.title} variant="h6" noWrap>
               Jobs Finder
             </Typography>
+            <Typography variant="h6">{getUserName()}</Typography>
             <IconButton color="inherit" onClick={handleMenu}>
               <AccountCircle />
             </IconButton>
@@ -145,7 +168,7 @@ function App({ isLoggedIn, requestLogout }) {
               open={open}
               onClose={handleClose}
             >
-              {!isLoggedIn && [
+              {!isAuthenticated && [
                 <MenuItem
                   key={1}
                   component={Link}
@@ -163,7 +186,7 @@ function App({ isLoggedIn, requestLogout }) {
                   Register
                 </MenuItem>
               ]}
-              {isLoggedIn && [
+              {isAuthenticated && [
                 <MenuItem
                   key={3}
                   component={Link}
@@ -232,7 +255,7 @@ function App({ isLoggedIn, requestLogout }) {
 }
 
 App.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
   requestLogout: PropTypes.func.isRequired
 };
 

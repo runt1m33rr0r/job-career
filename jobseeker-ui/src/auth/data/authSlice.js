@@ -13,8 +13,13 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    loginRequest: state => {
+    loginRequest: (state, action) => {
       state.isAuthenticated = true;
+      state.userType = action.payload.userType;
+      state.firstName = "Some";
+      state.lastName = "User";
+      state.companyName = "Some Company";
+      state.eMail = action.payload.eMail;
     },
     loginSuccess: state => {
       state.isAuthenticated = true;
@@ -23,8 +28,13 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
     },
     logout: () => initialState,
-    registerRequest: state => {
+    registerRequest: (state, action) => {
       state.isAuthenticated = true;
+      state.userType = action.payload.userType;
+      state.firstName = action.payload.firstName;
+      state.lastName = action.payload.lastName;
+      state.companyName = action.payload.companyName;
+      state.eMail = action.payload.eMail;
     },
     registerSuccess: state => {
       state.isAuthenticated = true;
