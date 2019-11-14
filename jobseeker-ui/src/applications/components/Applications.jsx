@@ -5,7 +5,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import ApplicationModal from "./ApplicationModal";
-import ItemsList from "../common/ItemsList";
+import ItemsList from "../../shared/components/ItemsList";
 import ApplicationListItem from "./ApplicationListItem";
 
 const applications = [

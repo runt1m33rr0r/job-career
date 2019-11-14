@@ -1,14 +1,14 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import Home from "../../home/Home";
-import Register from "../../auth/Register";
-import Login from "../../auth/Login";
-import Notices from "../../notices/Notices";
-import Applications from "../../applications/Applications";
-import Search from "../../search/Search";
-import Categories from "../../categories/Categories";
-import Profile from "../../auth/Profile";
+import Home from "../../../home/components/Home";
+import Register from "../../../auth/components/Register";
+import Login from "../../../auth/components/Login";
+import Notices from "../../../notices/components/Notices";
+import Applications from "../../../applications/components/Applications";
+import Search from "../../../search/components/Search";
+import Categories from "../../../categories/components/Categories";
+import Profile from "../../../auth/components/Profile";
 
 const Routes = ({ isLoggedIn }) => (
   <Switch>
