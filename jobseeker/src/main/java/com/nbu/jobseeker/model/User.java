@@ -1,6 +1,8 @@
 package com.nbu.jobseeker.model;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.UUID;
 
 @MappedSuperclass
 public class User {
@@ -18,6 +20,12 @@ public class User {
 
     @Column(name = "DELETED")
     private boolean isDeleted = false;
+
+    @Column(name = "LOGIN_TIME")
+    private Date loginTime;
+
+    @Column(name = "TOKEN")
+    private UUID token;
 
     public long getId() {
         return id;
@@ -41,5 +49,29 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Date loginTime) {
+        this.loginTime = loginTime;
+    }
+
+    public UUID getToken() {
+        return token;
+    }
+
+    public void setToken(UUID token) {
+        this.token = token;
     }
 }
