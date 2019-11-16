@@ -2,10 +2,8 @@ package com.nbu.jobseeker.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "PEOPLE")
 public class Person extends User {
 
     @Column(name = "FIRST_NAME")

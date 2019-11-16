@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
-@MappedSuperclass
+@Entity
 public class User {
 
     @Id
