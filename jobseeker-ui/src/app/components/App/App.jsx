@@ -19,8 +19,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import Routes from "./Routes";
-import DrawerItem from "./DrawerItem";
+import PropTypes from "prop-types";
+import Routes from "../Routes";
+import DrawerItem from "../DrawerItem";
 
 const drawerWidth = 240;
 
@@ -73,7 +74,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function App() {
+function App({
+  userType,
+  firstName,
+  lastName,
+  companyName,
+  eMail,
+  isAuthenticated,
+  requestLogout
+}) {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -89,6 +98,25 @@ function App() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogoutPress = () => {
+    requestLogout();
+    handleClose();
+  };
+
+  const getUserName = () => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    if (userType === "user") {
+      return `${firstName} ${lastName}`;
+    } else if (userType === "company") {
+      return companyName;
+    } else {
+      return eMail;
+    }
   };
 
   const drawer = (
@@ -122,6 +150,7 @@ function App() {
             <Typography className={classes.title} variant="h6" noWrap>
               Jobs Finder
             </Typography>
+            <Typography variant="h6">{getUserName()}</Typography>
             <IconButton color="inherit" onClick={handleMenu}>
               <AccountCircle />
             </IconButton>
@@ -139,15 +168,42 @@ function App() {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem component={Link} to="/login" onClick={handleClose}>
-                Login
-              </MenuItem>
-              <MenuItem component={Link} to="/register" onClick={handleClose}>
-                Register
-              </MenuItem>
-              <MenuItem component={Link} to="/profile" onClick={handleClose}>
-                Profile
-              </MenuItem>
+              {!isAuthenticated && [
+                <MenuItem
+                  key={1}
+                  component={Link}
+                  to="/login"
+                  onClick={handleClose}
+                >
+                  Login
+                </MenuItem>,
+                <MenuItem
+                  key={2}
+                  component={Link}
+                  to="/register"
+                  onClick={handleClose}
+                >
+                  Register
+                </MenuItem>
+              ]}
+              {isAuthenticated && [
+                <MenuItem
+                  key={3}
+                  component={Link}
+                  to="/profile"
+                  onClick={handleClose}
+                >
+                  Profile
+                </MenuItem>,
+                <MenuItem
+                  key={4}
+                  component={Link}
+                  to="/"
+                  onClick={handleLogoutPress}
+                >
+                  Logout
+                </MenuItem>
+              ]}
             </Menu>
           </Toolbar>
         </AppBar>
@@ -197,5 +253,10 @@ function App() {
     </ThemeProvider>
   );
 }
+
+App.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  requestLogout: PropTypes.func.isRequired
+};
 
 export default App;

@@ -1,7 +1,7 @@
 import React from "react";
 import NoticeModal from "./NoticeModal";
 import NoticeListItem from "./NoticeListItem";
-import ItemsList from "./ItemsList";
+import ItemsList from "../../shared/components/ItemsList";
 
 const notices = [
   {
