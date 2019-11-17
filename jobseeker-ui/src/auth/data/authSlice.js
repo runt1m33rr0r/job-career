@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { makeRequest } from "../../app/data/networkSlice";
-import { register } from "./authApi";
+import { register, login } from "./authApi";
 
 const initialState = {
   type: "",
@@ -63,3 +63,6 @@ export const registerRequest = registrationData => async dispatch =>
   dispatch(
     makeRequest(register, registrationData, registerSuccess, registerFailure)
   );
+
+export const loginRequest = loginData => async dispatch =>
+  dispatch(makeRequest(login, loginData, loginSuccess, loginFailure));

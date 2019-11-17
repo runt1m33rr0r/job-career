@@ -20,3 +20,15 @@ export async function register({
     token: "123456"
   };
 }
+
+export async function login({ type, eMail, password }) {
+  console.log({ type, eMail, password });
+
+  await sleep(3000);
+
+  return {
+    success: true,
+    message: "Login successful!",
+    token: "123456"
+  };
+}

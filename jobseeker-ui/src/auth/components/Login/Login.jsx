@@ -7,7 +7,7 @@ import Form from "../AuthForm";
 
 const userTypes = ["user", "company", "admin"];
 
-function Login({ loginRequest }) {
+function Login({ loginRequest, isFetching }) {
   const [formData, setFormData] = useState({
     eMail: "",
     password: "",
@@ -21,7 +21,7 @@ function Login({ loginRequest }) {
     });
 
   const handleLoginClick = () => {
-    //loginRequest(formData);
+    loginRequest(formData);
   };
 
   return (
@@ -40,7 +40,7 @@ function Login({ loginRequest }) {
         userTypes={userTypes}
       />
       <Button
-        disabled={!formData.eMail || !formData.password}
+        disabled={!formData.eMail || !formData.password || isFetching}
         onClick={handleLoginClick}
       >
         Log in

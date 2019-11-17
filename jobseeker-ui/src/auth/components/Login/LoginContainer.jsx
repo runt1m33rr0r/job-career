@@ -1,7 +1,11 @@
 import { connect } from "react-redux";
 import Login from "./Login";
-//import { loginRequest } from "../../data/authSlice";
+import { loginRequest } from "../../data/authSlice";
 
-//const mapDispatchToProps = { loginRequest };
+const mapStateToProps = state => ({
+  isFetching: state.network.isFetching
+});
 
-export default connect(null, null)(Login);
+const mapDispatchToProps = { loginRequest };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
