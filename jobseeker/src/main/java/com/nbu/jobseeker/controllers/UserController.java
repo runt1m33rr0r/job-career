@@ -3,12 +3,12 @@ package com.nbu.jobseeker.controllers;
 import com.nbu.jobseeker.exceptions.EmptyFieldsException;
 import com.nbu.jobseeker.exceptions.NoUserExistsException;
 import com.nbu.jobseeker.exceptions.WrongPasswordException;
+import com.nbu.jobseeker.model.Company;
 import com.nbu.jobseeker.model.Person;
+import com.nbu.jobseeker.model.User;
 import com.nbu.jobseeker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -18,13 +18,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/login1")
+    @GetMapping("/users/login")
     public UUID login(String email, String password) {
         if(email != null && password != null) {
-            Person person = userService.findUserByEmail(email);
-            if(person != null) {
-                if (userService.validateUser(password, person.getPassword())) {
-                    return userService.generateLoginToken(person);
+            User user = userService.findUserByEmail(email);
+            if(user != null) {
+                if (userService.validateUser(password, user.getPassword())) {
+                    return userService.generateLoginToken(user);
                 }
                 throw new WrongPasswordException(email);
             }
@@ -33,16 +33,28 @@ public class UserController {
         throw new EmptyFieldsException();
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/users/logout")
     public String logout(String email) {
         userService.logoutUser(email);
-        return "User Logged out";
+        return "Successfully Logged out";
     }
 
-    @PostMapping(path = "/register", consumes = "application/json")
-    public String registerPerson(Person person) {
-        userService.saveUser(person);
-        return "Success";
+    @PostMapping(path = "/users/register-person", consumes = "application/json")
+    public String registerPerson(@RequestBody Person person) {
+        userService.savePerson(person);
+        return "Registration Successful";
+    }
+
+    @PostMapping(path = "/users/register-company", consumes = "application/json")
+    public String registerCompany(@RequestBody Company company) {
+        userService.saveCompany(company);
+        return "Registration Successful";
+    }
+
+    @PostMapping("/users/reset-password")
+    public String resetPassword(String email) {
+        userService.resetPassword(email);
+        return "An email will be sent if we hold an account associated with this email";
     }
 
 }
