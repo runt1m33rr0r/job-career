@@ -3,6 +3,8 @@ package com.nbu.jobseeker.controllers;
 import com.nbu.jobseeker.model.JobCategory;
 import com.nbu.jobseeker.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,24 +21,24 @@ public class CategoryController {
     }
 
     @PostMapping(path = "/categories")
-    public String createCategory(@RequestBody JobCategory category){
+    public ResponseEntity<String> createCategory(@RequestBody JobCategory category){
         categoryService.saveCategory(category);
-        return "Success";
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
     @PatchMapping(path = "/categories/{id}")
-    public String updateCategory(@PathVariable Long id, String name) {
+    public ResponseEntity<String> updateCategory(@PathVariable Long id, String name) {
         if(categoryService.updateCategory(id, name)) {
-            return "Success";
+            return new ResponseEntity<>("Success", HttpStatus.OK);
         }
-        return "Failed to update";
+        return new ResponseEntity<>("Failed", HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping(path = "/categories/{id}")
-    public String deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
         if(categoryService.deleteCategory(id)) {
-            return "Success";
+            return new ResponseEntity<>("Success", HttpStatus.OK);
         }
-        return "Failed to delete";
+        return new ResponseEntity<>("Failed", HttpStatus.NOT_MODIFIED);
     }
 }
