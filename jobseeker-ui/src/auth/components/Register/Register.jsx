@@ -44,13 +44,13 @@ function Register({ registerRequest, isFetching }) {
   };
 
   const isUserDataValid = () =>
-    formData.userType === "user"
+    formData.type === "user"
       ? formData.firstName && formData.lastName
       : formData.companyName;
 
   return (
     <Form>
-      {formData.userType === "user" ? (
+      {formData.type === "user" ? (
         <Fragment>
           <TextField
             name="firstName"

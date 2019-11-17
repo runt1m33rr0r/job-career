@@ -1,7 +1,11 @@
 import { connect } from "react-redux";
 import Profile from "./Profile";
-//import { profileChangeRequest } from "../../data/authSlice";
+import { profileChangeRequest } from "../../data/authSlice";
 
-//const mapDispatchToProps = { profileChangeRequest };
+const mapStateToProps = state => ({
+  isFetching: state.network.isFetching
+});
 
-export default connect(null, null)(Profile);
+const mapDispatchToProps = { profileChangeRequest };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

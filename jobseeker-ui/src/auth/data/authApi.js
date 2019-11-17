@@ -12,7 +12,7 @@ export async function register({
 }) {
   console.log({ type, firstName, lastName, companyName, eMail, password });
 
-  await sleep(3000);
+  await sleep(1000);
 
   return {
     success: true,
@@ -24,11 +24,37 @@ export async function register({
 export async function login({ type, eMail, password }) {
   console.log({ type, eMail, password });
 
-  await sleep(3000);
+  await sleep(1000);
 
   return {
     success: true,
     message: "Login successful!",
+    token: "123456"
+  };
+}
+
+export async function changeProfile({
+  firstName,
+  lastName,
+  companyName,
+  phoneNumber,
+  eMail,
+  password
+}) {
+  console.log({
+    firstName,
+    lastName,
+    companyName,
+    phoneNumber,
+    eMail,
+    password
+  });
+
+  await sleep(1000);
+
+  return {
+    success: true,
+    message: "Profile change successful!",
     token: "123456"
   };
 }

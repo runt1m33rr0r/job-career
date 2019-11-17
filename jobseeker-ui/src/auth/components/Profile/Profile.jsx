@@ -5,7 +5,7 @@ import TextField from "../AuthTextField";
 import Form from "../AuthForm";
 import RepeatedTextField from "../RepeatedTextField";
 
-function Profile({ profileChangeRequest }) {
+function Profile({ profileChangeRequest, isFetching }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -24,7 +24,7 @@ function Profile({ profileChangeRequest }) {
     });
 
   const handleFieldChange = event =>
-    setFormData(event.target.name, event.target.value);
+    setDataField(event.target.name, event.target.value);
 
   const handleEmailValidation = ({ value, isValid }) => {
     setDataField("eMail", value);
@@ -80,7 +80,9 @@ function Profile({ profileChangeRequest }) {
       />
       <TextField label="repeat password" type="password" />
       <Button
-        disabled={!isPasswordValid || !isEmailValid || !isFormValid}
+        disabled={
+          !isPasswordValid || !isEmailValid || !isFormValid || isFetching
+        }
         onClick={handleSave}
       >
         Save

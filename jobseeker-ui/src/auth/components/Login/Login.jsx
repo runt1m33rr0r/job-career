@@ -11,7 +11,7 @@ function Login({ loginRequest, isFetching }) {
   const [formData, setFormData] = useState({
     eMail: "",
     password: "",
-    userType: userTypes[0]
+    type: userTypes[0]
   });
 
   const handleFieldChange = event =>
@@ -34,9 +34,9 @@ function Login({ loginRequest, isFetching }) {
         onChange={handleFieldChange}
       />
       <SelectMenu
-        name="userType"
+        name="type"
         onChange={handleFieldChange}
-        userType={formData.userType}
+        userType={formData.type}
         userTypes={userTypes}
       />
       <Button
