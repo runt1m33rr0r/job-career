@@ -40,7 +40,7 @@ export const makeRequest = (
     dispatch(stopFetching(requestResponse));
 
     if (requestResponse.success) {
-      dispatch(successAction(requestData));
+      dispatch(successAction({ ...requestData, ...requestResponse }));
     } else {
       dispatch(failAction());
     }
