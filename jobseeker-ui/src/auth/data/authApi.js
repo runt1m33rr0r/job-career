@@ -1,3 +1,8 @@
+import axios from "axios";
+import { BASE_ROUTE } from "../../shared/config";
+
+const USERS_ROUTE = `${BASE_ROUTE}users\\`;
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -12,25 +17,42 @@ export async function register({
 }) {
   console.log({ type, firstName, lastName, companyName, eMail, password });
 
-  await sleep(1000);
+  try {
+    let response;
 
-  return {
-    success: true,
-    message: "Registration successful!",
-    token: "123456"
-  };
+    if (type === "user") {
+      response = await axios.post(`${USERS_ROUTE}register-person`, {
+        firstName,
+        lastName,
+        eMail,
+        password
+      });
+    } else {
+      response = await axios.post(`${USERS_ROUTE}register-company`, {
+        companyName,
+        eMail,
+        password
+      });
+    }
+
+    return { success: true, message: response.data };
+  } catch (error) {
+    return { sucess: false, message: error };
+  }
 }
 
-export async function login({ type, eMail, password }) {
-  console.log({ type, eMail, password });
+export async function login({ eMail, password }) {
+  console.log({ eMail, password });
 
-  await sleep(1000);
+  try {
+    let response = await axios.post(`${USERS_ROUTE}login`, { eMail, password });
 
-  return {
-    success: true,
-    message: "Login successful!",
-    token: "123456"
-  };
+    console.log(response.data);
+
+    return { success: true, message: response.data };
+  } catch (error) {
+    return { sucess: false, message: error };
+  }
 }
 
 export async function changeProfile({

@@ -27,13 +27,8 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
     },
     logout: () => initialState,
-    registerSuccess: (state, action) => {
-      state.isAuthenticated = true;
-      state.type = action.payload.type;
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
-      state.companyName = action.payload.companyName;
-      state.eMail = action.payload.eMail;
+    registerSuccess: state => {
+      state.isAuthenticated = false;
     },
     registerFailure: state => {
       state.isAuthenticated = false;

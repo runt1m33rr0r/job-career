@@ -2,16 +2,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "../AuthButton";
 import TextField from "../AuthTextField";
-import SelectMenu from "../AuthSelectMenu";
 import Form from "../AuthForm";
-
-const userTypes = ["user", "company", "admin"];
 
 function Login({ loginRequest, isFetching }) {
   const [formData, setFormData] = useState({
     eMail: "",
-    password: "",
-    type: userTypes[0]
+    password: ""
   });
 
   const handleFieldChange = event =>
@@ -32,12 +28,6 @@ function Login({ loginRequest, isFetching }) {
         label="password"
         type="password"
         onChange={handleFieldChange}
-      />
-      <SelectMenu
-        name="type"
-        onChange={handleFieldChange}
-        userType={formData.type}
-        userTypes={userTypes}
       />
       <Button
         disabled={!formData.eMail || !formData.password || isFetching}
