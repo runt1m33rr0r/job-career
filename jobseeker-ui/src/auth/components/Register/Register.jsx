@@ -8,14 +8,14 @@ import RepeatedTextField from "../RepeatedTextField";
 
 const userTypes = ["user", "company"];
 
-function Register({ registerRequest }) {
+function Register({ registerRequest, isFetching }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     companyName: "",
     eMail: "",
     password: "",
-    userType: userTypes[0]
+    type: userTypes[0]
   });
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -77,13 +77,15 @@ function Register({ registerRequest }) {
         onValidation={handlePasswordValidation}
       />
       <SelectMenu
-        name="userType"
+        name="type"
         onChange={handleFieldChange}
-        userType={formData.userType}
+        userType={formData.type}
         userTypes={userTypes}
       />
       <Button
-        disabled={!isEmailValid || !isPasswordValid || !isUserDataValid()}
+        disabled={
+          !isEmailValid || !isPasswordValid || !isUserDataValid() || isFetching
+        }
         onClick={handleRegisterClick}
       >
         Register

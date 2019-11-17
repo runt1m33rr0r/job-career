@@ -22,6 +22,7 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import Routes from "../Routes";
 import DrawerItem from "../DrawerItem";
+import Notification from "../Notification";
 
 const drawerWidth = 240;
 
@@ -237,6 +238,7 @@ function App({
           </Hidden>
         </nav>
         <main className={classes.main}>
+          <Notification />
           <div className={classes.toolbar} />
           <Grid
             container

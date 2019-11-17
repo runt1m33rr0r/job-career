@@ -1,7 +1,9 @@
-import { createSlice } from "redux-starter-kit";
+import { createSlice } from "@reduxjs/toolkit";
+import { makeRequest } from "../../app/data/networkSlice";
+import { register } from "./authApi";
 
 const initialState = {
-  userType: "",
+  type: "",
   firstName: "",
   lastName: "",
   companyName: "",
@@ -13,37 +15,28 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    loginRequest: (state, action) => {
+    loginSuccess: (state, action) => {
       state.isAuthenticated = true;
-      state.userType = action.payload.userType;
+      state.type = action.payload.type;
       state.firstName = "Some";
       state.lastName = "User";
       state.companyName = "Some Company";
       state.eMail = action.payload.eMail;
     },
-    loginSuccess: state => {
-      state.isAuthenticated = true;
-    },
     loginFailure: state => {
       state.isAuthenticated = false;
     },
     logout: () => initialState,
-    registerRequest: (state, action) => {
+    registerSuccess: (state, action) => {
       state.isAuthenticated = true;
-      state.userType = action.payload.userType;
+      state.type = action.payload.type;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
       state.companyName = action.payload.companyName;
       state.eMail = action.payload.eMail;
     },
-    registerSuccess: state => {
-      state.isAuthenticated = true;
-    },
     registerFailure: state => {
       state.isAuthenticated = false;
-    },
-    profileChangeRequest: state => {
-      state.isAuthenticated = true;
     },
     profileChangeSuccess: state => {
       state.isAuthenticated = true;
@@ -55,16 +48,18 @@ const authSlice = createSlice({
 });
 
 export const {
-  loginRequest,
   loginSuccess,
   loginFailure,
-  registerRequest,
   registerSuccess,
   registerFailure,
-  profileChangeRequest,
   profileChangeSuccess,
   profileChangeFailure,
   logout
 } = authSlice.actions;
 
 export default authSlice.reducer;
+
+export const registerRequest = registrationData => async dispatch =>
+  dispatch(
+    makeRequest(register, registrationData, registerSuccess, registerFailure)
+  );

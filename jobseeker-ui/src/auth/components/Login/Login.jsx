@@ -20,7 +20,9 @@ function Login({ loginRequest }) {
       [event.target.name]: event.target.value
     });
 
-  const handleLoginClick = () => loginRequest(formData);
+  const handleLoginClick = () => {
+    //loginRequest(formData);
+  };
 
   return (
     <Form>

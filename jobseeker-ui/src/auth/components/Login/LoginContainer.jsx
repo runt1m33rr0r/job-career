@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import Login from "./Login";
-import { loginRequest } from "../../data/authSlice";
+//import { loginRequest } from "../../data/authSlice";
 
-const mapDispatchToProps = { loginRequest };
+//const mapDispatchToProps = { loginRequest };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(null, null)(Login);
