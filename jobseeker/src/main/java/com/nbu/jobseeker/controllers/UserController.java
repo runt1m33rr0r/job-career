@@ -8,6 +8,8 @@ import com.nbu.jobseeker.model.Person;
 import com.nbu.jobseeker.model.User;
 import com.nbu.jobseeker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -18,13 +20,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users/login")
-    public UUID login(String email, String password) {
+    @PostMapping("/users/login")
+    public ResponseEntity<UUID> login(String email, String password) {
         if(email != null && password != null) {
             User user = userService.findUserByEmail(email);
             if(user != null) {
                 if (userService.validateUser(password, user.getPassword())) {
-                    return userService.generateLoginToken(user);
+                    return new ResponseEntity<>(userService.generateLoginToken(user), HttpStatus.OK);
                 }
                 throw new WrongPasswordException(email);
             }
@@ -34,27 +36,27 @@ public class UserController {
     }
 
     @PostMapping("/users/logout")
-    public String logout(String email) {
+    public ResponseEntity<String> logout(String email) {
         userService.logoutUser(email);
-        return "Successfully Logged out";
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
     @PostMapping(path = "/users/register-person", consumes = "application/json")
-    public String registerPerson(@RequestBody Person person) {
+    public ResponseEntity<String> registerPerson(@RequestBody Person person) {
         userService.savePerson(person);
-        return "Registration Successful";
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
     @PostMapping(path = "/users/register-company", consumes = "application/json")
-    public String registerCompany(@RequestBody Company company) {
+    public ResponseEntity<String> registerCompany(@RequestBody Company company) {
         userService.saveCompany(company);
-        return "Registration Successful";
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
     @PostMapping("/users/reset-password")
-    public String resetPassword(String email) {
+    public ResponseEntity<String> resetPassword(String email) {
         userService.resetPassword(email);
-        return "An email will be sent if we hold an account associated with this email";
+        return new ResponseEntity<>("An email will be sent if we hold an account associated with this email", HttpStatus.OK);
     }
 
 }
