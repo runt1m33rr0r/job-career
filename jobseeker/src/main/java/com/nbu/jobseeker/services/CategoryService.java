@@ -47,4 +47,8 @@ public class CategoryService {
         }
         return false;
     }
+
+    public JobCategory getByName(String name) {
+        return categoryRepository.findByName(name);
+    }
 }

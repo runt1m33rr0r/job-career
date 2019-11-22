@@ -12,11 +12,11 @@ public class JobApplication {
     @Column(name = "ID")
     private long id;
 
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = Person.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "PERSON_ID", nullable = false)
     private Person person;
 
-    @ManyToOne(targetEntity = JobNotice.class)
+    @ManyToOne(targetEntity = JobNotice.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "NOTICE_ID", nullable = false)
     private JobNotice jobNotice;
 

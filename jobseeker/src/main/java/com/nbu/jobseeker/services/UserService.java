@@ -1,5 +1,6 @@
 package com.nbu.jobseeker.services;
 
+import com.nbu.jobseeker.dto.UserUpdateDTO;
 import com.nbu.jobseeker.model.Company;
 import com.nbu.jobseeker.model.Person;
 import com.nbu.jobseeker.model.User;
@@ -54,12 +55,12 @@ public class UserService {
         return bCryptPasswordEncoder.matches(inputPassword, passwordOnFile);
     }
 
-    public UUID generateLoginToken(User user) {
+    public User generateLoginToken(User user) {
         UUID token = UUID.randomUUID();
         user.setLoginTime(new Date());
         user.setToken(token);
         userRepository.save(user);
-        return token;
+        return user;
     }
 
     public boolean logoutUser(String email) {
@@ -85,5 +86,52 @@ public class UserService {
 
     private <T extends User> void encryptPassword(T user, String password) {
         user.setPassword(bCryptPasswordEncoder.encode(password));
+    }
+
+    public boolean updateUser(Long id, UserUpdateDTO userUpdateDTO) {
+        User user = userRepository.getOne(id);
+        if(user != null) {
+            if(user instanceof Company) {
+                updateCompany(userUpdateDTO, user);
+            } else if (user instanceof Person) {
+                updatePerson(userUpdateDTO, user);
+            }
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    private void updateCompany(UserUpdateDTO userUpdateDTO, User user) {
+        if(userUpdateDTO.getName() != null) {
+            ((Company) user).setName(userUpdateDTO.getName());
+        }
+        if(userUpdateDTO.getPassword() != null) {
+            encryptPassword(user, userUpdateDTO.getPassword());
+        }
+        if(userUpdateDTO.getNumber() != null) {
+            ((Company) user).setNumber(userUpdateDTO.getNumber());
+        }
+        if(userUpdateDTO.getEmail() != null) {
+            user.setEmail(userUpdateDTO.getEmail());
+        }
+    }
+
+    private void updatePerson(UserUpdateDTO userUpdateDTO, User user) {
+        if(userUpdateDTO.getEmail() != null) {
+            user.setEmail(userUpdateDTO.getEmail());
+        }
+        if(userUpdateDTO.getNumber() != null) {
+            ((Person) user).setNumber(userUpdateDTO.getNumber());
+        }
+        if(userUpdateDTO.getFirstName() != null) {
+            ((Person) user).setFirstName(userUpdateDTO.getFirstName());
+        }
+        if(userUpdateDTO.getLastName() != null) {
+            ((Person) user).setLastName(userUpdateDTO.getLastName());
+        }
+        if(userUpdateDTO.getPassword() != null) {
+            encryptPassword(user, userUpdateDTO.getPassword());
+        }
     }
 }
