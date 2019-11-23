@@ -5,10 +5,12 @@ import com.nbu.jobseeker.dto.ApplicationSearchDTO;
 import com.nbu.jobseeker.dto.ApplicationUpdateDTO;
 import com.nbu.jobseeker.model.JobApplication;
 import com.nbu.jobseeker.model.JobNotice;
-import com.nbu.jobseeker.model.User;
+import com.nbu.jobseeker.model.Person;
 import com.nbu.jobseeker.repositories.ApplicationRepository;
 import com.nbu.jobseeker.repositories.NoticeRepository;
+import com.nbu.jobseeker.repositories.PersonRepository;
 import com.nbu.jobseeker.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +21,16 @@ import java.util.List;
 public class ApplicationService {
 
     private ApplicationRepository applicationRepository;
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
     private NoticeRepository noticeRepository;
+    @Autowired
+    private EmailService emailService;
 
     public ApplicationService(@Qualifier("applicationRepository") ApplicationRepository applicationRepository,
-                              @Qualifier("userRepository") UserRepository userRepository,
+                              @Qualifier("personRepository") PersonRepository personRepository,
                               @Qualifier("noticeRepository") NoticeRepository noticeRepository) {
         this.applicationRepository = applicationRepository;
-        this.userRepository = userRepository;
+        this.personRepository = personRepository;
         this.noticeRepository = noticeRepository;
     }
 
@@ -83,9 +87,9 @@ public class ApplicationService {
 
     public boolean createApplication(ApplicationCreateDTO applicationCreateDTO) {
         JobApplication application = new JobApplication();
-        User user = null;
+        Person user = null;
         if(applicationCreateDTO.getNoticeId() != null) {
-            user = userRepository.getOne(applicationCreateDTO.getPersonId());
+            user = personRepository.getOne(applicationCreateDTO.getPersonId());
         }
         JobNotice notice = null;
         if(applicationCreateDTO.getNoticeId() != null) {
@@ -109,8 +113,9 @@ public class ApplicationService {
                 }
             }
             application.setLastModified(new Date());
-
             applicationRepository.save(application);
+            emailService.sendNewApplicationEmailForCompany(notice.getCompany().getName(), notice.getCompany().getEmail(), notice.getTitle());
+            emailService.sendNewApplicationEmailForPerson(user.getFirstName(),user.getEmail(),notice.getTitle());
             return true;
         }
         return false;
