@@ -37,8 +37,16 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public Person findUserByEmail(String email) {
-        return personRepository.findByEmail(email);
+    public User findUserByEmail(String email) {
+        Person person = personRepository.findByEmail(email);
+        if( person != null) {
+            return person;
+        }
+        Company company = companyRepository.findByEmail(email);
+        if(company != null) {
+            return company;
+        }
+        return null;
     }
 
     public boolean createUser(UserUpdateDTO userUpdateDTO) {
