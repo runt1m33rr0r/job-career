@@ -6,7 +6,7 @@ import Form from "../AuthForm";
 
 function Login({ loginRequest, isFetching }) {
   const [formData, setFormData] = useState({
-    eMail: "",
+    email: "",
     password: ""
   });
 
@@ -22,7 +22,7 @@ function Login({ loginRequest, isFetching }) {
 
   return (
     <Form>
-      <TextField name="eMail" label="e-mail" onChange={handleFieldChange} />
+      <TextField name="email" label="e-mail" onChange={handleFieldChange} />
       <TextField
         name="password"
         label="password"
@@ -30,7 +30,7 @@ function Login({ loginRequest, isFetching }) {
         onChange={handleFieldChange}
       />
       <Button
-        disabled={!formData.eMail || !formData.password || isFetching}
+        disabled={!formData.email || !formData.password || isFetching}
         onClick={handleLoginClick}
       >
         Log in

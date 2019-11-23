@@ -5,17 +5,18 @@ import TextField from "../AuthTextField";
 import SelectMenu from "../AuthSelectMenu";
 import Form from "../AuthForm";
 import RepeatedTextField from "../RepeatedTextField";
+import { usualUserTypes } from "../../../shared/constants";
 
-const userTypes = ["user", "company"];
+const userTypes = Object.values(usualUserTypes);
 
 function Register({ registerRequest, isFetching }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     companyName: "",
-    eMail: "",
+    email: "",
     password: "",
-    type: userTypes[0]
+    userType: userTypes[0]
   });
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -34,7 +35,7 @@ function Register({ registerRequest, isFetching }) {
   };
 
   const handleEmailValidation = ({ value, isValid }) => {
-    setDataField("eMail", value);
+    setDataField("email", value);
     setIsEmailValid(isValid);
   };
 
@@ -44,13 +45,13 @@ function Register({ registerRequest, isFetching }) {
   };
 
   const isUserDataValid = () =>
-    formData.type === "user"
+    formData.userType === usualUserTypes.USER
       ? formData.firstName && formData.lastName
       : formData.companyName;
 
   return (
     <Form>
-      {formData.type === "user" ? (
+      {formData.userType === usualUserTypes.USER ? (
         <Fragment>
           <TextField
             name="firstName"
@@ -77,9 +78,9 @@ function Register({ registerRequest, isFetching }) {
         onValidation={handlePasswordValidation}
       />
       <SelectMenu
-        name="type"
+        name="userType"
         onChange={handleFieldChange}
-        userType={formData.type}
+        userType={formData.userType}
         userTypes={userTypes}
       />
       <Button

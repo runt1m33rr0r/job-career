@@ -1,5 +1,7 @@
 import axios from "axios";
 import { BASE_ROUTE } from "../../shared/config";
+import { setItem, removeAll } from "../../shared/storageUtils";
+import { usualUserTypes } from "../../shared/constants";
 
 const USERS_ROUTE = `${BASE_ROUTE}users\\`;
 
@@ -8,50 +10,91 @@ function sleep(ms) {
 }
 
 export async function register({
-  type,
+  userType,
   firstName,
   lastName,
   companyName,
-  eMail,
+  email,
   password
 }) {
-  console.log({ type, firstName, lastName, companyName, eMail, password });
-
   try {
-    let response;
+    let requestData = { companyName, email, password };
 
-    if (type === "user") {
-      response = await axios.post(`${USERS_ROUTE}register-person`, {
+    if (userType === usualUserTypes.USER) {
+      requestData = {
         firstName,
         lastName,
-        eMail,
+        email,
         password
-      });
-    } else {
-      response = await axios.post(`${USERS_ROUTE}register-company`, {
-        companyName,
-        eMail,
-        password
-      });
+      };
     }
 
-    return { success: true, message: response.data };
-  } catch (error) {
-    return { sucess: false, message: error };
-  }
-}
-
-export async function login({ eMail, password }) {
-  console.log({ eMail, password });
-
-  try {
-    let response = await axios.post(`${USERS_ROUTE}login`, { eMail, password });
+    const response = await axios.post(`${USERS_ROUTE}register`, requestData);
 
     console.log(response.data);
 
-    return { success: true, message: response.data };
-  } catch (error) {
-    return { sucess: false, message: error };
+    if (response.data.success) {
+      return await login({ email, password });
+    }
+
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
+}
+
+export async function login({ email, password }) {
+  console.log({ email, password });
+
+  try {
+    const response = await axios.post(`${USERS_ROUTE}login`, {
+      email,
+      password
+    });
+
+    const userData = {
+      success: response.data.success,
+      message: response.data.message,
+      email: response.data.user.email,
+      firstName: response.data.user.firstName,
+      lastName: response.data.user.lastName,
+      companyName: response.data.user.name,
+      phoneNumber: response.data.user.number,
+      userType: response.data.user.type.toLowerCase(),
+      token: response.data.user.token
+    };
+
+    console.log(userData);
+
+    if (userData.success) {
+      setItem("email", email);
+      setItem("firstName", userData.firstName);
+      setItem("lastName", userData.lastName);
+      setItem("companyName", userData.companyName);
+      setItem("phoneNumber", userData.phoneNumber);
+      setItem("userType", userData.userType);
+      setItem("token", userData.token);
+    }
+
+    return userData;
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
+}
+
+export async function logOut({ email }) {
+  try {
+    const response = await axios.post(`${USERS_ROUTE}logout`, { email });
+
+    if (response.data.success) {
+      removeAll();
+    }
+
+    console.log(response.data);
+
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
   }
 }
 

@@ -11,7 +11,7 @@ function Profile({ profileChangeRequest, isFetching }) {
     lastName: "",
     companyName: "",
     phoneNumber: "",
-    eMail: "",
+    email: "",
     password: ""
   });
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -27,7 +27,7 @@ function Profile({ profileChangeRequest, isFetching }) {
     setDataField(event.target.name, event.target.value);
 
   const handleEmailValidation = ({ value, isValid }) => {
-    setDataField("eMail", value);
+    setDataField("email", value);
     setIsEmailValid(isValid);
   };
 

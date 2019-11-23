@@ -28,9 +28,9 @@ export default networkSlice.reducer;
 
 export const makeRequest = (
   requestFunction,
-  requestData,
   successAction,
-  failAction
+  failAction,
+  requestData
 ) => async dispatch => {
   try {
     dispatch(startFetching());
