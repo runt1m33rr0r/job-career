@@ -4,8 +4,6 @@ import com.nbu.jobseeker.dto.LoginDTO;
 import com.nbu.jobseeker.dto.ResponseDTO;
 import com.nbu.jobseeker.dto.UserDTO;
 import com.nbu.jobseeker.dto.UserUpdateDTO;
-import com.nbu.jobseeker.model.Company;
-import com.nbu.jobseeker.model.Person;
 import com.nbu.jobseeker.model.User;
 import com.nbu.jobseeker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

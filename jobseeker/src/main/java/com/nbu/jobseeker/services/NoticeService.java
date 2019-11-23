@@ -61,6 +61,15 @@ public class NoticeService {
         return false;
     }
 
+    //Search by category
+    public List<JobNotice> findByCategory(String name) {
+        JobCategory category = categoryService.getByName(name);
+        if(category != null) {
+            return noticeRepository.findByCategory(category);
+        }
+        return null;
+    }
+
 
     public boolean deleteJobNotice(Long id) {
         JobNotice toDelete = noticeRepository.getOne(id);

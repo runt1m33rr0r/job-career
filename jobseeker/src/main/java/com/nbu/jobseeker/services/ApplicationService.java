@@ -39,7 +39,6 @@ public class ApplicationService {
         return null;
     }
 
-
     private List<JobApplication> getByPersonId(Long personId) {
         return applicationRepository.findByPersonId(personId);
     }
@@ -81,8 +80,6 @@ public class ApplicationService {
         }
         return false;
     }
-
-    //TODO create application
 
     public boolean createApplication(ApplicationCreateDTO applicationCreateDTO) {
         JobApplication application = new JobApplication();

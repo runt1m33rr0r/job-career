@@ -25,6 +25,8 @@ public class NoticeController {
         return new ResponseEntity<>(new NoticeDTO(true, "Success", noticeService.retrieveByKeywords(null, keywords)), HttpStatus.OK);
     }
 
+    //TODO GET search by category ^ keywords is above
+
     //TODO POST create notice
 
 

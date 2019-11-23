@@ -1,9 +1,11 @@
 package com.nbu.jobseeker.services;
 
 import com.nbu.jobseeker.dto.UserUpdateDTO;
+import com.nbu.jobseeker.model.Administrator;
 import com.nbu.jobseeker.model.Company;
 import com.nbu.jobseeker.model.Person;
 import com.nbu.jobseeker.model.User;
+import com.nbu.jobseeker.repositories.AdministratorRepository;
 import com.nbu.jobseeker.repositories.CompanyRepository;
 import com.nbu.jobseeker.repositories.PersonRepository;
 import com.nbu.jobseeker.repositories.UserRepository;
@@ -23,6 +25,7 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private UserRepository userRepository;
     private CompanyRepository companyRepository;
+    private AdministratorRepository administratorRepository;
     @Autowired
     private EmailService emailService;
 
@@ -30,11 +33,13 @@ public class UserService {
     public UserService(@Qualifier("personRepository") PersonRepository personRepository,
                        @Qualifier("userRepository") UserRepository userRepository,
                        @Qualifier("companyRepository") CompanyRepository companyRepository,
-                       BCryptPasswordEncoder bCryptPasswordEncoder) {
+                       BCryptPasswordEncoder bCryptPasswordEncoder,
+                       @Qualifier("administratorRepository") AdministratorRepository administratorRepository) {
         this.personRepository = personRepository;
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.administratorRepository = administratorRepository;
     }
 
     public User findUserByEmail(String email) {
@@ -45,6 +50,10 @@ public class UserService {
         Company company = companyRepository.findByEmail(email);
         if(company != null) {
             return company;
+        }
+        Administrator administrator =administratorRepository.findByEmail(email);
+        if(administrator != null) {
+            return administrator;
         }
         return null;
     }
