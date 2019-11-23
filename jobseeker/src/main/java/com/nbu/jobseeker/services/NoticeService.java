@@ -57,6 +57,9 @@ public class NoticeService {
     }
 
     //TODO Create notice
+    public boolean createNotice() {
+        return false;
+    }
 
 
     public boolean deleteJobNotice(Long id) {

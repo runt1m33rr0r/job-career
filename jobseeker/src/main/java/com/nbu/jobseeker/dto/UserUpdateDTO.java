@@ -3,7 +3,7 @@ package com.nbu.jobseeker.dto;
 public class UserUpdateDTO {
     private String firstName;
     private String lastName;
-    private String name;
+    private String companyName;
     private String email;
     private String number;
     private String password;
@@ -24,12 +24,12 @@ public class UserUpdateDTO {
         this.lastName = lastName;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getEmail() {

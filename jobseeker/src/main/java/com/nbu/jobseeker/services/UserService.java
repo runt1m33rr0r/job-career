@@ -41,13 +41,33 @@ public class UserService {
         return personRepository.findByEmail(email);
     }
 
-    public void savePerson(Person person) {
-        encryptPassword(person, person.getPassword());
+    public boolean createUser(UserUpdateDTO userUpdateDTO) {
+        if(userUpdateDTO.getFirstName() != null && userUpdateDTO.getLastName() != null) {
+            savePerson(userUpdateDTO);
+            return true;
+        } else if(userUpdateDTO.getCompanyName() != null) {
+            saveCompany(userUpdateDTO);
+            return true;
+        }
+        return false;
+    }
+
+    private void savePerson(UserUpdateDTO userUpdateDTO) {
+        Person person = new Person();
+        person.setFirstName(userUpdateDTO.getFirstName());
+        person.setLastName(userUpdateDTO.getLastName());
+        person.setNumber(userUpdateDTO.getNumber());
+        person.setEmail(userUpdateDTO.getEmail());
+        encryptPassword(person, userUpdateDTO.getPassword());
         personRepository.save(person);
     }
 
-    public void saveCompany(Company company) {
-        encryptPassword(company, company.getPassword());
+    private void saveCompany(UserUpdateDTO userUpdateDTO) {
+        Company company = new Company();
+        company.setName(userUpdateDTO.getCompanyName());
+        company.setNumber(userUpdateDTO.getNumber());
+        company.setEmail(userUpdateDTO.getEmail());
+        encryptPassword(company, userUpdateDTO.getPassword());
         companyRepository.save(company);
     }
 
@@ -103,8 +123,8 @@ public class UserService {
     }
 
     private void updateCompany(UserUpdateDTO userUpdateDTO, User user) {
-        if(userUpdateDTO.getName() != null) {
-            ((Company) user).setName(userUpdateDTO.getName());
+        if(userUpdateDTO.getCompanyName() != null) {
+            ((Company) user).setName(userUpdateDTO.getCompanyName());
         }
         if(userUpdateDTO.getPassword() != null) {
             encryptPassword(user, userUpdateDTO.getPassword());

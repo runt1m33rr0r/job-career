@@ -40,18 +40,12 @@ public class UserController {
         return new ResponseEntity<>(new ResponseDTO(true,"Logout successful"), HttpStatus.OK);
     }
 
-    //TODO do we want validation on backend or only front?
-    @PostMapping(path = "/users/register-person", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ResponseDTO> registerPerson(@RequestBody Person person) {
-        userService.savePerson(person);
-        return new ResponseEntity<>(new ResponseDTO(true,"Registration successful"), HttpStatus.CREATED);
-    }
-
-    //TODO do we want validation on backend or only front?
-    @PostMapping(path = "/users/register-company", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ResponseDTO> registerCompany(@RequestBody Company company) {
-        userService.saveCompany(company);
-        return new ResponseEntity<>(new ResponseDTO(true,"Registration successful"), HttpStatus.OK);
+    @PostMapping(path = "/users/register", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ResponseDTO> registerUser(@RequestBody UserUpdateDTO userUpdateDTO) {
+        if(userService.createUser(userUpdateDTO)) {
+            return new ResponseEntity<>(new ResponseDTO(true, "Registration successful"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ResponseDTO(false, "Registration unsuccessful"), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping(path ="/users/reset-password", consumes = "application/json", produces = "application/json")
