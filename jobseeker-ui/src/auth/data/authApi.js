@@ -52,21 +52,21 @@ export async function login({ email, password }) {
       password
     });
 
-    const userData = {
-      success: response.data.success,
-      message: response.data.message,
-      email: response.data.user.email,
-      firstName: response.data.user.firstName,
-      lastName: response.data.user.lastName,
-      companyName: response.data.user.name,
-      phoneNumber: response.data.user.number,
-      userType: response.data.user.type.toLowerCase(),
-      token: response.data.user.token
-    };
+    if (response.data.success) {
+      const userData = {
+        success: response.data.success,
+        message: response.data.message,
+        email: response.data.user.email,
+        firstName: response.data.user.firstName,
+        lastName: response.data.user.lastName,
+        companyName: response.data.user.name,
+        phoneNumber: response.data.user.number,
+        userType: response.data.user.type.toLowerCase(),
+        token: response.data.user.token
+      };
 
-    console.log(userData);
+      console.log(userData);
 
-    if (userData.success) {
       setItem("email", email);
       setItem("firstName", userData.firstName);
       setItem("lastName", userData.lastName);
@@ -74,9 +74,13 @@ export async function login({ email, password }) {
       setItem("phoneNumber", userData.phoneNumber);
       setItem("userType", userData.userType);
       setItem("token", userData.token);
+
+      return userData;
     }
 
-    return userData;
+    console.log(response.data);
+
+    return response.data;
   } catch ({ message }) {
     return { sucess: false, message };
   }
