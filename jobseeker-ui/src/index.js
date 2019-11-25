@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { configureStore } from "redux-starter-kit";
+import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import "typeface-roboto";
 import App from "./app/components/App";

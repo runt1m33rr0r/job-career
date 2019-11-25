@@ -1,52 +1,48 @@
-import { createSlice } from "redux-starter-kit";
+import { createSlice } from "@reduxjs/toolkit";
+import { makeRequest } from "../../app/data/networkSlice";
+import { register, login, changeProfile, logOut } from "./authApi";
+import { getString, getItem } from "../../shared/storageUtils";
 
-const initialState = {
-  userType: "",
-  firstName: "",
-  lastName: "",
-  companyName: "",
-  eMail: "",
-  isAuthenticated: false
-};
+const getInitialState = () => ({
+  userType: getString("userType"),
+  firstName: getString("firstName"),
+  lastName: getString("lastName"),
+  companyName: getString("companyName"),
+  email: getString("email"),
+  phoneNumber: getString("phoneNumber"),
+  isAuthenticated: !!getItem("token")
+});
 
 const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: getInitialState(),
   reducers: {
-    loginRequest: (state, action) => {
-      state.isAuthenticated = true;
-      state.userType = action.payload.userType;
-      state.firstName = "Some";
-      state.lastName = "User";
-      state.companyName = "Some Company";
-      state.eMail = action.payload.eMail;
-    },
-    loginSuccess: state => {
-      state.isAuthenticated = true;
-    },
-    loginFailure: state => {
-      state.isAuthenticated = false;
-    },
-    logout: () => initialState,
-    registerRequest: (state, action) => {
+    loginSuccess: (state, action) => {
       state.isAuthenticated = true;
       state.userType = action.payload.userType;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
       state.companyName = action.payload.companyName;
-      state.eMail = action.payload.eMail;
+      state.phoneNumber = action.payload.phoneNumber;
+      state.email = action.payload.email;
     },
-    registerSuccess: state => {
+    loginFailure: state => {
+      state.isAuthenticated = false;
+    },
+    logoutSuccess: () => getInitialState(),
+    logoutFailure: state => {
       state.isAuthenticated = true;
     },
     registerFailure: state => {
       state.isAuthenticated = false;
     },
-    profileChangeRequest: state => {
+    profileChangeSuccess: (state, action) => {
       state.isAuthenticated = true;
-    },
-    profileChangeSuccess: state => {
-      state.isAuthenticated = true;
+      state.firstName = action.payload.firstName;
+      state.lastName = action.payload.lastName;
+      state.companyName = action.payload.companyName;
+      state.email = action.payload.email;
+      state.phoneNumber = action.payload.phoneNumber;
     },
     profileChangeFailure: state => {
       state.isAuthenticated = true;
@@ -55,16 +51,38 @@ const authSlice = createSlice({
 });
 
 export const {
-  loginRequest,
   loginSuccess,
   loginFailure,
-  registerRequest,
-  registerSuccess,
   registerFailure,
-  profileChangeRequest,
   profileChangeSuccess,
   profileChangeFailure,
-  logout
+  logoutSuccess,
+  logoutFailure
 } = authSlice.actions;
 
 export default authSlice.reducer;
+
+export const registerRequest = registrationData => async dispatch =>
+  dispatch(
+    makeRequest(register, loginSuccess, registerFailure, registrationData)
+  );
+
+export const loginRequest = loginData => async dispatch =>
+  dispatch(makeRequest(login, loginSuccess, loginFailure, loginData));
+
+export const profileChangeRequest = profileData => async dispatch =>
+  dispatch(
+    makeRequest(
+      changeProfile,
+      profileChangeSuccess,
+      profileChangeFailure,
+      profileData
+    )
+  );
+
+export const logoutRequest = () => async (dispatch, getState) =>
+  dispatch(
+    makeRequest(logOut, logoutSuccess, logoutFailure, {
+      email: getState().email
+    })
+  );

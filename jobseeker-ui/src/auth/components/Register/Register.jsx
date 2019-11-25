@@ -5,15 +5,16 @@ import TextField from "../AuthTextField";
 import SelectMenu from "../AuthSelectMenu";
 import Form from "../AuthForm";
 import RepeatedTextField from "../RepeatedTextField";
+import { usualUserTypes } from "../../../shared/constants";
 
-const userTypes = ["user", "company"];
+const userTypes = Object.values(usualUserTypes);
 
-function Register({ registerRequest }) {
+function Register({ registerRequest, isFetching }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     companyName: "",
-    eMail: "",
+    email: "",
     password: "",
     userType: userTypes[0]
   });
@@ -34,7 +35,7 @@ function Register({ registerRequest }) {
   };
 
   const handleEmailValidation = ({ value, isValid }) => {
-    setDataField("eMail", value);
+    setDataField("email", value);
     setIsEmailValid(isValid);
   };
 
@@ -44,13 +45,13 @@ function Register({ registerRequest }) {
   };
 
   const isUserDataValid = () =>
-    formData.userType === "user"
+    formData.userType === usualUserTypes.USER
       ? formData.firstName && formData.lastName
       : formData.companyName;
 
   return (
     <Form>
-      {formData.userType === "user" ? (
+      {formData.userType === usualUserTypes.USER ? (
         <Fragment>
           <TextField
             name="firstName"
@@ -83,7 +84,9 @@ function Register({ registerRequest }) {
         userTypes={userTypes}
       />
       <Button
-        disabled={!isEmailValid || !isPasswordValid || !isUserDataValid()}
+        disabled={
+          !isEmailValid || !isPasswordValid || !isUserDataValid() || isFetching
+        }
         onClick={handleRegisterClick}
       >
         Register

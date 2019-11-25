@@ -22,6 +22,8 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import Routes from "../Routes";
 import DrawerItem from "../DrawerItem";
+import Notification from "../Notification";
+import { userTypes } from "../../../shared/constants";
 
 const drawerWidth = 240;
 
@@ -79,7 +81,7 @@ function App({
   firstName,
   lastName,
   companyName,
-  eMail,
+  email,
   isAuthenticated,
   requestLogout
 }) {
@@ -110,12 +112,12 @@ function App({
       return;
     }
 
-    if (userType === "user") {
+    if (userType === userTypes.USER) {
       return `${firstName} ${lastName}`;
-    } else if (userType === "company") {
+    } else if (userType === userTypes.COMPANY) {
       return companyName;
     } else {
-      return eMail;
+      return email;
     }
   };
 
@@ -125,10 +127,16 @@ function App({
       <Divider />
       <List>
         <DrawerItem text="Home" linkTo="/" />
-        <DrawerItem text="Notices" linkTo="/notices" />
-        <DrawerItem text="Applications" linkTo="/applications" />
+        {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
+          <DrawerItem text="Notices" linkTo="/notices" />
+        )}
+        {(userType === userTypes.COMPANY || userType === userTypes.USER) && (
+          <DrawerItem text="Applications" linkTo="/applications" />
+        )}
         <DrawerItem text="Search" linkTo="/search" />
-        <DrawerItem text="Categories" linkTo="/categories" />
+        {userType === userTypes.ADMIN && (
+          <DrawerItem text="Categories" linkTo="/categories" />
+        )}
       </List>
     </div>
   );
@@ -195,12 +203,7 @@ function App({
                 >
                   Profile
                 </MenuItem>,
-                <MenuItem
-                  key={4}
-                  component={Link}
-                  to="/"
-                  onClick={handleLogoutPress}
-                >
+                <MenuItem key={4} onClick={handleLogoutPress}>
                   Logout
                 </MenuItem>
               ]}
@@ -237,6 +240,7 @@ function App({
           </Hidden>
         </nav>
         <main className={classes.main}>
+          <Notification />
           <div className={classes.toolbar} />
           <Grid
             container

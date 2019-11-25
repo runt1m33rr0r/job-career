@@ -1,9 +1,9 @@
 import { connect } from "react-redux";
 import App from "./App";
-import { logout } from "../../../auth/data/authSlice";
+import { logoutRequest } from "../../../auth/data/authSlice";
 
 const mapStateToProps = state => state.auth;
 
-const mapDispatchToProps = { requestLogout: logout };
+const mapDispatchToProps = { requestLogout: logoutRequest };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
