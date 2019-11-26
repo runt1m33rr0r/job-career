@@ -19,4 +19,22 @@ public class EmailService  {
         javaMailSender.send(message);
     }
 
+    void sendNewApplicationEmailForCompany(String companyName, String email, String title) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setSubject("You have new applications!");
+        message.setTo(email);
+        message.setText("Hello "  + companyName + ",\n You have recieved a new application for the following job:\n"
+                + title + "\n Have a nice day!\n");
+        javaMailSender.send(message);
+    }
+
+    void sendNewApplicationEmailForPerson(String personName, String email, String title) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setSubject("Successfully applied for job");
+        message.setTo(email);
+        message.setText("Hello "  + personName + ",\n You have successfully applied for the following job:\n"
+                + title + "\n Have a nice day!\n");
+        javaMailSender.send(message);
+    }
+
 }

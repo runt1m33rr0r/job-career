@@ -12,14 +12,14 @@ public class JobNotice {
     @Column(name = "ID")
     private long id;
 
-    @ManyToOne(targetEntity = Company.class)
+    @ManyToOne(targetEntity = Company.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "COMPANY_ID", nullable = false)
     private Company company;
 
     @Column(name = "STATUS")
     private JobNoticeStatus status;
 
-    @ManyToOne(targetEntity = JobCategory.class)
+    @ManyToOne(targetEntity = JobCategory.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "CATEGORY_ID", nullable = false)
     private JobCategory category;
 

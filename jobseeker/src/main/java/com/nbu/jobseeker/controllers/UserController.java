@@ -1,10 +1,9 @@
 package com.nbu.jobseeker.controllers;
 
-import com.nbu.jobseeker.exceptions.EmptyFieldsException;
-import com.nbu.jobseeker.exceptions.NoUserExistsException;
-import com.nbu.jobseeker.exceptions.WrongPasswordException;
-import com.nbu.jobseeker.model.Company;
-import com.nbu.jobseeker.model.Person;
+import com.nbu.jobseeker.dto.LoginDTO;
+import com.nbu.jobseeker.dto.ResponseDTO;
+import com.nbu.jobseeker.dto.UserDTO;
+import com.nbu.jobseeker.dto.UserUpdateDTO;
 import com.nbu.jobseeker.model.User;
 import com.nbu.jobseeker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,51 +11,53 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/users/login")
-    public ResponseEntity<UUID> login(String email, String password) {
-        if(email != null && password != null) {
-            User user = userService.findUserByEmail(email);
+    @PostMapping(path = "/users/login", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ResponseDTO> login(@RequestBody LoginDTO loginDTO) {
+        if(loginDTO.getEmail() != null && loginDTO.getPassword() != null) {
+            User user = userService.findUserByEmail(loginDTO.getEmail());
             if(user != null) {
-                if (userService.validateUser(password, user.getPassword())) {
-                    return new ResponseEntity<>(userService.generateLoginToken(user), HttpStatus.OK);
+                if (userService.validateUser(loginDTO.getPassword(), user.getPassword())) {
+                    return new ResponseEntity<>(new UserDTO(true,"Login successful", userService.generateLoginToken(user)), HttpStatus.OK);
                 }
-                throw new WrongPasswordException(email);
+                return new ResponseEntity<>(new ResponseDTO(false,"Wrong password for email: " + loginDTO.getEmail()), HttpStatus.NOT_ACCEPTABLE);
             }
-            throw new NoUserExistsException(email);
+            return new ResponseEntity<>(new ResponseDTO(false,"Failed to find users for: " + loginDTO.getEmail()), HttpStatus.NO_CONTENT);
         }
-        throw new EmptyFieldsException();
+        return new ResponseEntity<>(new ResponseDTO(false,"Email or password is null"), HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @PostMapping("/users/logout")
-    public ResponseEntity<String> logout(String email) {
+    @PostMapping(path = "/users/logout", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ResponseDTO> logout(@RequestBody String email) {
         userService.logoutUser(email);
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDTO(true,"Logout successful"), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/users/register-person", consumes = "application/json")
-    public ResponseEntity<String> registerPerson(@RequestBody Person person) {
-        userService.savePerson(person);
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+    @PostMapping(path = "/users/register", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ResponseDTO> registerUser(@RequestBody UserUpdateDTO userUpdateDTO) {
+        if(userService.createUser(userUpdateDTO)) {
+            return new ResponseEntity<>(new ResponseDTO(true, "Registration successful"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ResponseDTO(false, "Registration unsuccessful"), HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @PostMapping(path = "/users/register-company", consumes = "application/json")
-    public ResponseEntity<String> registerCompany(@RequestBody Company company) {
-        userService.saveCompany(company);
-        return new ResponseEntity<>("Success", HttpStatus.OK);
-    }
-
-    @PostMapping("/users/reset-password")
-    public ResponseEntity<String> resetPassword(String email) {
+    @PostMapping(path ="/users/reset-password", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ResponseDTO> resetPassword(@RequestBody String email) {
         userService.resetPassword(email);
-        return new ResponseEntity<>("An email will be sent if we hold an account associated with this email", HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDTO(true,"An email will be sent if we hold an account associated with this email"), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/users/{id}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserUpdateDTO userUpdateDTO) {
+        if(userService.updateUser(id, userUpdateDTO)) {
+            return new ResponseEntity<>(new ResponseDTO(true,"User update successful"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ResponseDTO(true,"User does not exist"), HttpStatus.NOT_FOUND);
     }
 
 }
