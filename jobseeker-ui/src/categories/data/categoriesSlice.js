@@ -44,7 +44,8 @@ export const createCategoryRequest = categoryData => async dispatch =>
     makeRequest({
       requestFunction: createCategory,
       successAction: createCategorySuccess,
-      requestData: categoryData
+      requestData: categoryData,
+      shouldAlert: false
     })
   );
 
@@ -52,7 +53,8 @@ export const getAllCategoriesRequest = () => async dispatch =>
   dispatch(
     makeRequest({
       requestFunction: getAllCategories,
-      successAction: getAllCategoriesSuccess
+      successAction: getAllCategoriesSuccess,
+      shouldAlert: false
     })
   );
 
@@ -61,7 +63,8 @@ export const deleteCategoryRequest = categoryData => async dispatch =>
     makeRequest({
       requestFunction: deleteCategory,
       successAction: deleteCategorySuccess,
-      requestData: categoryData
+      requestData: categoryData,
+      shouldAlert: false
     })
   );
 
@@ -70,6 +73,7 @@ export const modifyCategoryRequest = categoryData => async dispatch =>
     makeRequest({
       requestFunction: modifyCategory,
       successAction: modifyCategorySuccess,
-      requestData: categoryData
+      requestData: categoryData,
+      shouldAlert: false
     })
   );

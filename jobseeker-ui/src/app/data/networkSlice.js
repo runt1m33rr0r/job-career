@@ -30,14 +30,23 @@ export const makeRequest = ({
   requestFunction,
   successAction,
   failAction,
-  requestData
+  requestData,
+  shouldAlert = true
 }) => async dispatch => {
+  const dispatchStopFetch = requestResponse => {
+    if (shouldAlert) {
+      dispatch(stopFetching(requestResponse));
+    } else {
+      dispatch(stopFetching({ success: requestResponse.success, message: "" }));
+    }
+  };
+
   try {
     dispatch(startFetching());
 
     const requestResponse = await requestFunction(requestData);
 
-    dispatch(stopFetching(requestResponse));
+    dispatchStopFetch(requestResponse);
 
     if (successAction && requestResponse.success) {
       dispatch(successAction({ ...requestData, ...requestResponse }));
@@ -45,7 +54,7 @@ export const makeRequest = ({
       dispatch(failAction());
     }
   } catch (error) {
-    dispatch(stopFetching({ success: false, message: error }));
+    dispatchStopFetch({ success: false, message: error });
 
     if (failAction) {
       dispatch(failAction());
