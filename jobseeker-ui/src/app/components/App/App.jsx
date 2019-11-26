@@ -134,7 +134,7 @@ function App({
           <DrawerItem text="Applications" linkTo="/applications" />
         )}
         <DrawerItem text="Search" linkTo="/search" />
-        {userType === userTypes.ADMIN && (
+        {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
           <DrawerItem text="Categories" linkTo="/categories" />
         )}
       </List>
