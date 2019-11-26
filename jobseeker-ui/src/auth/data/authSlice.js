@@ -64,25 +64,42 @@ export default authSlice.reducer;
 
 export const registerRequest = registrationData => async dispatch =>
   dispatch(
-    makeRequest(register, loginSuccess, registerFailure, registrationData)
+    makeRequest({
+      requestFunction: register,
+      successAction: loginSuccess,
+      failAction: registerFailure,
+      requestData: registrationData
+    })
   );
 
 export const loginRequest = loginData => async dispatch =>
-  dispatch(makeRequest(login, loginSuccess, loginFailure, loginData));
+  dispatch(
+    makeRequest({
+      requestFunction: login,
+      successAction: loginSuccess,
+      failAction: loginFailure,
+      requestData: loginData
+    })
+  );
 
 export const profileChangeRequest = profileData => async dispatch =>
   dispatch(
-    makeRequest(
-      changeProfile,
-      profileChangeSuccess,
-      profileChangeFailure,
-      profileData
-    )
+    makeRequest({
+      requestFunction: changeProfile,
+      successAction: profileChangeSuccess,
+      failAction: profileChangeFailure,
+      requestData: profileData
+    })
   );
 
 export const logoutRequest = () => async (dispatch, getState) =>
   dispatch(
-    makeRequest(logOut, logoutSuccess, logoutFailure, {
-      email: getState().email
+    makeRequest({
+      requestFunction: logOut,
+      successAction: logoutSuccess,
+      failAction: logoutFailure,
+      requestData: {
+        email: getState().email
+      }
     })
   );

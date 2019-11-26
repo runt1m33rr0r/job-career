@@ -17,15 +17,11 @@ export async function getAllCategories() {
 
 export async function modifyCategory({ categoryId, categoryName }) {
   try {
-    const response = await axios.post(`${CATEGORIES_ROUTE}\\${categoryId}`, {
+    const response = await axios.patch(`${CATEGORIES_ROUTE}\\${categoryId}`, {
       name: categoryName
     });
 
     console.log(response.data);
-
-    if (response.data.success) {
-      return await getAllCategories();
-    }
 
     return response.data;
   } catch ({ message }) {
@@ -39,9 +35,19 @@ export async function deleteCategory({ categoryId }) {
 
     console.log(response.data);
 
-    if (response.data.success) {
-      return await getAllCategories();
-    }
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
+}
+
+export async function createCategory({ categoryName }) {
+  try {
+    const response = await axios.post(`${CATEGORIES_ROUTE}`, {
+      name: categoryName
+    });
+
+    console.log(response.data);
 
     return response.data;
   } catch ({ message }) {
