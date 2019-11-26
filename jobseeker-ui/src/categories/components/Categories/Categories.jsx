@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Chip from "@material-ui/core/Chip";
@@ -28,32 +28,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Categories() {
+function Categories({
+  categories,
+  isFetching,
+  createCategoryRequest,
+  deleteCategoryRequest,
+  getAllCategoriesRequest,
+  modifyCategoryRequest
+}) {
   const classes = useStyles();
-  const [categories, setCategories] = useState([]);
   const [categoryText, setCategoryText] = useState("");
   const [newCategoryName, setNewCategoryName] = useState("");
   const [isCategorChangeOpen, setIsCategoryChangeOpen] = useState(false);
   const [chosenCategory, setChosenCategory] = useState("");
 
-  const handleCategoryTextChange = event => setCategoryText(event.target.value);
-  const handleAddKeyword = () => {
-    if (!categories.includes(categoryText)) {
-      setCategories([...categories, categoryText]);
-    }
-  };
+  useEffect(() => {
+    getAllCategoriesRequest();
+  }, [getAllCategoriesRequest]);
 
-  const handleCategoryRemove = name => () =>
-    setCategories(categories.filter(category => category !== name));
+  const handleCategoryTextChange = event => setCategoryText(event.target.value);
+  const handleAddKeyword = () => createCategoryRequest({ name: categoryText });
+  const handleCategoryRemove = id => () => deleteCategoryRequest({ id });
 
   const handleCategoryChange = () => {
-    const index = categories.indexOf(chosenCategory);
-    setCategories([
-      ...categories.slice(0, index),
-      newCategoryName,
-      ...categories.slice(index + 1)
-    ]);
-
+    modifyCategoryRequest({ id: chosenCategory, name: newCategoryName });
     toggleCategoryChangeRequest();
   };
 
@@ -63,9 +61,9 @@ function Categories() {
   const handleSetNewCategoryName = event =>
     setNewCategoryName(event.target.value);
 
-  const requestCategoryChange = name => () => {
+  const requestCategoryChange = id => () => {
     toggleCategoryChangeRequest();
-    setChosenCategory(name);
+    setChosenCategory(id);
   };
 
   return (
@@ -84,7 +82,11 @@ function Categories() {
           <Button onClick={toggleCategoryChangeRequest} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleCategoryChange} color="primary">
+          <Button
+            onClick={handleCategoryChange}
+            color="primary"
+            disabled={isFetching}
+          >
             Change
           </Button>
         </DialogActions>
@@ -106,18 +108,23 @@ function Categories() {
           />
         </Grid>
         <Grid item xs={4}>
-          <Button variant="contained" onClick={handleAddKeyword}>
+          <Button
+            variant="contained"
+            onClick={handleAddKeyword}
+            disabled={isFetching}
+          >
             Add
           </Button>
         </Grid>
         <Grid container item xs={12} spacing={1}>
           {categories.map(category => (
-            <Grid item key={category}>
+            <Grid item key={category.id}>
               <Chip
-                label={category}
+                label={category.name}
                 variant="outlined"
-                onClick={requestCategoryChange(category)}
-                onDelete={handleCategoryRemove(category)}
+                onClick={requestCategoryChange(category.id)}
+                onDelete={handleCategoryRemove(category.id)}
+                disabled={isFetching}
               />
             </Grid>
           ))}

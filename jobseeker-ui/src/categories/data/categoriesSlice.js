@@ -15,19 +15,17 @@ const categoriesSlice = createSlice({
       state.categories = action.payload.categories;
     },
     createCategorySuccess: (state, action) => {
-      state.categories.push({ name: action.payload.categoryName });
+      state.categories = action.payload.categories;
     },
     deleteCategorySuccess: (state, action) => {
       state.categories = state.categories.filter(
-        category => category.id === action.payload.categoryId
+        category => category.id !== action.payload.id
       );
     },
     modifyCategorySuccess: (state, action) => {
-      const categoryIndex = state.categories.find(
-        category => category.id === action.payload.categoryId
-      );
-
-      state.categories[categoryIndex].name = action.payload.categoryName;
+      state.categories.find(
+        category => category.id === action.payload.id
+      ).name = action.payload.name;
     }
   }
 });

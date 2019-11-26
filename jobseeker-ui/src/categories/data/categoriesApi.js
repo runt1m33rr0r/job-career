@@ -15,11 +15,9 @@ export async function getAllCategories() {
   }
 }
 
-export async function modifyCategory({ categoryId, categoryName }) {
+export async function modifyCategory({ id, name }) {
   try {
-    const response = await axios.patch(`${CATEGORIES_ROUTE}\\${categoryId}`, {
-      name: categoryName
-    });
+    const response = await axios.patch(`${CATEGORIES_ROUTE}${id}`, { name });
 
     console.log(response.data);
 
@@ -29,9 +27,9 @@ export async function modifyCategory({ categoryId, categoryName }) {
   }
 }
 
-export async function deleteCategory({ categoryId }) {
+export async function deleteCategory({ id }) {
   try {
-    const response = await axios.delete(`${CATEGORIES_ROUTE}\\${categoryId}`);
+    const response = await axios.delete(`${CATEGORIES_ROUTE}${id}`);
 
     console.log(response.data);
 
@@ -41,13 +39,15 @@ export async function deleteCategory({ categoryId }) {
   }
 }
 
-export async function createCategory({ categoryName }) {
+export async function createCategory({ name }) {
   try {
-    const response = await axios.post(`${CATEGORIES_ROUTE}`, {
-      name: categoryName
-    });
+    const response = await axios.post(`${CATEGORIES_ROUTE}`, { name });
 
     console.log(response.data);
+
+    if (response.data.success) {
+      return await getAllCategories();
+    }
 
     return response.data;
   } catch ({ message }) {
