@@ -26,26 +26,38 @@ export const {
 
 export default networkSlice.reducer;
 
-export const makeRequest = (
+export const makeRequest = ({
   requestFunction,
   successAction,
   failAction,
-  requestData
-) => async dispatch => {
+  requestData,
+  shouldAlert = true
+}) => async dispatch => {
+  const dispatchStopFetch = requestResponse => {
+    if (shouldAlert) {
+      dispatch(stopFetching(requestResponse));
+    } else {
+      dispatch(stopFetching({ success: requestResponse.success, message: "" }));
+    }
+  };
+
   try {
     dispatch(startFetching());
 
     const requestResponse = await requestFunction(requestData);
 
-    dispatch(stopFetching(requestResponse));
+    dispatchStopFetch(requestResponse);
 
-    if (requestResponse.success) {
+    if (successAction && requestResponse.success) {
       dispatch(successAction({ ...requestData, ...requestResponse }));
-    } else {
+    } else if (failAction) {
       dispatch(failAction());
     }
   } catch (error) {
-    dispatch(stopFetching({ success: false, message: error }));
-    dispatch(failAction());
+    dispatchStopFetch({ success: false, message: error });
+
+    if (failAction) {
+      dispatch(failAction());
+    }
   }
 };
