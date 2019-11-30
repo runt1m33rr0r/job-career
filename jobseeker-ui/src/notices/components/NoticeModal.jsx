@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ReactMarkdown from "react-markdown/with-html";
+import PropTypes from "prop-types";
 import Input from "./Input";
 import LargeModal from "../../shared/components/LargeModal";
 import ApplicationModal from "../../applications/components/ApplicationModal";
@@ -145,5 +146,10 @@ function NoticeModal(props) {
     </LargeModal>
   );
 }
+
+NoticeModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
+};
 
 export default NoticeModal;
