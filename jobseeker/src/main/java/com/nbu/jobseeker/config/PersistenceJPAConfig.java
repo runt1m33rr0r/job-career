@@ -39,7 +39,7 @@ public class PersistenceJPAConfig {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/jobseeker");
         dataSource.setUsername( "root" );
-        dataSource.setPassword( "admin15" );
+        dataSource.setPassword( "admin98" );
         return dataSource;
     }
 
