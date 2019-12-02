@@ -72,7 +72,10 @@ function Search() {
         >
           {categories.map(name => (
             <MenuItem key={name} value={name}>
-              <Checkbox checked={chosenCategories.indexOf(name) > -1} />
+              <Checkbox
+                checked={chosenCategories.indexOf(name) > -1}
+                color="primary"
+              />
               <ListItemText primary={name} />
             </MenuItem>
           ))}

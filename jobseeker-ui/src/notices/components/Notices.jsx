@@ -39,7 +39,7 @@ const notices = [
 const Notices = () => (
   <ItemsList
     items={notices}
-    popupElement={NoticeModal}
+    popupElement={<NoticeModal />}
     listItemElement={NoticeListItem}
   />
 );
