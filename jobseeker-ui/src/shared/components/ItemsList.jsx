@@ -55,8 +55,8 @@ function ItemsList(props) {
 }
 
 ItemsList.propTypes = {
-  popupElement: PropTypes.func.isRequired,
-  listItemElement: PropTypes.func.isRequired,
+  popupElement: PropTypes.any.isRequired,
+  listItemElement: PropTypes.any.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 

@@ -25,8 +25,8 @@ import PropTypes from "prop-types";
 import Routes from "../Routes";
 import DrawerItem from "../DrawerItem";
 import Notification from "../Notification";
-import NoticeModal from "../../../notices/components/NoticeModal";
-import { userTypes, noticeModes } from "../../../shared/constants";
+import CreateNoticeModal from "../../../notices/components/CreateNotice";
+import { userTypes } from "../../../shared/constants";
 
 const drawerWidth = 240;
 
@@ -245,10 +245,9 @@ function App({
         <main className={classes.main}>
           <Notification />
           <div className={classes.toolbar} />
-          <NoticeModal
+          <CreateNoticeModal
             onClose={handleCreateNoticeToggle}
             isOpen={isCreateNoticeOpen}
-            mode={noticeModes.CREATE}
           />
           <Grid
             container
