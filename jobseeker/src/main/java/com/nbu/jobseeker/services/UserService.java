@@ -171,4 +171,5 @@ public class UserService {
             encryptPassword(user, userUpdateDTO.getPassword());
         }
     }
+
 }

@@ -5,6 +5,17 @@ public class NoticeUpdateDTO {
     private String title;
     private String category;
     private String description;
+    private String companyName;
+    private String status;
+    private boolean isDeleted;
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public String getTitle() {
         return title;
@@ -28,5 +39,21 @@ public class NoticeUpdateDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

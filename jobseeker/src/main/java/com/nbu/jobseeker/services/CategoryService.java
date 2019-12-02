@@ -1,5 +1,6 @@
 package com.nbu.jobseeker.services;
 
+import com.nbu.jobseeker.dto.CategoryUpdateDTO;
 import com.nbu.jobseeker.model.JobCategory;
 import com.nbu.jobseeker.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,10 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public boolean updateCategory(Long id, String name) {
+    public boolean updateCategory(Long id, CategoryUpdateDTO categoryUpdateDTO) {
         JobCategory category = categoryRepository.findById(id).get();
-        if(category != null) {
-            category.setName(name);
+        if(category != null && !"".equals(categoryUpdateDTO.getName().trim())) {
+            category.setName(categoryUpdateDTO.getName());
             saveCategory(category);
             return true;
         }
