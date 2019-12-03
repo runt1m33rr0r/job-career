@@ -7,40 +7,7 @@ import NoticeListItem from "../NoticeListItem";
 import ItemsList from "../../../shared/components/ItemsList";
 import { userTypes } from "../../../shared/constants";
 
-const notices = [
-  {
-    id: 1,
-    title: "some title",
-    category: "category1",
-    company: "some company",
-    content: "# test",
-    closed: false,
-    approved: false,
-    lastModified: "some date"
-  },
-  {
-    id: 2,
-    title: "some title",
-    category: "category1",
-    company: "some company",
-    content: "# test",
-    closed: false,
-    approved: false,
-    lastModified: "some date"
-  },
-  {
-    id: 3,
-    title: "some title",
-    category: "category1",
-    company: "some company",
-    content: "# test",
-    closed: false,
-    approved: false,
-    lastModified: "some date"
-  }
-];
-
-function Notices({ userType }) {
+function Notices({ userType, notices }) {
   let noticeElement = ApplicationNotice;
   if (userType === userTypes.ADMIN) {
     noticeElement = ApprovalNotice;
@@ -58,7 +25,8 @@ function Notices({ userType }) {
 }
 
 Notices.propTypes = {
-  userType: PropTypes.string.isRequired
+  userType: PropTypes.string.isRequired,
+  notices: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default Notices;

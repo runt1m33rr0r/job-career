@@ -5,11 +5,9 @@ import TextField from "@material-ui/core/TextField";
 import ReactMarkdown from "react-markdown/with-html";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import Input from "./Input";
-import LargeModal from "../../shared/components/LargeModal";
-import Button from "./NoticeModalButton";
-
-const categories = ["category1", "category2", "category3"];
+import Input from "../Input";
+import LargeModal from "../../../shared/components/LargeModal";
+import Button from "../NoticeModalButton";
 
 const useStyles = makeStyles(() => ({
   description: {
@@ -20,9 +18,11 @@ const useStyles = makeStyles(() => ({
 function NoticeModal(props) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState(!props.readOnly);
+  const notice = props.item;
 
   const handleCategoryChange = event =>
     props.onCategoryChange(event.target.value);
+  const handleTitleChange = event => props.onTitleChange(event.target.value);
   const handleDescriptionChange = text => props.onDescriptionChange(text);
   const handleDescriptionButtonPress = () => setIsEditing(!isEditing);
 
@@ -34,6 +34,8 @@ function NoticeModal(props) {
             InputProps={{ readOnly: props.readOnly }}
             label="job title"
             margin="dense"
+            value={notice.title}
+            onChange={handleTitleChange}
           />
         </Grid>
         <Grid item>
@@ -42,13 +44,13 @@ function NoticeModal(props) {
             select
             label="Select"
             className={classes.textField}
-            value={props.notice.category}
+            value={notice.category}
             onChange={handleCategoryChange}
             margin="dense"
           >
-            {categories.map(option => (
-              <MenuItem key={option} value={option}>
-                {option}
+            {props.categories.map(option => (
+              <MenuItem key={option.id} value={option}>
+                {option.name}
               </MenuItem>
             ))}
           </TextField>
@@ -56,20 +58,18 @@ function NoticeModal(props) {
         <Grid item>
           <TextField
             InputProps={{ readOnly: true }}
-            label={props.notice.company}
+            label="Company name"
             margin="dense"
+            value={notice.company}
           />
         </Grid>
       </Grid>
       <Grid item className={classes.description}>
         {isEditing ? (
-          <Input
-            onChange={handleDescriptionChange}
-            text={props.notice.content}
-          />
+          <Input onChange={handleDescriptionChange} text={notice.content} />
         ) : (
           <div>
-            <ReactMarkdown source={props.notice.content} escapeHtml={false} />
+            <ReactMarkdown source={notice.content} escapeHtml={false} />
           </div>
         )}
       </Grid>
@@ -96,19 +96,27 @@ function NoticeModal(props) {
 }
 
 NoticeModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  readOnly: PropTypes.bool,
-  notice: PropTypes.object,
-  onCategoryChange: PropTypes.func,
-  onDescriptionChange: PropTypes.func
+  onCategoryChange: PropTypes.func.isRequired,
+  onTitleChange: PropTypes.func.isRequired,
+  onDescriptionChange: PropTypes.func.isRequired,
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({ name: PropTypes.string.isRequired })
+  ).isRequired,
+  item: PropTypes.shape({
+    category: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    company: PropTypes.string.isRequired
+  }).isRequired,
+  readOnly: PropTypes.bool
 };
 
 NoticeModal.defaultProps = {
   readOnly: true,
   onCategoryChange: () => null,
   onDescriptionChange: () => null,
-  notice: { content: "" }
+  onTitleChange: () => null,
+  item: { content: "" }
 };
 
 export default NoticeModal;

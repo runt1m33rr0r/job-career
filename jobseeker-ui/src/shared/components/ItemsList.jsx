@@ -24,21 +24,27 @@ const useStyles = makeStyles(() => ({
 function ItemsList(props) {
   const classes = useStyles();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(props.items[0]);
+  const ListItem = props.listItemElement;
+  const PopupItem = props.popupElement;
 
   const handlePopupClose = () => setIsPopupOpen(false);
-  const handlePopupOpen = () => setIsPopupOpen(true);
+  const handlePopupOpen = item => () => {
+    setIsPopupOpen(true);
+    setSelectedItem(item);
+  };
 
-  const listItems = props.items.map(item => (
-    <props.listItemElement
-      key={item.id}
-      item={item}
-      handleClick={handlePopupOpen}
-    />
+  const listItems = props.items.map(i => (
+    <ListItem key={i.id} item={i} handleClick={handlePopupOpen(i)} />
   ));
 
   return (
     <Paper className={classes.container}>
-      <props.popupElement isOpen={isPopupOpen} onClose={handlePopupClose} />
+      <PopupItem
+        item={selectedItem}
+        isOpen={isPopupOpen}
+        onClose={handlePopupClose}
+      />
       <List>{listItems}</List>
       <div className={classes.paginationContainer}>
         <TablePagination
