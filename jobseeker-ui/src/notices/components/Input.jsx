@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import CodeMirror from "codemirror";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -7,36 +7,42 @@ import "codemirror/mode/markdown/markdown";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/dracula.css";
 
-let textArea = null;
-let handleChange = null;
-let cm = null;
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   editor: {
     fontSize: "large"
   }
 }));
 
+let cm;
+
 function Input(props) {
   const classes = useStyles();
-  textArea = React.createRef();
-  handleChange = () => props.onChange(cm.getValue());
+  const textArea = useRef();
+  const initialText = useRef(props.text);
+  const onChange = useRef(props.onChange);
 
   useEffect(() => {
+    const change = onChange.current;
+
     cm = CodeMirror.fromTextArea(textArea.current, {
       lineNumbers: true,
       mode: "markdown",
       theme: "dracula",
       lineWrapping: false
     });
-    cm.setValue(props.text);
+
+    cm.setValue(initialText.current);
     cm.setSize(null, "60vh");
+    cm.on("change", () => change(cm.getValue()));
+
+    change(initialText.current);
 
     return () => {
-      handleChange();
+      console.log("unload codemirror");
+
       cm.toTextArea();
     };
-  }, [props]);
+  }, []);
 
   return (
     <div className={classes.editor}>
