@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/core/styles";
-import green from "@material-ui/core/colors/green";
-import blue from "@material-ui/core/colors/blue";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Divider from "@material-ui/core/Divider";
@@ -32,8 +30,6 @@ const drawerWidth = 240;
 
 const theme = createMuiTheme({
   palette: {
-    primary: green,
-    secondary: blue,
     type: "dark"
   }
 });

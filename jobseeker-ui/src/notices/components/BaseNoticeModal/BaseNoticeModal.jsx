@@ -18,7 +18,6 @@ const useStyles = makeStyles(() => ({
 function NoticeModal(props) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState(!props.readOnly);
-  const notice = props.item;
 
   const handleCategoryChange = event =>
     props.onCategoryChange(event.target.value);
@@ -34,7 +33,7 @@ function NoticeModal(props) {
             InputProps={{ readOnly: props.readOnly }}
             label="job title"
             margin="dense"
-            value={notice.title}
+            value={props.notice.title}
             onChange={handleTitleChange}
           />
         </Grid>
@@ -44,12 +43,12 @@ function NoticeModal(props) {
             select
             label="Select"
             className={classes.textField}
-            value={notice.category}
+            value={props.notice.category}
             onChange={handleCategoryChange}
             margin="dense"
           >
             {props.categories.map(option => (
-              <MenuItem key={option.id} value={option}>
+              <MenuItem key={option.id} value={option.name}>
                 {option.name}
               </MenuItem>
             ))}
@@ -60,16 +59,19 @@ function NoticeModal(props) {
             InputProps={{ readOnly: true }}
             label="Company name"
             margin="dense"
-            value={notice.company}
+            value={props.notice.company}
           />
         </Grid>
       </Grid>
       <Grid item className={classes.description}>
         {isEditing ? (
-          <Input onChange={handleDescriptionChange} text={notice.content} />
+          <Input
+            onChange={handleDescriptionChange}
+            text={props.notice.content}
+          />
         ) : (
           <div>
-            <ReactMarkdown source={notice.content} escapeHtml={false} />
+            <ReactMarkdown source={props.notice.content} escapeHtml={false} />
           </div>
         )}
       </Grid>
@@ -102,8 +104,8 @@ NoticeModal.propTypes = {
   categories: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string.isRequired })
   ).isRequired,
-  item: PropTypes.shape({
-    category: PropTypes.object.isRequired,
+  notice: PropTypes.shape({
+    category: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     company: PropTypes.string.isRequired
@@ -116,7 +118,7 @@ NoticeModal.defaultProps = {
   onCategoryChange: () => null,
   onDescriptionChange: () => null,
   onTitleChange: () => null,
-  item: { content: "" }
+  notice: { content: "" }
 };
 
 export default NoticeModal;

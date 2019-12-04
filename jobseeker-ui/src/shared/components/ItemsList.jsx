@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -22,40 +22,49 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ItemsList(props) {
+  const { items, listItemElement: ListItem, popupElement: PopupItem } = props;
+
   const classes = useStyles();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(props.items[0]);
-  const ListItem = props.listItemElement;
-  const PopupItem = props.popupElement;
+  const [popupItem, setPopupItem] = useState(items[0]);
+  const [popupOpen, setPopupOpen] = useState(false);
 
-  const handlePopupClose = () => setIsPopupOpen(false);
-  const handlePopupOpen = item => () => {
-    setIsPopupOpen(true);
-    setSelectedItem(item);
-  };
+  useEffect(() => {
+    if (popupItem) {
+      setPopupOpen(true);
+    }
+  }, [popupItem]);
 
-  const listItems = props.items.map(i => (
-    <ListItem key={i.id} item={i} handleClick={handlePopupOpen(i)} />
-  ));
+  const handlePopupClose = () => setPopupOpen(false);
+  const handlePopupOpen = item => () => setPopupItem(item);
 
   return (
     <Paper className={classes.container}>
-      <PopupItem
-        item={selectedItem}
-        isOpen={isPopupOpen}
-        onClose={handlePopupClose}
-      />
-      <List>{listItems}</List>
-      <div className={classes.paginationContainer}>
-        <TablePagination
-          component="nav"
-          page={0}
-          rowsPerPage={10}
-          count={100}
-          rowsPerPageOptions={[]}
-          onChangePage={() => {}}
-        />
-      </div>
+      {items.length > 0 && (
+        <Fragment>
+          {popupItem && (
+            <PopupItem
+              isOpen={popupOpen}
+              onClose={handlePopupClose}
+              item={popupItem}
+            />
+          )}
+          <List>
+            {items.map(i => (
+              <ListItem key={i.id} handleClick={handlePopupOpen(i)} item={i} />
+            ))}
+          </List>
+          <div className={classes.paginationContainer}>
+            <TablePagination
+              component="nav"
+              page={0}
+              rowsPerPage={10}
+              count={100}
+              rowsPerPageOptions={[]}
+              onChangePage={() => {}}
+            />
+          </div>
+        </Fragment>
+      )}
     </Paper>
   );
 }
@@ -64,6 +73,10 @@ ItemsList.propTypes = {
   popupElement: PropTypes.any.isRequired,
   listItemElement: PropTypes.any.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired
+};
+
+ItemsList.defaultProps = {
+  items: []
 };
 
 export default ItemsList;
