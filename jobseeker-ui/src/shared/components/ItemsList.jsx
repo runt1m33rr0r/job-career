@@ -27,9 +27,14 @@ function ItemsList(props) {
   const classes = useStyles();
   const [popupItem, setPopupItem] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
+  const [currentPage, setCurrentpage] = useState(0);
+
+  const itemsPerPage = 1;
+  const pagesCount = items.length / itemsPerPage;
 
   const handlePopupClose = () => setPopupOpen(false);
   const handlePopupOpen = item => () => setPopupItem(item);
+  const handlePageChange = (event, newPage) => setCurrentpage(newPage);
 
   useEffect(() => {
     if (popupItem) {
@@ -49,18 +54,27 @@ function ItemsList(props) {
       {items.length > 0 && (
         <Fragment>
           <List>
-            {items.map(i => (
-              <ListItem key={i.id} handleClick={handlePopupOpen(i)} item={i} />
-            ))}
+            {items
+              .slice(
+                currentPage * itemsPerPage,
+                currentPage * itemsPerPage + itemsPerPage
+              )
+              .map(i => (
+                <ListItem
+                  key={i.id}
+                  handleClick={handlePopupOpen(i)}
+                  item={i}
+                />
+              ))}
           </List>
           <div className={classes.paginationContainer}>
             <TablePagination
               component="nav"
-              page={0}
-              rowsPerPage={10}
-              count={100}
+              page={currentPage}
+              rowsPerPage={itemsPerPage}
+              count={pagesCount}
               rowsPerPageOptions={[]}
-              onChangePage={() => {}}
+              onChangePage={handlePageChange}
             />
           </div>
         </Fragment>
