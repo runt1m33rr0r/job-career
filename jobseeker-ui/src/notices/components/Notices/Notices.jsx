@@ -11,8 +11,7 @@ function Notices({
   userType,
   notices,
   getCompanyNoticesRequest,
-  getAllCategoriesRequest,
-  isFetching
+  getAllCategoriesRequest
 }) {
   let noticeElement = ApplicationNotice;
   if (userType === userTypes.ADMIN) {
@@ -28,13 +27,11 @@ function Notices({
 
   return (
     <Fragment>
-      {!isFetching && (
-        <ItemsList
-          items={notices}
-          popupElement={noticeElement}
-          listItemElement={NoticeListItem}
-        />
-      )}
+      <ItemsList
+        items={notices}
+        popupElement={noticeElement}
+        listItemElement={NoticeListItem}
+      />
     </Fragment>
   );
 }
@@ -43,8 +40,7 @@ Notices.propTypes = {
   userType: PropTypes.string.isRequired,
   notices: PropTypes.arrayOf(PropTypes.object).isRequired,
   getCompanyNoticesRequest: PropTypes.func.isRequired,
-  getAllCategoriesRequest: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired
+  getAllCategoriesRequest: PropTypes.func.isRequired
 };
 
 export default Notices;

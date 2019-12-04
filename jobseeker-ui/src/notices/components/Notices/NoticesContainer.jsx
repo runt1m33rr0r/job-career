@@ -10,7 +10,6 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => ({
   notices: state.notices.notices,
-  isFetching: state.network.isFetching,
   ...state.auth
 });
 

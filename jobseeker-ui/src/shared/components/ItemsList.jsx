@@ -39,15 +39,15 @@ function ItemsList(props) {
 
   return (
     <Paper className={classes.container}>
+      {popupItem && (
+        <PopupItem
+          isOpen={popupOpen}
+          onClose={handlePopupClose}
+          item={popupItem}
+        />
+      )}
       {items.length > 0 && (
         <Fragment>
-          {popupItem && (
-            <PopupItem
-              isOpen={popupOpen}
-              onClose={handlePopupClose}
-              item={popupItem}
-            />
-          )}
           <List>
             {items.map(i => (
               <ListItem key={i.id} handleClick={handlePopupOpen(i)} item={i} />
