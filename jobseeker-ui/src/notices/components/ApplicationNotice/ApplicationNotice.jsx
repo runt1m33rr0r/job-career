@@ -1,6 +1,6 @@
 import React from "react";
-import BaseNoticeModal from "./BaseNoticeModal";
-import Button from "./NoticeModalButton";
+import BaseNoticeModal from "../BaseNoticeModal";
+import Button from "../NoticeModalButton";
 
 const ApplicationNotice = props => (
   <BaseNoticeModal readOnly={true} {...props}>
