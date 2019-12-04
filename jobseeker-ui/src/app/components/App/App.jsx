@@ -129,6 +129,9 @@ function App({
         {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
           <DrawerItem text="My notices" linkTo="/notices" />
         )}
+        {userType === userTypes.USER && (
+          <DrawerItem text="Notices" linkTo="/notices" />
+        )}
         {(userType === userTypes.COMPANY || userType === userTypes.USER) && (
           <DrawerItem text="Applications" linkTo="/applications" />
         )}
