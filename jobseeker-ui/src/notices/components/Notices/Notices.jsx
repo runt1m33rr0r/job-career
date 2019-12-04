@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
 import ApprovalNotice from "../ApprovalNotice";
 import ApplicationNotice from "../ApplicationNotice";
@@ -7,7 +7,13 @@ import NoticeListItem from "../NoticeListItem";
 import ItemsList from "../../../shared/components/ItemsList";
 import { userTypes } from "../../../shared/constants";
 
-function Notices({ userType, notices }) {
+function Notices({
+  userType,
+  notices,
+  getCompanyNoticesRequest,
+  getAllCategoriesRequest,
+  isFetching
+}) {
   let noticeElement = ApplicationNotice;
   if (userType === userTypes.ADMIN) {
     noticeElement = ApprovalNotice;
@@ -15,18 +21,30 @@ function Notices({ userType, notices }) {
     noticeElement = EditNotice;
   }
 
+  useEffect(() => {
+    getCompanyNoticesRequest();
+    getAllCategoriesRequest();
+  }, [getCompanyNoticesRequest, getAllCategoriesRequest]);
+
   return (
-    <ItemsList
-      items={notices}
-      popupElement={noticeElement}
-      listItemElement={NoticeListItem}
-    />
+    <Fragment>
+      {!isFetching && (
+        <ItemsList
+          items={notices}
+          popupElement={noticeElement}
+          listItemElement={NoticeListItem}
+        />
+      )}
+    </Fragment>
   );
 }
 
 Notices.propTypes = {
   userType: PropTypes.string.isRequired,
-  notices: PropTypes.arrayOf(PropTypes.object).isRequired
+  notices: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getCompanyNoticesRequest: PropTypes.func.isRequired,
+  getAllCategoriesRequest: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired
 };
 
 export default Notices;

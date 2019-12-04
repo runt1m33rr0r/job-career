@@ -22,7 +22,8 @@ const AuthSelectMenu = ({ name, userType, userTypes, onChange }) => (
 AuthSelectMenu.propTypes = {
   name: PropTypes.string.isRequired,
   userType: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  usertTypes: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 export default AuthSelectMenu;

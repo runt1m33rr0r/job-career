@@ -1,23 +1,17 @@
-import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Notices from "./Notices";
 import { getCompanyNoticesRequest } from "../../data/noticesSlice";
+import { getAllCategoriesRequest } from "../../../categories/data/categoriesSlice";
 
-function NoticesContainer(props) {
-  const { getCompanyNoticesRequest } = props;
-
-  useEffect(() => {
-    getCompanyNoticesRequest();
-  }, [getCompanyNoticesRequest]);
-
-  return <Notices {...props} />;
-}
-
-const mapDispatchToProps = { getCompanyNoticesRequest };
+const mapDispatchToProps = {
+  getCompanyNoticesRequest,
+  getAllCategoriesRequest
+};
 
 const mapStateToProps = state => ({
   notices: state.notices.notices,
+  isFetching: state.network.isFetching,
   ...state.auth
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoticesContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Notices);

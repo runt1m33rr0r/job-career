@@ -25,17 +25,17 @@ function ItemsList(props) {
   const { items, listItemElement: ListItem, popupElement: PopupItem } = props;
 
   const classes = useStyles();
-  const [popupItem, setPopupItem] = useState(items[0]);
+  const [popupItem, setPopupItem] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
+
+  const handlePopupClose = () => setPopupOpen(false);
+  const handlePopupOpen = item => () => setPopupItem(item);
 
   useEffect(() => {
     if (popupItem) {
       setPopupOpen(true);
     }
   }, [popupItem]);
-
-  const handlePopupClose = () => setPopupOpen(false);
-  const handlePopupOpen = item => () => setPopupItem(item);
 
   return (
     <Paper className={classes.container}>

@@ -40,7 +40,8 @@ function Login({ loginRequest, isFetching }) {
 }
 
 Login.propTypes = {
-  loginRequest: PropTypes.func.isRequired
+  loginRequest: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired
 };
 
 export default Login;

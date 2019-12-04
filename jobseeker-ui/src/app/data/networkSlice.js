@@ -2,13 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const networkSlice = createSlice({
   name: "network",
-  initialState: { isFetching: false, success: true, message: "" },
+  initialState: {
+    isFetching: false,
+    success: true,
+    message: "",
+    requestsRunning: 0
+  },
   reducers: {
     startFetching: state => {
       state.isFetching = true;
+      state.requestsRunning += 1;
     },
     stopFetching: (state, action) => {
-      state.isFetching = false;
+      state.isFetching = state.requestsRunning === 1 ? false : true;
+      state.requestsRunning -= 1;
       state.success = action.payload.success;
       state.message = action.payload.message;
     },

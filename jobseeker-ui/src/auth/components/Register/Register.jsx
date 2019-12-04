@@ -96,7 +96,8 @@ function Register({ registerRequest, isFetching }) {
 }
 
 Register.propTypes = {
-  registerRequest: PropTypes.func.isRequired
+  registerRequest: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired
 };
 
 export default Register;
