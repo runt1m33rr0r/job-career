@@ -88,7 +88,7 @@ function NoticeModal(props) {
           ? { title, category, content, company: props.companyName }
           : props.notice
       }
-      readOnly={isApplicationNotice || isApprovalNotice}
+      readOnly={isApplicationNotice || isApprovalNotice || props.viewNotice}
       onCategoryChange={handleCategoryChange}
       onTitleChange={handleTitleChange}
       onDescriptionChange={handleDescriptionChange}

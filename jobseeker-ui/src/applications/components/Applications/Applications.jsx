@@ -4,48 +4,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
-import ApplicationModal from "./ApplicationModal";
-import ItemsList from "../../shared/components/ItemsList";
-import ApplicationListItem from "./ApplicationListItem";
-
-const applications = [
-  {
-    id: 1,
-    phone: "some phone",
-    eMail: "some mail",
-    letter: "some letter",
-    firstName: "first name",
-    lastName: "last name",
-    lastModified: "some date",
-    notice: {
-      id: 1,
-      title: "some title",
-      category: "some category",
-      company: "some company",
-      content: "some content",
-      closed: false,
-      lastModified: "some date"
-    }
-  },
-  {
-    id: 2,
-    phone: "some phone",
-    eMail: "some mail",
-    letter: "some letter",
-    firstName: "first name",
-    lastName: "last name",
-    lastModified: "some date",
-    notice: {
-      id: 2,
-      title: "some title2",
-      category: "some category",
-      company: "some company",
-      content: "some content",
-      closed: false,
-      lastModified: "some date"
-    }
-  }
-];
+import PropTypes from "prop-types";
+import ApplicationModal from "../ApplicationModal";
+import ItemsList from "../../../shared/components/ItemsList";
+import ApplicationListItem from "../ApplicationListItem";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -61,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Applications() {
+function Applications(props) {
   const classes = useStyles();
   const [noticeFilter, setNoticeFilter] = useState(1);
 
@@ -72,7 +34,7 @@ function Applications() {
       <FormControl className={classes.formControl}>
         <InputLabel>Notice filter</InputLabel>
         <Select value={noticeFilter} onChange={handleFilterChange}>
-          {applications.map(application => (
+          {props.applications.map(application => (
             <MenuItem key={application.id} value={application.notice.id}>
               {application.notice.title}
             </MenuItem>
@@ -80,12 +42,16 @@ function Applications() {
         </Select>
       </FormControl>
       <ItemsList
-        items={applications}
+        items={props.applications}
         popupElement={ApplicationModal}
         listItemElement={ApplicationListItem}
       />
     </div>
   );
 }
+
+Applications.propTypes = {
+  applications: PropTypes.array.isRequired
+};
 
 export default Applications;
