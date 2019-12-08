@@ -16,7 +16,9 @@ function NoticeModal(props) {
 
   const [title, setTitle] = useState(isEditNotice ? props.notice.title : "");
   const [category, setCategory] = useState(
-    isEditNotice ? props.notice.category : props.categories[0].name
+    !isEditNotice && props.categories[0]
+      ? props.categories[0].name
+      : props.notice.category
   );
   const [content, setDescription] = useState(
     isEditNotice ? props.notice.content : ""
@@ -73,6 +75,10 @@ function NoticeModal(props) {
   const handleNoticeClose = () => makeNoticeStatusRequest(true);
   const handleNoticeDelete = () =>
     props.deleteNoticeRequest({ id: props.notice.id });
+
+  if (props.categories.length === 0) {
+    return null;
+  }
 
   return (
     <BaseNoticeModal

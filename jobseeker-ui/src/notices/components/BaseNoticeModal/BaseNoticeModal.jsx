@@ -25,6 +25,10 @@ function NoticeModal(props) {
   const handleDescriptionChange = text => props.onDescriptionChange(text);
   const handleDescriptionButtonPress = () => setIsEditing(!isEditing);
 
+  if (props.categories.length === 0) {
+    return null;
+  }
+
   return (
     <LargeModal {...props}>
       <Grid container item justify="center" alignItems="center" spacing={3}>
