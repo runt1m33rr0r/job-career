@@ -1,9 +1,9 @@
 package com.nbu.jobseeker.controllers;
 
 import com.nbu.jobseeker.dto.NoticeDTO;
+import com.nbu.jobseeker.dto.NoticeSearchDTO;
 import com.nbu.jobseeker.dto.NoticeUpdateDTO;
 import com.nbu.jobseeker.dto.ResponseDTO;
-import com.nbu.jobseeker.model.JobNotice;
 import com.nbu.jobseeker.services.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @RestController
 public class NoticeController {
@@ -21,13 +20,9 @@ public class NoticeController {
 
     //retrieve by keywords
     @GetMapping(path = "/notices", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<NoticeDTO> noticesByKeyword(@RequestBody List<String> keywords) {
-        if(keywords.isEmpty()) {
-            return new ResponseEntity<>(new NoticeDTO(true, "Success", noticeService.retrieveAllNotices(null)), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new NoticeDTO(true, "Success", noticeService.retrieveByKeywords(null, keywords)), HttpStatus.OK);
+    public ResponseEntity<NoticeDTO> returnNotices(@RequestBody(required = false) NoticeSearchDTO parameters) {
+        return new ResponseEntity<>(new NoticeDTO(true, "Success", noticeService.retrieveNotices(null, parameters)), HttpStatus.OK);
     }
-    //TODO GET search by category ^ keywords is above
 
     //create notice
     @PostMapping(path = "/notices", consumes = "application/json", produces = "application/json")
