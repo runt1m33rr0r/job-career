@@ -23,7 +23,12 @@ function ApplicationModal(props) {
 
   return (
     <LargeModal {...props}>
-      <NoticeModal isOpen={isJobDetailsOpen} onClose={handleJobDetailsClose} />
+      <NoticeModal
+        isOpen={isJobDetailsOpen}
+        onClose={handleJobDetailsClose}
+        viewNotice={true}
+        notice={{ company: "company" }}
+      />
       <Grid container item justify="center" alignItems="center" spacing={3}>
         <Grid container item xs={12} spacing={3} justify="center">
           <Grid item>

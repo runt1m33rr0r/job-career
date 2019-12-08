@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import Home from "../../../home/components/Home";
 import Register from "../../../auth/components/Register";
 import Login from "../../../auth/components/Login";
-import Notices from "../../../notices/components/Notices";
 import Applications from "../../../applications/components/Applications";
 import Search from "../../../search/components/Search";
 import Categories from "../../../categories/components/Categories";
 import Profile from "../../../auth/components/Profile";
+import Notices from "../../../notices/components/Notices";
 
 const Routes = ({ isLoggedIn }) => (
   <Switch>
@@ -20,7 +20,7 @@ const Routes = ({ isLoggedIn }) => (
     <Route path="/profile">
       {!isLoggedIn ? <Redirect to="/" /> : <Profile />}
     </Route>
-    <Route path="/notices" component={Notices} />
+    <Route path="/notices/mine" component={Notices} />
     <Route path="/applications" component={Applications} />
     <Route path="/search" component={Search} />
     <Route path="/categories" component={Categories} />

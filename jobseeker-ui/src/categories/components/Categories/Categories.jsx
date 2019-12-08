@@ -10,6 +10,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -133,5 +134,16 @@ function Categories({
     </Paper>
   );
 }
+
+Categories.propTypes = {
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({ name: PropTypes.string.isRequired })
+  ).isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  createCategoryRequest: PropTypes.func.isRequired,
+  deleteCategoryRequest: PropTypes.func.isRequired,
+  getAllCategoriesRequest: PropTypes.func.isRequired,
+  modifyCategoryRequest: PropTypes.func.isRequired
+};
 
 export default Categories;

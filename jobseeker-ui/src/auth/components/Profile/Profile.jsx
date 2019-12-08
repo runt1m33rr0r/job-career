@@ -92,7 +92,8 @@ function Profile({ profileChangeRequest, isFetching }) {
 }
 
 Profile.propTypes = {
-  profileChangeRequest: PropTypes.func.isRequired
+  profileChangeRequest: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired
 };
 
 export default Profile;

@@ -2,12 +2,16 @@ export const getItem = itemName => {
   try {
     return JSON.parse(localStorage.getItem(itemName));
   } catch (error) {
-    return null;
+    try {
+      return localStorage.getItem(itemName);
+    } catch (error) {
+      return null;
+    }
   }
 };
 
 export const getString = itemName =>
-  getItem(itemName) ? getItem(itemName) : "";
+  getItem(itemName) !== null ? getItem(itemName) : "";
 
 export const setItem = (itemName, data) =>
   localStorage.setItem(itemName, JSON.stringify(data));

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/core/styles";
-import green from "@material-ui/core/colors/green";
-import blue from "@material-ui/core/colors/blue";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Divider from "@material-ui/core/Divider";
@@ -19,18 +17,19 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import PropTypes from "prop-types";
 import Routes from "../Routes";
 import DrawerItem from "../DrawerItem";
 import Notification from "../Notification";
+import NoticeModal from "../../../notices/components/NoticeModal";
 import { userTypes } from "../../../shared/constants";
 
 const drawerWidth = 240;
 
 const theme = createMuiTheme({
   palette: {
-    primary: green,
-    secondary: blue,
     type: "dark"
   }
 });
@@ -87,20 +86,15 @@ function App({
 }) {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isCreateNoticeOpen, setIsCreateNoticeOpen] = useState(false);
   const open = Boolean(anchorEl);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+  const handleMenu = event => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+  const handleCreateNoticeToggle = () =>
+    setIsCreateNoticeOpen(!isCreateNoticeOpen);
 
   const handleLogoutPress = () => {
     requestLogout();
@@ -127,13 +121,21 @@ function App({
       <Divider />
       <List>
         <DrawerItem text="Home" linkTo="/" />
+        {userType === userTypes.COMPANY && (
+          <ListItem button onClick={handleCreateNoticeToggle}>
+            <ListItemText primary="Create notice" />
+          </ListItem>
+        )}
         {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
+          <DrawerItem text="My notices" linkTo="/notices/mine" />
+        )}
+        {userType === userTypes.USER && (
           <DrawerItem text="Notices" linkTo="/notices" />
         )}
         {(userType === userTypes.COMPANY || userType === userTypes.USER) && (
           <DrawerItem text="Applications" linkTo="/applications" />
         )}
-        <DrawerItem text="Search" linkTo="/search" />
+        <DrawerItem text="Search notices" linkTo="/search" />
         {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
           <DrawerItem text="Categories" linkTo="/categories" />
         )}
@@ -242,6 +244,11 @@ function App({
         <main className={classes.main}>
           <Notification />
           <div className={classes.toolbar} />
+          <NoticeModal
+            onClose={handleCreateNoticeToggle}
+            isOpen={isCreateNoticeOpen}
+            creationNotice={true}
+          />
           <Grid
             container
             justify="center"
