@@ -7,7 +7,7 @@ const applicationsSlice = createSlice({
       {
         id: 1,
         phone: "some phone",
-        eMail: "some mail",
+        email: "some mail",
         letter: "some letter",
         firstName: "first name",
         lastName: "last name",
@@ -25,7 +25,7 @@ const applicationsSlice = createSlice({
       {
         id: 2,
         phone: "some phone",
-        eMail: "some mail",
+        email: "some mail",
         letter: "some letter",
         firstName: "first name",
         lastName: "last name",

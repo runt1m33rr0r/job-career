@@ -10,7 +10,9 @@ const ApplicationModalContainer = props => (
 );
 
 const mapStateToProps = state => ({
-  userType: state.auth.userType
+  userType: state.auth.userType,
+  firstName: state.auth.firstName,
+  lastName: state.auth.lastName
 });
 
 export default connect(mapStateToProps, null)(ApplicationModalContainer);

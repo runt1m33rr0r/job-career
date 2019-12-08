@@ -23,40 +23,52 @@ function ApplicationModal(props) {
 
   const classes = useStyles();
   const [isJobDetailsOpen, setIsJobDetails] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState(
+    isEditApplication ? props.application.phone : ""
+  );
+  const [email, setEmail] = useState(
+    isEditApplication ? props.application.email : ""
+  );
 
   const handleJobDetailsClose = () => setIsJobDetails(false);
   const handleJobDetailsOpen = () => setIsJobDetails(true);
+  const handlePhoneNumberChange = event => setPhoneNumber(event.target.value);
+  const handleEmailChange = event => setEmail(event.target.value);
 
   return (
     <LargeModal {...props}>
-      <NoticeModal
-        isOpen={isJobDetailsOpen}
-        onClose={handleJobDetailsClose}
-        viewNotice={true}
-        notice={props.application.notice}
-      />
+      {isEditApplication && (
+        <NoticeModal
+          isOpen={isJobDetailsOpen}
+          onClose={handleJobDetailsClose}
+          viewNotice={true}
+          notice={props.application.notice}
+        />
+      )}
       <Grid container item justify="center" alignItems="center" spacing={3}>
         <Grid container item xs={12} spacing={3} justify="center">
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              job title
+              {props.application.notice.title}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              company name
+              {props.application.notice.company}
             </Typography>
           </Grid>
         </Grid>
         <Grid container item xs={12} spacing={3} justify="center">
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              first name
+              {isEditApplication
+                ? props.application.firstName
+                : props.firstName}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              last name
+              {isEditApplication ? props.application.lastName : props.lastName}
             </Typography>
           </Grid>
         </Grid>
@@ -65,6 +77,8 @@ function ApplicationModal(props) {
             InputProps={{ readOnly: isCompanyApplication }}
             label="phone number"
             margin="dense"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
           />
         </Grid>
         <Grid item>
@@ -72,6 +86,8 @@ function ApplicationModal(props) {
             InputProps={{ readOnly: isCompanyApplication }}
             label="e-mail"
             margin="dense"
+            value={email}
+            onChange={handleEmailChange}
           />
         </Grid>
       </Grid>
@@ -90,11 +106,13 @@ function ApplicationModal(props) {
         </div>
       </Grid>
       <Grid container justify="center" alignItems="center" item spacing={3}>
-        <Grid item>
-          <Button variant="contained" onClick={handleJobDetailsOpen}>
-            Job details
-          </Button>
-        </Grid>
+        {!props.createApplication && (
+          <Grid item>
+            <Button variant="contained" onClick={handleJobDetailsOpen}>
+              Job details
+            </Button>
+          </Grid>
+        )}
         {isUserApplication && (
           <Fragment>
             {isEditApplication && (
@@ -125,8 +143,14 @@ function ApplicationModal(props) {
 
 ApplicationModal.propTypes = {
   userType: PropTypes.string.isRequired,
-  application: PropTypes.object.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  application: PropTypes.object,
   createApplication: PropTypes.bool
+};
+
+ApplicationModal.defaultProps = {
+  application: { notice: {} }
 };
 
 export default ApplicationModal;

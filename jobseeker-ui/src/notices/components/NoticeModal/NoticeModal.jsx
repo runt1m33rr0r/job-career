@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import BaseNoticeModal from "../BaseNoticeModal";
 import Button from "../NoticeModalButton";
+import ApplicationModal from "../../../applications/components/ApplicationModal";
 import { userTypes } from "../../../shared/constants";
 
 function NoticeModal(props) {
@@ -15,6 +16,7 @@ function NoticeModal(props) {
     props.notice.company === props.companyName;
 
   const [title, setTitle] = useState(isEditNotice ? props.notice.title : "");
+  const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [category, setCategory] = useState(
     !isEditNotice && props.categories[0]
       ? props.categories[0].name
@@ -75,6 +77,8 @@ function NoticeModal(props) {
   const handleNoticeClose = () => makeNoticeStatusRequest(true);
   const handleNoticeDelete = () =>
     props.deleteNoticeRequest({ id: props.notice.id });
+  const handleApplicationWindowOpen = () => setIsApplicationOpen(true);
+  const handleApplicationWindowClose = () => setIsApplicationOpen(false);
 
   if (props.categories.length === 0) {
     return null;
@@ -93,7 +97,14 @@ function NoticeModal(props) {
       onTitleChange={handleTitleChange}
       onDescriptionChange={handleDescriptionChange}
     >
-      {isApplicationNotice && <Button text="Apply" />}
+      <ApplicationModal
+        createApplication={true}
+        isOpen={isApplicationOpen}
+        onClose={handleApplicationWindowClose}
+      />
+      {isApplicationNotice && (
+        <Button text="Apply" onClick={handleApplicationWindowOpen} />
+      )}
       {isApprovalNotice && (
         <Fragment>
           <Button

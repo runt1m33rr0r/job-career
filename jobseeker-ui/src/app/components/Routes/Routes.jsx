@@ -21,6 +21,7 @@ const Routes = ({ isLoggedIn }) => (
       {!isLoggedIn ? <Redirect to="/" /> : <Profile />}
     </Route>
     <Route path="/notices/mine" component={Notices} />
+    <Route path="/notices" component={Notices} />
     <Route path="/applications" component={Applications} />
     <Route path="/search" component={Search} />
     <Route path="/categories" component={Categories} />

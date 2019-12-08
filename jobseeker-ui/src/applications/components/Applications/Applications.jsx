@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import ApplicationModal from "../ApplicationModal";
 import ItemsList from "../../../shared/components/ItemsList";
 import ApplicationListItem from "../ApplicationListItem";
+import { userTypes } from "../../../shared/constants";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -31,16 +32,19 @@ function Applications(props) {
 
   return (
     <div className={classes.container}>
-      <FormControl className={classes.formControl}>
-        <InputLabel>Notice filter</InputLabel>
-        <Select value={noticeFilter} onChange={handleFilterChange}>
-          {props.applications.map(application => (
-            <MenuItem key={application.id} value={application.notice.id}>
-              {application.notice.title}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      {props.userType === userTypes.COMPANY && (
+        <FormControl className={classes.formControl}>
+          <InputLabel>Notice filter</InputLabel>
+
+          <Select value={noticeFilter} onChange={handleFilterChange}>
+            {props.applications.map(application => (
+              <MenuItem key={application.id} value={application.notice.id}>
+                {application.notice.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
       <ItemsList
         items={props.applications}
         popupElement={ApplicationModal}
@@ -51,7 +55,8 @@ function Applications(props) {
 }
 
 Applications.propTypes = {
-  applications: PropTypes.array.isRequired
+  applications: PropTypes.array.isRequired,
+  userType: PropTypes.string.isRequired
 };
 
 export default Applications;
