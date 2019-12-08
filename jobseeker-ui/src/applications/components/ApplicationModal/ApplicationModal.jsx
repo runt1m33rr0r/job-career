@@ -29,11 +29,15 @@ function ApplicationModal(props) {
   const [email, setEmail] = useState(
     isEditApplication ? props.application.email : ""
   );
+  const [letter, setLetter] = useState(
+    isEditApplication ? props.application.letter : ""
+  );
 
   const handleJobDetailsClose = () => setIsJobDetails(false);
   const handleJobDetailsOpen = () => setIsJobDetails(true);
   const handlePhoneNumberChange = event => setPhoneNumber(event.target.value);
   const handleEmailChange = event => setEmail(event.target.value);
+  const handleLetterChange = event => setLetter(event.target.value);
 
   return (
     <LargeModal {...props}>
@@ -99,9 +103,10 @@ function ApplicationModal(props) {
             label="Motivational letter"
             multiline
             rows="20"
-            defaultValue="some letter"
             margin="normal"
             variant="outlined"
+            value={letter}
+            onChange={handleLetterChange}
           />
         </div>
       </Grid>
