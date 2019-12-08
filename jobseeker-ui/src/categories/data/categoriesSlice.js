@@ -11,8 +11,8 @@ const categoriesSlice = createSlice({
   name: "categories",
   initialState: {
     categories: [
-      // { name: "category1", id: 1 },
-      // { name: "category2", id: 2 }
+      { name: "category1", id: 1 },
+      { name: "category2", id: 2 }
     ]
   },
   reducers: {
