@@ -1,6 +1,8 @@
 package com.nbu.jobseeker.dto;
 
-public class ResponseDTO {
+import java.io.Serializable;
+
+public class ResponseDTO implements Serializable {
 
     public ResponseDTO(boolean success, String message) {
         this.message = message;

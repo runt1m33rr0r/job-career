@@ -1,6 +1,8 @@
 package com.nbu.jobseeker.dto;
 
-public class ApplicationSearchDTO {
+import java.io.Serializable;
+
+public class ApplicationSearchDTO implements Serializable {
 
     public ApplicationSearchDTO(Long personId, Long noticeId) {
         this.personId = personId;

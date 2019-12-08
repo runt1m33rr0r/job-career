@@ -2,9 +2,10 @@ package com.nbu.jobseeker.dto;
 
 import com.nbu.jobseeker.model.JobCategory;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CategoryDTO extends ResponseDTO {
+public class CategoryDTO extends ResponseDTO implements Serializable {
 
     private List<JobCategory> categories;
 

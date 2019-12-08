@@ -1,6 +1,8 @@
 package com.nbu.jobseeker.dto;
 
-public class ApplicationCreateDTO {
+import java.io.Serializable;
+
+public class ApplicationCreateDTO implements Serializable {
 
     public ApplicationCreateDTO(Long personId, Long noticeId, String number, String email, String letter) {
         this.personId = personId;

@@ -1,5 +1,6 @@
 package com.nbu.jobseeker.services;
 
+import com.nbu.jobseeker.dto.NoticeSearchDTO;
 import com.nbu.jobseeker.dto.NoticeUpdateDTO;
 import com.nbu.jobseeker.model.Company;
 import com.nbu.jobseeker.model.JobCategory;
@@ -7,15 +8,13 @@ import com.nbu.jobseeker.model.JobNotice;
 import com.nbu.jobseeker.model.JobNoticeStatus;
 import com.nbu.jobseeker.repositories.CompanyRepository;
 import com.nbu.jobseeker.repositories.NoticeRepository;
-import com.nbu.jobseeker.repositories.UserRepository;
-import jdk.net.SocketFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service("noticeService")
 public class NoticeService {
@@ -32,18 +31,28 @@ public class NoticeService {
         this.companyRepository = companyRepository;
     }
 
-    public Set<JobNotice> retrieveByKeywords(JobNoticeStatus status, List<String> keywords) {
+    public List<JobNotice> retrieveNotices(JobNoticeStatus status, NoticeSearchDTO parameters) {
         HashSet<JobNotice> notices = new HashSet<>();
-        for(String keyword : keywords) {
-            notices.addAll(noticeRepository.findByTitleContaining("%" + keyword + "%"));
+        if(parameters == null || ((parameters.getKeywords() == null || parameters.getKeywords().isEmpty()) && (parameters.getCategory() == null || "".equals(parameters.getCategory())))){
+            return noticeRepository.findAll();
         }
-        return notices;
-    }
+        if(parameters.getCategory() == null || "".equals(parameters.getCategory())){
+            for(String keyword : parameters.getKeywords()) {
+                notices.addAll(noticeRepository.findByTitleContains(keyword));
+            }
+            return new ArrayList<>(notices);
+        }
+        JobCategory categoryNew = categoryService.getByName(parameters.getCategory());
+        if(parameters.getKeywords() == null || parameters.getKeywords().isEmpty()){
+            notices.addAll(noticeRepository.findByCategory(categoryNew));
+            return new ArrayList<>(notices);
+        }
+        for(String keyword : parameters.getKeywords()) {
+            notices.addAll(noticeRepository.findByTitleContainsAndCategory(keyword, categoryNew));
+        }
 
-    public List<JobNotice> retrieveAllNotices(JobNoticeStatus status) {
-        return noticeRepository.findAll();
+        return new ArrayList<>(notices);
     }
-
 
     public boolean updateNotice(Long id, NoticeUpdateDTO noticeUpdateDTO) {
         JobNotice notice = noticeRepository.findById(id).get();

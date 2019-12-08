@@ -1,6 +1,8 @@
 package com.nbu.jobseeker.dto;
 
-public class UserUpdateDTO {
+import java.io.Serializable;
+
+public class UserUpdateDTO implements Serializable {
     private String firstName;
     private String lastName;
     private String companyName;
