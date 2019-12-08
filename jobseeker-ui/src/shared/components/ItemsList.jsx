@@ -32,7 +32,11 @@ function ItemsList(props) {
   const itemsPerPage = 1;
   const pagesCount = items.length / itemsPerPage;
 
-  const handlePopupClose = () => setPopupOpen(false);
+  const handlePopupClose = () => {
+    setPopupOpen(false);
+    setPopupItem(null);
+  };
+
   const handlePopupOpen = item => () => setPopupItem(item);
   const handlePageChange = (event, newPage) => setCurrentpage(newPage);
 

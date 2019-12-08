@@ -1,5 +1,40 @@
+const notices = [
+  {
+    id: 1,
+    title: "some title1",
+    category: "category1",
+    company: "company",
+    content: "content1",
+    closed: false,
+    approved: true,
+    lastModified: "some date1"
+  },
+  {
+    id: 2,
+    title: "some title2",
+    category: "category2",
+    company: "company",
+    content: "content2",
+    closed: false,
+    approved: true,
+    lastModified: "some date2"
+  }
+];
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export async function getNotices({ keywords, approved }) {
+  console.log({ keywords, approved });
+
+  await sleep(1000);
+
+  return {
+    success: true,
+    message: "Notices gathered successfully!",
+    notices
+  };
 }
 
 export async function getCompanyNotices({ company }) {
@@ -10,28 +45,7 @@ export async function getCompanyNotices({ company }) {
   return {
     success: true,
     message: "Notices gathered successfully!",
-    notices: [
-      {
-        id: 1,
-        title: "some title1",
-        category: "category1",
-        company: "company",
-        content: "content1",
-        closed: false,
-        approved: false,
-        lastModified: "some date1"
-      },
-      {
-        id: 2,
-        title: "some title2",
-        category: "category2",
-        company: "company",
-        content: "content2",
-        closed: false,
-        approved: false,
-        lastModified: "some date2"
-      }
-    ]
+    notices
   };
 }
 

@@ -23,7 +23,7 @@ import PropTypes from "prop-types";
 import Routes from "../Routes";
 import DrawerItem from "../DrawerItem";
 import Notification from "../Notification";
-import CreateNoticeModal from "../../../notices/components/CreateNotice";
+import NoticeModal from "../../../notices/components/NoticeModal";
 import { userTypes } from "../../../shared/constants";
 
 const drawerWidth = 240;
@@ -127,7 +127,7 @@ function App({
           </ListItem>
         )}
         {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
-          <DrawerItem text="My notices" linkTo="/notices" />
+          <DrawerItem text="My notices" linkTo="/notices/mine" />
         )}
         {userType === userTypes.USER && (
           <DrawerItem text="Notices" linkTo="/notices" />
@@ -244,9 +244,10 @@ function App({
         <main className={classes.main}>
           <Notification />
           <div className={classes.toolbar} />
-          <CreateNoticeModal
+          <NoticeModal
             onClose={handleCreateNoticeToggle}
             isOpen={isCreateNoticeOpen}
+            creationNotice={true}
           />
           <Grid
             container

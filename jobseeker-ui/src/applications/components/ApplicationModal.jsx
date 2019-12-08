@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LargeModal from "../../shared/components/LargeModal";
-import ViewNotice from "../../notices/components/ViewNotice";
+import NoticeModal from "../../notices/components/NoticeModal";
 
 const useStyles = makeStyles(() => ({
   description: {
@@ -23,7 +23,12 @@ function ApplicationModal(props) {
 
   return (
     <LargeModal {...props}>
-      <ViewNotice isOpen={isJobDetailsOpen} onClose={handleJobDetailsClose} />
+      <NoticeModal
+        isOpen={isJobDetailsOpen}
+        onClose={handleJobDetailsClose}
+        viewNotice={true}
+        notice={{ company: "company" }}
+      />
       <Grid container item justify="center" alignItems="center" spacing={3}>
         <Grid container item xs={12} spacing={3} justify="center">
           <Grid item>

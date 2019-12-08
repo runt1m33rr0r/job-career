@@ -1,46 +1,64 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import ApprovalNotice from "../ApprovalNotice";
-import ApplicationNotice from "../ApplicationNotice";
-import EditNotice from "../EditNotice";
-import NoticeListItem from "../NoticeListItem";
 import ItemsList from "../../../shared/components/ItemsList";
+import NoticeListItem from "../NoticeListItem";
+import NoticeModal from "../NoticeModal";
 import { userTypes } from "../../../shared/constants";
 
 function Notices({
   userType,
+  keywords,
+  approved,
+  showCompanyNotices,
   notices,
   getCompanyNoticesRequest,
+  getNoticesRequest,
   getAllCategoriesRequest
 }) {
-  let noticeElement = ApplicationNotice;
-  if (userType === userTypes.ADMIN) {
-    noticeElement = ApprovalNotice;
-  } else if (userType === userTypes.COMPANY) {
-    noticeElement = EditNotice;
-  }
-
   useEffect(() => {
-    getCompanyNoticesRequest();
+    if (showCompanyNotices) {
+      getCompanyNoticesRequest();
+    } else {
+      if (userType === userTypes.USER) {
+        getNoticesRequest({ approved: true, keywords });
+      } else {
+        getNoticesRequest({ approved, keywords });
+      }
+    }
+
     getAllCategoriesRequest();
-  }, [getCompanyNoticesRequest, getAllCategoriesRequest]);
+  }, [
+    getCompanyNoticesRequest,
+    getAllCategoriesRequest,
+    getNoticesRequest,
+    showCompanyNotices,
+    approved,
+    keywords,
+    userType
+  ]);
 
   return (
-    <Fragment>
-      <ItemsList
-        items={notices}
-        popupElement={noticeElement}
-        listItemElement={NoticeListItem}
-      />
-    </Fragment>
+    <ItemsList
+      items={notices}
+      popupElement={NoticeModal}
+      listItemElement={NoticeListItem}
+    />
   );
 }
 
 Notices.propTypes = {
-  userType: PropTypes.string.isRequired,
   notices: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userType: PropTypes.string.isRequired,
+  keywords: PropTypes.arrayOf(PropTypes.string).isRequired,
   getCompanyNoticesRequest: PropTypes.func.isRequired,
-  getAllCategoriesRequest: PropTypes.func.isRequired
+  getNoticesRequest: PropTypes.func.isRequired,
+  getAllCategoriesRequest: PropTypes.func.isRequired,
+  approved: PropTypes.bool,
+  showCompanyNotices: PropTypes.bool
+};
+
+Notices.defaultProps = {
+  keywords: []
 };
 
 export default Notices;

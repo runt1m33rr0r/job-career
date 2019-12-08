@@ -4,6 +4,7 @@ import {
   createNotice,
   editNotice,
   getCompanyNotices,
+  getNotices,
   deleteNotice
 } from "./noticesApi";
 
@@ -13,13 +14,13 @@ const noticesSlice = createSlice({
     notices: []
   },
   reducers: {
-    getAllNoticesSuccess: (state, action) => {
+    getNoticesSuccess: (state, action) => {
       state.notices = action.payload.notices;
     }
   }
 });
 
-export const { getAllNoticesSuccess } = noticesSlice.actions;
+export const { getNoticesSuccess } = noticesSlice.actions;
 
 export default noticesSlice.reducer;
 
@@ -28,7 +29,17 @@ export const getCompanyNoticesRequest = () => async (dispatch, getState) =>
     makeRequest({
       requestFunction: getCompanyNotices,
       requestData: { company: getState().auth.companyName },
-      successAction: getAllNoticesSuccess,
+      successAction: getNoticesSuccess,
+      shouldAlert: false
+    })
+  );
+
+export const getNoticesRequest = noticesData => async dispatch =>
+  dispatch(
+    makeRequest({
+      requestFunction: getNotices,
+      requestData: noticesData,
+      successAction: getNoticesSuccess,
       shouldAlert: false
     })
   );
