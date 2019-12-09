@@ -1,56 +1,64 @@
-const notices = [
-  {
-    id: 1,
-    title: "some title1",
-    category: "category1",
-    company: "company",
-    content: "content1",
-    closed: false,
-    approved: true,
-    lastModified: "some date1"
-  },
-  {
-    id: 2,
-    title: "some title2",
-    category: "category2",
-    company: "company",
-    content: "content2",
-    closed: false,
-    approved: true,
-    lastModified: "some date2"
-  }
-];
+import axios from "axios";
+import { BASE_ROUTE } from "../../shared/config";
+
+const NOTICES_ROUTE = `${BASE_ROUTE}notices\\`;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export async function getNotices({ keywords, approved }) {
-  console.log({ keywords, approved });
+  try {
+    const response = await axios.get(NOTICES_ROUTE, {
+      data: { keywords, approved }
+    });
 
-  await sleep(1000);
+    const processedNotices = response.data.notices.map(notice => ({
+      id: notice.id,
+      title: notice.title,
+      category: notice.category.name,
+      company: notice.company.name,
+      content: notice.description,
+      closed: notice.status === "CLOSED",
+      approved: notice.status === "APPROVED",
+      lastModified: notice.lastModified
+        ? notice.lastModified
+        : new Date().toTimeString()
+    }));
 
-  return {
-    success: true,
-    message: "Notices gathered successfully!",
-    notices
-  };
+    console.log(processedNotices);
+
+    return {
+      success: true,
+      message: "Notices gathered successfully!",
+      notices: processedNotices
+    };
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
 
 export async function getCompanyNotices({ company }) {
-  console.log({ company });
+  const notices = await getNotices({ keywords: [] }).notices;
+  const companyNotices = notices.filter(el => el.company === company);
 
-  await sleep(1000);
+  console.log(`notices: ${notices}`);
+  console.log(`company notices: ${companyNotices}`);
 
   return {
     success: true,
     message: "Notices gathered successfully!",
-    notices
+    companyNotices
   };
 }
 
-export async function createNotice({ title, category, content, companyName }) {
-  console.log({ title, category, content, companyName });
+export async function createNotice({
+  title,
+  category,
+  content: description,
+  companyName
+}) {
+  console.log({ title, category, description, companyName });
 
   await sleep(1000);
 
