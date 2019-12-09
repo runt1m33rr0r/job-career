@@ -20,6 +20,7 @@ import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import Routes from "../Routes";
 import DrawerItem from "../DrawerItem";
 import Notification from "../Notification";
@@ -82,7 +83,8 @@ function App({
   companyName,
   email,
   isAuthenticated,
-  requestLogout
+  requestLogout,
+  history
 }) {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -97,6 +99,7 @@ function App({
     setIsCreateNoticeOpen(!isCreateNoticeOpen);
 
   const handleLogoutPress = () => {
+    history.push("/");
     requestLogout();
     handleClose();
   };
@@ -270,4 +273,4 @@ App.propTypes = {
   requestLogout: PropTypes.func.isRequired
 };
 
-export default App;
+export default withRouter(App);
