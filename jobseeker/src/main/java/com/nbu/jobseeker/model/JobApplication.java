@@ -1,11 +1,12 @@
 package com.nbu.jobseeker.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "JOB_APPLICATIONS")
-public class JobApplication {
+public class JobApplication implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

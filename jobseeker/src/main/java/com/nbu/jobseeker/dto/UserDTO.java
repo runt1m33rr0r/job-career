@@ -2,7 +2,9 @@ package com.nbu.jobseeker.dto;
 
 import com.nbu.jobseeker.model.User;
 
-public class UserDTO extends ResponseDTO {
+import java.io.Serializable;
+
+public class UserDTO extends ResponseDTO implements Serializable {
     private User user;
 
     public UserDTO(boolean success, String message, User user) {

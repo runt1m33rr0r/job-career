@@ -1,6 +1,8 @@
 package com.nbu.jobseeker.dto;
 
-public class CategoryUpdateDTO {
+import java.io.Serializable;
+
+public class CategoryUpdateDTO implements Serializable {
     private String name;
 
     public String getName() {

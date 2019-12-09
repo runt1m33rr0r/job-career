@@ -1,6 +1,8 @@
 package com.nbu.jobseeker.dto;
 
-public class ApplicationUpdateDTO {
+import java.io.Serializable;
+
+public class ApplicationUpdateDTO implements Serializable {
 
     public ApplicationUpdateDTO(String number, String email, String letter) {
         this.number = number;

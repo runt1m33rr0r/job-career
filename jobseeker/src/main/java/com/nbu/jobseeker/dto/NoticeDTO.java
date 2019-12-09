@@ -2,13 +2,15 @@ package com.nbu.jobseeker.dto;
 
 import com.nbu.jobseeker.model.JobNotice;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
-public class NoticeDTO extends ResponseDTO {
+public class NoticeDTO extends ResponseDTO implements Serializable {
 
-    private Collection<JobNotice> notices;
+    private List<JobNotice> notices;
 
-    public NoticeDTO(boolean success, String message, Collection<JobNotice> notices) {
+    public NoticeDTO(boolean success, String message, List<JobNotice> notices) {
         super(success, message);
         this.notices = notices;
     }
@@ -17,7 +19,7 @@ public class NoticeDTO extends ResponseDTO {
         return notices;
     }
 
-    public void setNotices(Collection<JobNotice> notices) {
+    public void setNotices(List<JobNotice> notices) {
         this.notices = notices;
     }
 }
