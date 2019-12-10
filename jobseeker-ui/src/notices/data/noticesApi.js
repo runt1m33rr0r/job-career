@@ -60,12 +60,20 @@ export async function createNotice({
 }) {
   console.log({ title, category, description, companyName });
 
-  await sleep(1000);
+  try {
+    const response = await axios.post(NOTICES_ROUTE, {
+      title,
+      category,
+      description,
+      companyName
+    });
 
-  return {
-    success: true,
-    message: "Notice created successfully!"
-  };
+    console.log(response.data);
+
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
 
 export async function editNotice({

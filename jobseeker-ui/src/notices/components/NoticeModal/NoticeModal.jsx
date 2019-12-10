@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import BaseNoticeModal from "../BaseNoticeModal";
 import Button from "../NoticeModalButton";
@@ -6,6 +6,8 @@ import ApplicationModal from "../../../applications/components/ApplicationModal"
 import { userTypes } from "../../../shared/constants";
 
 function NoticeModal(props) {
+  const { notice, categories } = props;
+
   const isApplicationNotice =
     !props.viewNotice && props.userType === userTypes.USER;
   const isApprovalNotice = props.userType === userTypes.ADMIN;
@@ -15,24 +17,34 @@ function NoticeModal(props) {
     props.userType === userTypes.COMPANY &&
     props.notice.company === props.companyName;
 
+  const getDefaultCategory = useCallback(() => {
+    if (!isEditNotice && categories.length > 0) {
+      return categories[0].name;
+    } else {
+      return notice.category;
+    }
+  }, [isEditNotice, categories, notice]);
+
   const [title, setTitle] = useState(isEditNotice ? props.notice.title : "");
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
-  const [category, setCategory] = useState(
-    !isEditNotice && props.categories[0]
-      ? props.categories[0].name
-      : props.notice.category
-  );
+  const [category, setCategory] = useState(getDefaultCategory());
   const [content, setDescription] = useState(
     isEditNotice ? props.notice.content : ""
   );
 
   useEffect(() => {
     if (isEditNotice) {
-      setCategory(props.notice.category);
-      setTitle(props.notice.title);
-      setDescription(props.notice.content);
+      setCategory(notice.category);
+      setTitle(notice.title);
+      setDescription(notice.content);
     }
-  }, [props, isEditNotice]);
+  }, [notice, isEditNotice]);
+
+  useEffect(() => {
+    if (isCreationNotice) {
+      setCategory(getDefaultCategory());
+    }
+  }, [categories, isCreationNotice, getDefaultCategory]);
 
   const makeApprovalRequest = approved =>
     props.editNoticeRequest({

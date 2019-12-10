@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -84,13 +84,18 @@ function App({
   email,
   isAuthenticated,
   requestLogout,
-  history
+  history,
+  getAllCategoriesRequest
 }) {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isCreateNoticeOpen, setIsCreateNoticeOpen] = useState(false);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    getAllCategoriesRequest();
+  }, [getAllCategoriesRequest]);
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const handleMenu = event => setAnchorEl(event.currentTarget);
