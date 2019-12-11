@@ -37,7 +37,7 @@ function NoticeModal(props) {
             InputProps={{ readOnly: props.readOnly }}
             label="job title"
             margin="dense"
-            value={props.notice.title}
+            value={props.title}
             onChange={handleTitleChange}
           />
         </Grid>
@@ -47,7 +47,7 @@ function NoticeModal(props) {
             select
             label="Select"
             className={classes.textField}
-            value={props.notice.category}
+            value={props.category}
             onChange={handleCategoryChange}
             margin="dense"
           >
@@ -63,19 +63,16 @@ function NoticeModal(props) {
             InputProps={{ readOnly: true }}
             label="Company name"
             margin="dense"
-            value={props.notice.company}
+            value={props.company}
           />
         </Grid>
       </Grid>
       <Grid item className={classes.description}>
         {isEditing ? (
-          <Input
-            onChange={handleDescriptionChange}
-            text={props.notice.content}
-          />
+          <Input onChange={handleDescriptionChange} text={props.content} />
         ) : (
           <div>
-            <ReactMarkdown source={props.notice.content} escapeHtml={false} />
+            <ReactMarkdown source={props.content} escapeHtml={false} />
           </div>
         )}
       </Grid>
@@ -108,12 +105,10 @@ NoticeModal.propTypes = {
   categories: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string.isRequired })
   ).isRequired,
-  notice: PropTypes.shape({
-    category: PropTypes.string,
-    title: PropTypes.string,
-    content: PropTypes.string,
-    company: PropTypes.string
-  }).isRequired,
+  category: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  company: PropTypes.string.isRequired,
   readOnly: PropTypes.bool
 };
 

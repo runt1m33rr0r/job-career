@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useCallback } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import BaseNoticeModal from "../BaseNoticeModal";
 import Button from "../NoticeModalButton";
@@ -6,45 +6,54 @@ import ApplicationModal from "../../../applications/components/ApplicationModal"
 import { userTypes } from "../../../shared/constants";
 
 function NoticeModal(props) {
-  const { notice, categories } = props;
-
-  const isApplicationNotice =
-    !props.viewNotice && props.userType === userTypes.USER;
   const isApprovalNotice = props.userType === userTypes.ADMIN;
   const isCreationNotice =
     props.userType === userTypes.COMPANY && props.creationNotice;
+  const isViewNotice =
+    props.viewNotice ||
+    (props.userType === userTypes.COMPANY &&
+      props.notice.company !== props.companyName &&
+      !isCreationNotice);
   const isEditNotice =
     props.userType === userTypes.COMPANY &&
     props.notice.company === props.companyName;
+  const isApplicationNotice =
+    !isViewNotice && props.userType === userTypes.USER;
 
-  const getDefaultCategory = useCallback(() => {
-    if (!isEditNotice && categories.length > 0) {
-      return categories[0].name;
+  const getDefaultCategory = () => {
+    if (!isEditNotice && props.categories.length > 0) {
+      return props.categories[0].name;
     } else {
-      return notice.category;
+      return props.notice.category;
     }
-  }, [isEditNotice, categories, notice]);
+  };
 
-  const [title, setTitle] = useState(isEditNotice ? props.notice.title : "");
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
+  const [title, setTitle] = useState(
+    isCreationNotice ? "" : props.notice.title
+  );
   const [category, setCategory] = useState(getDefaultCategory());
   const [content, setDescription] = useState(
-    isEditNotice ? props.notice.content : ""
+    isCreationNotice ? "" : props.notice.content
   );
 
   useEffect(() => {
     if (isEditNotice) {
-      setCategory(notice.category);
-      setTitle(notice.title);
-      setDescription(notice.content);
+      setCategory(props.notice.category);
+      setTitle(props.notice.title);
+      setDescription(props.notice.content);
     }
-  }, [notice, isEditNotice]);
+  }, [isEditNotice, props]);
 
   useEffect(() => {
     if (isCreationNotice) {
-      setCategory(getDefaultCategory());
+      setCategory(
+        props.categories.length > 0
+          ? props.categories[0].name
+          : props.notice.category
+      );
     }
-  }, [categories, isCreationNotice, getDefaultCategory]);
+  }, [props, isCreationNotice]);
 
   const makeApprovalRequest = approved =>
     props.editNoticeRequest({
@@ -92,22 +101,21 @@ function NoticeModal(props) {
   const handleApplicationWindowOpen = () => setIsApplicationOpen(true);
   const handleApplicationWindowClose = () => setIsApplicationOpen(false);
 
-  if (props.categories.length === 0) {
+  if (!category) {
     return null;
   }
 
   return (
     <BaseNoticeModal
       {...props}
-      notice={
-        isCreationNotice || isEditNotice
-          ? { title, category, content, company: props.companyName }
-          : props.notice
-      }
-      readOnly={isApplicationNotice || isApprovalNotice || props.viewNotice}
+      readOnly={isApplicationNotice || isApprovalNotice || isViewNotice}
       onCategoryChange={handleCategoryChange}
       onTitleChange={handleTitleChange}
       onDescriptionChange={handleDescriptionChange}
+      title={title}
+      category={category}
+      content={content}
+      company={props.companyName}
     >
       <ApplicationModal
         createApplication={true}

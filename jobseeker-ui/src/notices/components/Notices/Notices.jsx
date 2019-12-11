@@ -16,6 +16,8 @@ function Notices({
   getAllCategoriesRequest
 }) {
   useEffect(() => {
+    getAllCategoriesRequest();
+
     if (showCompanyNotices) {
       getCompanyNoticesRequest();
     } else {
@@ -25,8 +27,6 @@ function Notices({
         getNoticesRequest({ approved, keywords });
       }
     }
-
-    getAllCategoriesRequest();
   }, [
     getCompanyNoticesRequest,
     getAllCategoriesRequest,
@@ -36,6 +36,10 @@ function Notices({
     keywords,
     userType
   ]);
+
+  if (notices.length === 0) {
+    return null;
+  }
 
   return (
     <ItemsList

@@ -23,7 +23,7 @@ export async function getNotices({ keywords, approved }) {
       approved: notice.status === "APPROVED",
       lastModified: notice.lastModified
         ? notice.lastModified
-        : new Date().toTimeString()
+        : new Date().toLocaleDateString("en-US")
     }));
 
     console.log(processedNotices);
@@ -86,12 +86,29 @@ export async function editNotice({
 }) {
   console.log({ id, category, title, content, closed, approved });
 
-  await sleep(1000);
+  let status = "OPEN";
+  if (closed) {
+    status = "CLOSED";
+  } else if (!closed) {
+    status = "OPEN";
+  } else if (approved) {
+    status = "APPROVED";
+  } else {
+    status = "PENDING";
+  }
 
-  return {
-    success: true,
-    message: "Notice edited successfully!"
-  };
+  try {
+    const response = await axios.patch(`${NOTICES_ROUTE}\\${id}`, {
+      category,
+      title,
+      content,
+      status
+    });
+
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
 
 export async function deleteNotice({ id }) {
