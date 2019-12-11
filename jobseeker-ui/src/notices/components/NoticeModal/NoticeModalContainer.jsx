@@ -8,7 +8,7 @@ import {
 } from "../../data/noticesSlice";
 
 const NoticeModalContainer = props => (
-  <NoticeModal notice={props.notice ? props.notice : props.item} {...props} />
+  <NoticeModal {...props.item} {...props} />
 );
 
 const mapStateToProps = state => ({

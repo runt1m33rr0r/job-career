@@ -83,12 +83,12 @@ export async function editNotice({
   id,
   category,
   title,
-  content,
+  content: description,
   closed,
   approved,
   company
 }) {
-  console.log({ id, category, title, content, closed, approved, company });
+  console.log({ id, category, title, description, closed, approved, company });
 
   let status = "OPEN";
   if (closed) {
@@ -105,15 +105,15 @@ export async function editNotice({
     const response = await axios.patch(`${NOTICES_ROUTE}${id}`, {
       category,
       title,
-      content,
+      description,
       status
     });
 
-    // if (response.data.success) {
-    //   return await getCompanyNotices({ company });
-    // } else {
-    return response.data;
-    // }
+    if (response.data.success) {
+      return await getCompanyNotices({ company });
+    } else {
+      return response.data;
+    }
   } catch ({ message }) {
     return { sucess: false, message };
   }

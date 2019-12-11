@@ -12,11 +12,10 @@ function NoticeModal(props) {
   const isViewNotice =
     props.viewNotice ||
     (props.userType === userTypes.COMPANY &&
-      props.notice.company !== props.companyName &&
+      props.company !== props.companyName &&
       !isCreationNotice);
   const isEditNotice =
-    props.userType === userTypes.COMPANY &&
-    props.notice.company === props.companyName;
+    props.userType === userTypes.COMPANY && props.company === props.companyName;
   const isApplicationNotice =
     !isViewNotice && props.userType === userTypes.USER;
 
@@ -24,56 +23,55 @@ function NoticeModal(props) {
     if (!isEditNotice && props.categories.length > 0) {
       return props.categories[0].name;
     } else {
-      return props.notice.category;
+      return props.category;
     }
   };
 
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
-  const [title, setTitle] = useState(
-    isCreationNotice ? "" : props.notice.title
-  );
+  const [title, setTitle] = useState(isCreationNotice ? "" : props.title);
   const [category, setCategory] = useState(getDefaultCategory());
   const [content, setDescription] = useState(
-    isCreationNotice ? "" : props.notice.content
+    isCreationNotice ? "" : props.content
   );
 
-  useEffect(() => {
-    console.log("effect");
-    if (isEditNotice) {
-      setCategory(props.notice.category);
-      setTitle(props.notice.title);
-      setDescription(props.notice.content);
-    }
-  }, [isEditNotice, props]);
+  const {
+    category: propsCategory,
+    title: propsTitle,
+    content: propsContent,
+    categories
+  } = props;
 
   useEffect(() => {
-    console.log("effect");
-    if (isCreationNotice) {
-      setCategory(
-        props.categories.length > 0
-          ? props.categories[0].name
-          : props.notice.category
-      );
+    if (isEditNotice) {
+      setCategory(propsCategory);
+      setTitle(propsTitle);
+      setDescription(propsContent);
     }
-  }, [props, isCreationNotice]);
+  }, [isEditNotice, propsCategory, propsTitle, propsContent]);
+
+  useEffect(() => {
+    if (isCreationNotice) {
+      setCategory(categories.length > 0 ? categories[0].name : propsCategory);
+    }
+  }, [categories, propsCategory, isCreationNotice]);
 
   const makeApprovalRequest = approved =>
     props.editNoticeRequest({
-      id: props.notice.id,
-      closed: props.notice.closed,
-      category: props.notice.category,
-      title: props.notice.title,
-      content: props.notice.content,
+      id: props.id,
+      closed: props.closed,
+      category: props.category,
+      title: props.title,
+      content: props.content,
       approved
     });
 
   const makeNoticeStatusRequest = closed =>
     props.editNoticeRequest({
-      id: props.notice.id,
-      approved: props.notice.approved,
-      category: props.notice.category,
-      title: props.notice.title,
-      content: props.notice.content,
+      id: props.id,
+      approved: props.approved,
+      category: props.category,
+      title: props.title,
+      content: props.content,
       closed
     });
 
@@ -88,10 +86,10 @@ function NoticeModal(props) {
 
   const handleUpdateNotice = () =>
     props.editNoticeRequest({
-      id: props.notice.id,
-      closed: props.notice.closed,
-      approved: props.notice.approved,
-      lastModified: props.notice.lastModified,
+      id: props.id,
+      closed: props.closed,
+      approved: props.approved,
+      lastModified: props.lastModified,
       category,
       title,
       content
@@ -99,8 +97,7 @@ function NoticeModal(props) {
 
   const handleNoticeOpen = () => makeNoticeStatusRequest(false);
   const handleNoticeClose = () => makeNoticeStatusRequest(true);
-  const handleNoticeDelete = () =>
-    props.deleteNoticeRequest({ id: props.notice.id });
+  const handleNoticeDelete = () => props.deleteNoticeRequest({ id: props.id });
   const handleApplicationWindowOpen = () => setIsApplicationOpen(true);
   const handleApplicationWindowClose = () => setIsApplicationOpen(false);
 
@@ -133,12 +130,12 @@ function NoticeModal(props) {
           <Button
             text="Approve"
             onClick={onApproved}
-            disabled={props.isFetching || props.notice.approved}
+            disabled={props.isFetching || props.approved}
           />
           <Button
             text="Disapprove"
             onClick={onDisapproved}
-            disabled={props.isFetching || !props.notice.approved}
+            disabled={props.isFetching || !props.approved}
           />
         </Fragment>
       )}
@@ -160,12 +157,12 @@ function NoticeModal(props) {
           <Button
             text="Open"
             onClick={handleNoticeOpen}
-            disabled={!props.notice.closed || props.isFetching}
+            disabled={!props.closed || props.isFetching}
           />
           <Button
             text="Close"
             onClick={handleNoticeClose}
-            disabled={props.notice.closed || props.isFetching}
+            disabled={props.closed || props.isFetching}
           />
         </Fragment>
       )}
@@ -180,12 +177,6 @@ NoticeModal.propTypes = {
       id: PropTypes.number.isRequired
     })
   ).isRequired,
-  notice: PropTypes.shape({
-    category: PropTypes.string,
-    title: PropTypes.string,
-    content: PropTypes.string,
-    company: PropTypes.string
-  }).isRequired,
   userType: PropTypes.string.isRequired,
   companyName: PropTypes.string.isRequired,
   editNoticeRequest: PropTypes.func.isRequired,
@@ -193,12 +184,15 @@ NoticeModal.propTypes = {
   deleteNoticeRequest: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   creationNotice: PropTypes.bool,
-  viewNotice: PropTypes.bool
+  viewNotice: PropTypes.bool,
+  category: PropTypes.string,
+  title: PropTypes.string,
+  content: PropTypes.string,
+  company: PropTypes.string
 };
 
 NoticeModal.defaultProps = {
-  categories: [],
-  notice: {}
+  categories: []
 };
 
 export default NoticeModal;

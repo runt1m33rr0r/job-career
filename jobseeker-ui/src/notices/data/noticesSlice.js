@@ -57,7 +57,7 @@ export const editNoticeRequest = noticeData => async (dispatch, getState) =>
     makeRequest({
       requestFunction: editNotice,
       requestData: { ...noticeData, company: getState().auth.companyName },
-      // successAction: getNoticesSuccess,
+      successAction: getNoticesSuccess,
       shouldAlert: false
     })
   );
