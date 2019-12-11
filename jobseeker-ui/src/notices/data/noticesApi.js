@@ -26,8 +26,6 @@ export async function getNotices({ keywords, approved }) {
         : new Date().toLocaleDateString("en-US")
     }));
 
-    console.log(processedNotices);
-
     return {
       success: true,
       message: "Notices gathered successfully!",
@@ -39,17 +37,22 @@ export async function getNotices({ keywords, approved }) {
 }
 
 export async function getCompanyNotices({ company }) {
-  const notices = await getNotices({ keywords: [] }).notices;
-  const companyNotices = notices.filter(el => el.company === company);
+  try {
+    const res = await getNotices({ keywords: [] });
 
-  console.log(`notices: ${notices}`);
-  console.log(`company notices: ${companyNotices}`);
+    if (res.success) {
+      const notices = res.notices;
+      const companyNotices = notices.filter(el => el.company === company);
 
-  return {
-    success: true,
-    message: "Notices gathered successfully!",
-    companyNotices
-  };
+      return {
+        success: true,
+        message: "Notices gathered successfully!",
+        notices: companyNotices
+      };
+    }
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
 
 export async function createNotice({
@@ -82,9 +85,10 @@ export async function editNotice({
   title,
   content,
   closed,
-  approved
+  approved,
+  company
 }) {
-  console.log({ id, category, title, content, closed, approved });
+  console.log({ id, category, title, content, closed, approved, company });
 
   let status = "OPEN";
   if (closed) {
@@ -98,14 +102,18 @@ export async function editNotice({
   }
 
   try {
-    const response = await axios.patch(`${NOTICES_ROUTE}\\${id}`, {
+    const response = await axios.patch(`${NOTICES_ROUTE}${id}`, {
       category,
       title,
       content,
       status
     });
 
+    // if (response.data.success) {
+    //   return await getCompanyNotices({ company });
+    // } else {
     return response.data;
+    // }
   } catch ({ message }) {
     return { sucess: false, message };
   }

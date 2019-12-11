@@ -7,8 +7,7 @@ import {
 import { getAllCategoriesRequest } from "../../../categories/data/categoriesSlice";
 
 const mapStateToProps = state => ({
-  notices: state.notices.notices,
-  userType: state.auth.userType
+  notices: state.notices.notices
 });
 
 const mapDispatchToProps = {

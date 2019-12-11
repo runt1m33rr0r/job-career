@@ -52,9 +52,14 @@ export const createNoticeRequest = noticeData => async (dispatch, getState) =>
     })
   );
 
-export const editNoticeRequest = noticeData => async dispatch =>
+export const editNoticeRequest = noticeData => async (dispatch, getState) =>
   dispatch(
-    makeRequest({ requestFunction: editNotice, requestData: noticeData })
+    makeRequest({
+      requestFunction: editNotice,
+      requestData: { ...noticeData, company: getState().auth.companyName },
+      // successAction: getNoticesSuccess,
+      shouldAlert: false
+    })
   );
 
 export const deleteNoticeRequest = noticeData => async dispatch =>

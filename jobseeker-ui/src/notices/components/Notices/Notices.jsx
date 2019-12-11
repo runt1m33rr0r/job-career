@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import ItemsList from "../../../shared/components/ItemsList";
 import NoticeListItem from "../NoticeListItem";
 import NoticeModal from "../NoticeModal";
-import { userTypes } from "../../../shared/constants";
 
 function Notices({
   userType,
@@ -21,11 +20,7 @@ function Notices({
     if (showCompanyNotices) {
       getCompanyNoticesRequest();
     } else {
-      if (userType === userTypes.USER) {
-        getNoticesRequest({ approved: true, keywords });
-      } else {
-        getNoticesRequest({ approved, keywords });
-      }
+      getNoticesRequest({ approved, keywords });
     }
   }, [
     getCompanyNoticesRequest,
@@ -52,7 +47,6 @@ function Notices({
 
 Notices.propTypes = {
   notices: PropTypes.arrayOf(PropTypes.object).isRequired,
-  userType: PropTypes.string.isRequired,
   keywords: PropTypes.arrayOf(PropTypes.string).isRequired,
   getCompanyNoticesRequest: PropTypes.func.isRequired,
   getNoticesRequest: PropTypes.func.isRequired,

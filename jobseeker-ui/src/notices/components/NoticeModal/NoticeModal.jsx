@@ -38,6 +38,7 @@ function NoticeModal(props) {
   );
 
   useEffect(() => {
+    console.log("effect");
     if (isEditNotice) {
       setCategory(props.notice.category);
       setTitle(props.notice.title);
@@ -46,6 +47,7 @@ function NoticeModal(props) {
   }, [isEditNotice, props]);
 
   useEffect(() => {
+    console.log("effect");
     if (isCreationNotice) {
       setCategory(
         props.categories.length > 0
@@ -89,6 +91,7 @@ function NoticeModal(props) {
       id: props.notice.id,
       closed: props.notice.closed,
       approved: props.notice.approved,
+      lastModified: props.notice.lastModified,
       category,
       title,
       content
