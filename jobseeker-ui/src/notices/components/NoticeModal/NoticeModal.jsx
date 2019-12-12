@@ -73,8 +73,10 @@ function NoticeModal(props) {
   const handleTitleChange = title => setTitle(title);
   const handleDescriptionChange = content => setDescription(content);
 
-  const handlePublishNotice = () =>
+  const handlePublishNotice = () => {
     props.createNoticeRequest({ category, title, content });
+    props.onClose();
+  };
 
   const handleUpdateNotice = () =>
     props.editNoticeRequest({
@@ -89,7 +91,11 @@ function NoticeModal(props) {
 
   const handleNoticeOpen = () => makeNoticeStatusRequest(false);
   const handleNoticeClose = () => makeNoticeStatusRequest(true);
-  const handleNoticeDelete = () => props.deleteNoticeRequest({ id: props.id });
+  const handleNoticeDelete = () => {
+    props.deleteNoticeRequest({ id: props.id });
+    props.onClose();
+  };
+
   const handleApplicationWindowOpen = () => setIsApplicationOpen(true);
   const handleApplicationWindowClose = () => setIsApplicationOpen(false);
 
