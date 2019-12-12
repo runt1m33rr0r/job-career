@@ -68,7 +68,10 @@ export async function createNotice({
     });
 
     if (response.data.success) {
-      return await getCompanyNotices({ company: companyName });
+      let res = await getCompanyNotices({ company: companyName });
+      res.message = response.data.message;
+
+      return res;
     } else {
       return response.data;
     }
@@ -130,7 +133,10 @@ export async function deleteNotice({ id, company }) {
     const response = await axios.delete(`${NOTICES_ROUTE}${id}`, { data: {} });
 
     if (response.data.success) {
-      return await getCompanyNotices({ company });
+      let res = await getCompanyNotices({ company });
+      res.message = response.data.message;
+
+      return res;
     } else {
       return response.data;
     }

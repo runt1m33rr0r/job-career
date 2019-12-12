@@ -49,8 +49,7 @@ export const createNoticeRequest = noticeData => async (dispatch, getState) =>
     makeRequest({
       requestFunction: createNotice,
       requestData: { ...noticeData, companyName: getState().auth.companyName },
-      successAction: getNoticesSuccess,
-      shouldAlert: true
+      successAction: getNoticesSuccess
     })
   );
 
@@ -69,7 +68,6 @@ export const deleteNoticeRequest = noticeData => async (dispatch, getState) =>
     makeRequest({
       requestFunction: deleteNotice,
       requestData: { ...noticeData, company: getState().auth.companyName },
-      successAction: getNoticesSuccess,
-      shouldAlert: false
+      successAction: getNoticesSuccess
     })
   );
