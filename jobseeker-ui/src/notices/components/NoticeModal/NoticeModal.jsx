@@ -178,11 +178,11 @@ NoticeModal.propTypes = {
     })
   ).isRequired,
   userType: PropTypes.string.isRequired,
-  companyName: PropTypes.string.isRequired,
   editNoticeRequest: PropTypes.func.isRequired,
   createNoticeRequest: PropTypes.func.isRequired,
   deleteNoticeRequest: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
+  companyName: PropTypes.string,
   creationNotice: PropTypes.bool,
   viewNotice: PropTypes.bool,
   category: PropTypes.string,

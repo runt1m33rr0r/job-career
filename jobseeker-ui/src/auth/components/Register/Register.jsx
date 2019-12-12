@@ -1,15 +1,15 @@
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
-import Button from "../AuthButton";
-import TextField from "../AuthTextField";
-import SelectMenu from "../AuthSelectMenu";
-import Form from "../AuthForm";
+import AuthButton from "../AuthButton";
+import AuthTextField from "../AuthTextField";
+import AuthSelectMenu from "../AuthSelectMenu";
+import AuthForm from "../AuthForm";
 import RepeatedTextField from "../RepeatedTextField";
 import { usualUserTypes } from "../../../shared/constants";
 
-const userTypes = Object.values(usualUserTypes);
-
 function Register({ registerRequest, isFetching }) {
+  const userTypes = Object.values(usualUserTypes);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -50,22 +50,22 @@ function Register({ registerRequest, isFetching }) {
       : formData.companyName;
 
   return (
-    <Form>
+    <AuthForm>
       {formData.userType === usualUserTypes.USER ? (
         <Fragment>
-          <TextField
+          <AuthTextField
             name="firstName"
             label="first name"
             onChange={handleFieldChange}
           />
-          <TextField
+          <AuthTextField
             name="lastName"
             label="last name"
             onChange={handleFieldChange}
           />
         </Fragment>
       ) : (
-        <TextField
+        <AuthTextField
           name="companyName"
           label="company name"
           onChange={handleFieldChange}
@@ -77,21 +77,21 @@ function Register({ registerRequest, isFetching }) {
         type="password"
         onValidation={handlePasswordValidation}
       />
-      <SelectMenu
+      <AuthSelectMenu
         name="userType"
         onChange={handleFieldChange}
         userType={formData.userType}
         userTypes={userTypes}
       />
-      <Button
+      <AuthButton
         disabled={
           !isEmailValid || !isPasswordValid || !isUserDataValid() || isFetching
         }
         onClick={handleRegisterClick}
       >
         Register
-      </Button>
-    </Form>
+      </AuthButton>
+    </AuthForm>
   );
 }
 
