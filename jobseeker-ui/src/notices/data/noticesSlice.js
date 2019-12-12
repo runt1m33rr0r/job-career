@@ -48,7 +48,9 @@ export const createNoticeRequest = noticeData => async (dispatch, getState) =>
   dispatch(
     makeRequest({
       requestFunction: createNotice,
-      requestData: { ...noticeData, companyName: getState().auth.companyName }
+      requestData: { ...noticeData, companyName: getState().auth.companyName },
+      successAction: getNoticesSuccess,
+      shouldAlert: true
     })
   );
 
@@ -57,12 +59,17 @@ export const editNoticeRequest = noticeData => async (dispatch, getState) =>
     makeRequest({
       requestFunction: editNotice,
       requestData: { ...noticeData, company: getState().auth.companyName },
-      successAction: getNoticesSuccess
-      // shouldAlert: false
+      successAction: getNoticesSuccess,
+      shouldAlert: false
     })
   );
 
-export const deleteNoticeRequest = noticeData => async dispatch =>
+export const deleteNoticeRequest = noticeData => async (dispatch, getState) =>
   dispatch(
-    makeRequest({ requestFunction: deleteNotice, requestData: noticeData })
+    makeRequest({
+      requestFunction: deleteNotice,
+      requestData: { ...noticeData, company: getState().auth.companyName },
+      successAction: getNoticesSuccess,
+      shouldAlert: false
+    })
   );

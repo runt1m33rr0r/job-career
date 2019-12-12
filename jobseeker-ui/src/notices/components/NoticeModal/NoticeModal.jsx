@@ -109,13 +109,15 @@ function NoticeModal(props) {
       content={content}
       company={props.companyName}
     >
-      <ApplicationModal
-        createApplication={true}
-        isOpen={isApplicationOpen}
-        onClose={handleApplicationWindowClose}
-      />
       {isApplicationNotice && (
-        <Button text="Apply" onClick={handleApplicationWindowOpen} />
+        <Fragment>
+          <ApplicationModal
+            createApplication={true}
+            isOpen={isApplicationOpen}
+            onClose={handleApplicationWindowClose}
+          />
+          <Button text="Apply" onClick={handleApplicationWindowOpen} />
+        </Fragment>
       )}
       {isApprovalNotice && !props.closed && (
         <Fragment>

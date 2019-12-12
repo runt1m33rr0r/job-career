@@ -33,6 +33,14 @@ function ItemsList(props) {
   const itemsPerPage = 1;
   const pagesCount = items.length / itemsPerPage;
 
+  const getCurrentPage = () => {
+    if (currentPage >= pagesCount) {
+      return 0;
+    }
+
+    return currentPage;
+  };
+
   const handlePopupClose = () => {
     setPopupOpen(false);
     setPopupItem(null);
@@ -68,8 +76,8 @@ function ItemsList(props) {
           <List>
             {items
               .slice(
-                currentPage * itemsPerPage,
-                currentPage * itemsPerPage + itemsPerPage
+                getCurrentPage() * itemsPerPage,
+                getCurrentPage() * itemsPerPage + itemsPerPage
               )
               .map(i => (
                 <ListItem
@@ -82,7 +90,7 @@ function ItemsList(props) {
           <div className={classes.paginationContainer}>
             <TablePagination
               component="nav"
-              page={currentPage}
+              page={getCurrentPage()}
               rowsPerPage={itemsPerPage}
               count={pagesCount}
               rowsPerPageOptions={[]}

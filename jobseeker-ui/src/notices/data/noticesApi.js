@@ -3,10 +3,6 @@ import { BASE_ROUTE } from "../../shared/config";
 
 const NOTICES_ROUTE = `${BASE_ROUTE}notices\\`;
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export async function getNotices({ keywords, approved }) {
   try {
     const response = await axios.get(NOTICES_ROUTE, {
@@ -71,9 +67,11 @@ export async function createNotice({
       companyName
     });
 
-    console.log(response.data);
-
-    return response.data;
+    if (response.data.success) {
+      return await getCompanyNotices({ company: companyName });
+    } else {
+      return response.data;
+    }
   } catch ({ message }) {
     return { sucess: false, message };
   }
@@ -127,13 +125,16 @@ export async function editNotice({
   }
 }
 
-export async function deleteNotice({ id }) {
-  console.log({ id });
+export async function deleteNotice({ id, company }) {
+  try {
+    const response = await axios.delete(`${NOTICES_ROUTE}${id}`, { data: {} });
 
-  await sleep(1000);
-
-  return {
-    success: true,
-    message: "Notice deleted successfully!"
-  };
+    if (response.data.success) {
+      return await getCompanyNotices({ company });
+    } else {
+      return response.data;
+    }
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
