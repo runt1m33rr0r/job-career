@@ -90,16 +90,24 @@ export async function editNotice({
 }) {
   console.log({ id, category, title, description, closed, approved, company });
 
-  let status = "OPEN";
-  if (closed) {
-    status = "CLOSED";
-  } else if (!closed) {
-    status = "OPEN";
-  } else if (approved) {
-    status = "APPROVED";
-  } else {
-    status = "PENDING";
+  let status;
+  if (closed !== undefined) {
+    if (closed) {
+      status = "CLOSED";
+    } else if (!closed) {
+      status = "OPEN";
+    }
   }
+
+  if (approved !== undefined) {
+    if (approved) {
+      status = "APPROVED";
+    } else {
+      status = "PENDING";
+    }
+  }
+
+  console.log(status);
 
   try {
     const response = await axios.patch(`${NOTICES_ROUTE}${id}`, {

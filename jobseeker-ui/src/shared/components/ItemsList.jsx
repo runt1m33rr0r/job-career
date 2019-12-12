@@ -26,6 +26,7 @@ function ItemsList(props) {
 
   const classes = useStyles();
   const [popupItem, setPopupItem] = useState(null);
+  const [popupData, setPopupData] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
   const [currentPage, setCurrentpage] = useState(0);
 
@@ -46,13 +47,20 @@ function ItemsList(props) {
     }
   }, [popupItem]);
 
+  useEffect(() => {
+    if (popupItem) {
+      const item = items.find(item => item.id === popupItem);
+      setPopupData(item);
+    }
+  }, [items, popupItem]);
+
   return (
     <Paper className={classes.container}>
-      {popupItem && (
+      {popupData && (
         <PopupItem
           isOpen={popupOpen}
           onClose={handlePopupClose}
-          item={popupItem}
+          {...popupData}
         />
       )}
       {items.length > 0 && (
@@ -66,7 +74,7 @@ function ItemsList(props) {
               .map(i => (
                 <ListItem
                   key={i.id}
-                  handleClick={handlePopupOpen(i)}
+                  handleClick={handlePopupOpen(i.id)}
                   item={i}
                 />
               ))}
@@ -90,7 +98,8 @@ function ItemsList(props) {
 ItemsList.propTypes = {
   popupElement: PropTypes.any.isRequired,
   listItemElement: PropTypes.any.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.any.isRequired }))
+    .isRequired
 };
 
 ItemsList.defaultProps = {

@@ -58,20 +58,12 @@ function NoticeModal(props) {
   const makeApprovalRequest = approved =>
     props.editNoticeRequest({
       id: props.id,
-      closed: props.closed,
-      category: props.category,
-      title: props.title,
-      content: props.content,
       approved
     });
 
   const makeNoticeStatusRequest = closed =>
     props.editNoticeRequest({
       id: props.id,
-      approved: props.approved,
-      category: props.category,
-      title: props.title,
-      content: props.content,
       closed
     });
 
@@ -125,7 +117,7 @@ function NoticeModal(props) {
       {isApplicationNotice && (
         <Button text="Apply" onClick={handleApplicationWindowOpen} />
       )}
-      {isApprovalNotice && (
+      {isApprovalNotice && !props.closed && (
         <Fragment>
           <Button
             text="Approve"
@@ -187,6 +179,8 @@ NoticeModal.propTypes = {
   viewNotice: PropTypes.bool,
   category: PropTypes.string,
   title: PropTypes.string,
+  closed: PropTypes.bool,
+  approved: PropTypes.bool,
   content: PropTypes.string,
   company: PropTypes.string
 };
