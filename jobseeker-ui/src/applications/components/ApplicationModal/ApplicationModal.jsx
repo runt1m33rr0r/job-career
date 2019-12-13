@@ -38,6 +38,34 @@ function ApplicationModal(props) {
   const handlePhoneNumberChange = event => setPhoneNumber(event.target.value);
   const handleEmailChange = event => setEmail(event.target.value);
   const handleLetterChange = event => setLetter(event.target.value);
+  const handleApplicationSend = () => {
+    props.onClose();
+
+    props.createApplicationRequest({
+      candidateId: props.candidateId,
+      noticeId: props.noticeId,
+      phone: phoneNumber,
+      email,
+      letter
+    });
+  };
+
+  const handleApplicationUpdate = () =>
+    props.editApplicationRequest({
+      id: props.application.id,
+      number: phoneNumber,
+      email,
+      letter
+    });
+
+  const handleApplicationDelete = () => {
+    props.onClose();
+
+    props.deleteApplicationRequest({
+      id: props.application.id,
+      email: props.application.email
+    });
+  };
 
   return (
     <LargeModal {...props}>
@@ -122,16 +150,22 @@ function ApplicationModal(props) {
           <Fragment>
             {isEditApplication && (
               <Grid item>
-                <Button variant="contained">Send new version</Button>
+                <Button variant="contained" onClick={handleApplicationUpdate}>
+                  Send new version
+                </Button>
               </Grid>
             )}
             {props.createApplication ? (
               <Grid item>
-                <Button variant="contained">Send</Button>
+                <Button variant="contained" onClick={handleApplicationSend}>
+                  Send
+                </Button>
               </Grid>
             ) : (
               <Grid item>
-                <Button variant="contained">Delete</Button>
+                <Button variant="contained" onClick={handleApplicationDelete}>
+                  Delete
+                </Button>
               </Grid>
             )}
           </Fragment>
@@ -150,6 +184,11 @@ ApplicationModal.propTypes = {
   userType: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
+  candidateId: PropTypes.any.isRequired,
+  noticeId: PropTypes.any.isRequired,
+  createApplicationRequest: PropTypes.func.isRequired,
+  editApplicationRequest: PropTypes.func.isRequired,
+  deleteApplicationRequest: PropTypes.func.isRequired,
   application: PropTypes.object,
   createApplication: PropTypes.bool
 };

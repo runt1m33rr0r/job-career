@@ -121,6 +121,7 @@ function NoticeModal(props) {
             createApplication={true}
             isOpen={isApplicationOpen}
             onClose={handleApplicationWindowClose}
+            noticeId={props.id}
           />
           <Button text="Apply" onClick={handleApplicationWindowOpen} />
         </Fragment>
@@ -190,7 +191,8 @@ NoticeModal.propTypes = {
   closed: PropTypes.bool,
   approved: PropTypes.bool,
   content: PropTypes.string,
-  company: PropTypes.string
+  company: PropTypes.string,
+  id: PropTypes.any
 };
 
 NoticeModal.defaultProps = {

@@ -4,6 +4,7 @@ import { register, login, changeProfile, logOut } from "./authApi";
 import { getString, getItem } from "../../shared/storageUtils";
 
 const getInitialState = () => ({
+  userId: getString("userId"),
   userType: getString("userType"),
   firstName: getString("firstName"),
   lastName: getString("lastName"),
@@ -19,6 +20,7 @@ const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action) => {
       state.isAuthenticated = true;
+      state.userId = action.payload.id;
       state.userType = action.payload.userType;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;

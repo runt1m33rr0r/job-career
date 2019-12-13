@@ -1,69 +1,44 @@
-const applications = [
-  {
-    id: 1,
-    authorId: 1,
-    phone: "some phone",
-    email: "some mail",
-    letter: "some letter",
-    firstName: "first name",
-    lastName: "last name",
-    lastModified: "some date",
-    notice: {
-      id: 1,
-      title: "some title",
-      category: "category1",
-      company: "some company",
-      content: "some content",
-      closed: false,
-      lastModified: "some date"
-    }
-  },
-  {
-    id: 2,
-    authorId: 2,
-    phone: "some phone",
-    email: "some mail",
-    letter: "some letter",
-    firstName: "first name",
-    lastName: "last name",
-    lastModified: "some date",
-    notice: {
-      id: 2,
-      title: "some title2",
-      category: "category2",
-      company: "some company",
-      content: "some content",
-      closed: false,
-      lastModified: "some date"
-    }
+import axios from "axios";
+import { BASE_ROUTE } from "../../shared/config";
+
+const APPLICATIONS_ROUTE = `${BASE_ROUTE}applications\\`;
+
+export async function getApplications({ authorId: personId, company }) {
+  console.log({ personId, company });
+
+  try {
+    const response = await axios.get(APPLICATIONS_ROUTE, {
+      data: { personId, company }
+    });
+
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
   }
-];
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function getApplications({ authorId, company }) {
-  console.log({ authorId, company });
+export async function editApplication({ id, number, email, letter }) {
+  console.log({ id, number, email, letter });
 
-  await sleep(1000);
+  try {
+    const response = await axios.patch(`${APPLICATIONS_ROUTE}${id}`, {
+      id,
+      number,
+      email,
+      letter
+    });
 
-  return {
-    success: true,
-    message: "Applications gathered successfully!",
-    applications
-  };
-}
+    if (response.data.success) {
+      let res = await getApplications({ email });
+      res.message = response.data.message;
 
-export async function editApplication({ id, phone, email, letter }) {
-  console.log({ id, phone, email, letter });
-
-  await sleep(1000);
-
-  return {
-    success: true,
-    message: "Application eddited successfully!"
-  };
+      return res;
+    } else {
+      return response.data;
+    }
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
 
 export async function createApplication({
@@ -73,18 +48,49 @@ export async function createApplication({
   email,
   letter
 }) {
-  console.log({ candidateId, noticeId, phone, email, letter });
+  try {
+    console.log({
+      candidateId,
+      noticeId,
+      phone,
+      email,
+      letter
+    });
 
-  return getApplications({ email });
+    const response = await axios.post(APPLICATIONS_ROUTE, {
+      personId: candidateId,
+      noticeId,
+      number: phone,
+      email,
+      letter
+    });
+
+    if (response.data.success) {
+      let res = await getApplications({ email });
+      res.message = response.data.message;
+
+      return res;
+    } else {
+      return response.data;
+    }
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
 
-export async function deleteApplication({ id }) {
-  console.log(id);
+export async function deleteApplication({ id, email }) {
+  try {
+    const response = await axios.delete(`${APPLICATIONS_ROUTE}${id}`);
 
-  await sleep(1000);
+    if (response.data.success) {
+      let res = await getApplications({ email });
+      res.message = response.data.message;
 
-  return {
-    success: true,
-    message: "Application deleted successfully!"
-  };
+      return res;
+    } else {
+      return response.data;
+    }
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }

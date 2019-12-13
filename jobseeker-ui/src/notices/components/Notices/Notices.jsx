@@ -8,6 +8,7 @@ function Notices({
   userType,
   keywords,
   approved,
+  closed,
   showCompanyNotices,
   notices,
   getCompanyNoticesRequest,
@@ -20,7 +21,7 @@ function Notices({
     if (showCompanyNotices) {
       getCompanyNoticesRequest();
     } else {
-      getNoticesRequest({ approved, keywords });
+      getNoticesRequest({ approved, closed, keywords });
     }
   }, [
     getCompanyNoticesRequest,
@@ -28,6 +29,7 @@ function Notices({
     getNoticesRequest,
     showCompanyNotices,
     approved,
+    closed,
     keywords,
     userType
   ]);
@@ -52,6 +54,7 @@ Notices.propTypes = {
   getNoticesRequest: PropTypes.func.isRequired,
   getAllCategoriesRequest: PropTypes.func.isRequired,
   approved: PropTypes.bool,
+  closed: PropTypes.bool,
   showCompanyNotices: PropTypes.bool
 };
 

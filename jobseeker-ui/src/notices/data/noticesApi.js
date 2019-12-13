@@ -5,8 +5,15 @@ const NOTICES_ROUTE = `${BASE_ROUTE}notices\\`;
 
 export async function getNotices({ keywords, approved }) {
   try {
+    let status;
+    if (approved) {
+      status = "APPROVED";
+    } else {
+      status = "PENDING";
+    }
+
     const response = await axios.get(NOTICES_ROUTE, {
-      data: { keywords, approved }
+      data: { keywords, status }
     });
 
     const processedNotices = response.data.notices.map(notice => ({
