@@ -4,12 +4,21 @@ import java.io.Serializable;
 
 public class NoticeUpdateDTO implements Serializable {
 
+    private String token;
     private String title;
     private String category;
     private String description;
     private String companyName;
     private String status;
     private boolean isDeleted;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public boolean isDeleted() {
         return isDeleted;
