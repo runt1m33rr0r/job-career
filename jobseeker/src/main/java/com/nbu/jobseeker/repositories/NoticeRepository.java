@@ -2,6 +2,7 @@ package com.nbu.jobseeker.repositories;
 
 import com.nbu.jobseeker.model.JobCategory;
 import com.nbu.jobseeker.model.JobNotice;
+import com.nbu.jobseeker.model.JobNoticeStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

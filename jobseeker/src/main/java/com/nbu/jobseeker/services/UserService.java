@@ -95,7 +95,7 @@ public class UserService {
     public User generateLoginToken(User user) {
         UUID token = UUID.randomUUID();
         user.setLoginTime(new Date());
-        user.setToken(token);
+        user.setToken(token.toString());
         userRepository.save(user);
         return user;
     }
