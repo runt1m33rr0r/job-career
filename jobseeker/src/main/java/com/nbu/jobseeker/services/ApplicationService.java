@@ -113,9 +113,11 @@ public class ApplicationService {
                 }
             }
             application.setLastModified(new Date());
+            application.setPerson(user);
+            application.setJobNotice(notice);
             applicationRepository.save(application);
-            emailService.sendNewApplicationEmailForCompany(notice.getCompany().getName(), notice.getCompany().getEmail(), notice.getTitle());
-            emailService.sendNewApplicationEmailForPerson(user.getFirstName(),user.getEmail(),notice.getTitle());
+            //emailService.sendNewApplicationEmailForCompany(notice.getCompany().getName(), notice.getCompany().getEmail(), notice.getTitle());
+            //emailService.sendNewApplicationEmailForPerson(user.getFirstName(),user.getEmail(),notice.getTitle());
             return true;
         }
         return false;

@@ -1,11 +1,14 @@
 package com.nbu.jobseeker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "JOB_NOTICES")
+@JsonIgnoreProperties(value = {"deleted"})
 public class JobNotice implements Serializable {
 
     @Id
@@ -15,6 +18,7 @@ public class JobNotice implements Serializable {
 
     @ManyToOne(targetEntity = Company.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "COMPANY_ID", nullable = false)
+    @JsonIgnoreProperties(value = {"email", "number", "token", "loginTime", "type", "deleted"})
     private Company company;
 
     @Column(name = "STATUS")

@@ -31,7 +31,7 @@ public class User implements Serializable {
     private Date loginTime;
 
     @Column(name = "TOKEN")
-    private UUID token;
+    private String token;
 
     public long getId() {
         return id;
@@ -73,11 +73,11 @@ public class User implements Serializable {
         this.loginTime = loginTime;
     }
 
-    public UUID getToken() {
+    public String getToken() {
         return token;
     }
 
-    public void setToken(UUID token) {
+    public void setToken(String token) {
         this.token = token;
     }
 }
