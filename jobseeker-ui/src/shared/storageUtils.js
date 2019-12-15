@@ -10,8 +10,14 @@ export const getItem = itemName => {
   }
 };
 
-export const getString = itemName =>
-  getItem(itemName) ? getItem(itemName) : "";
+export const getString = itemName => {
+  const item = getItem(itemName);
+  if (item && item !== "undefined") {
+    return item;
+  }
+
+  return "";
+};
 
 export const setItem = (itemName, data) =>
   localStorage.setItem(itemName, JSON.stringify(data));
