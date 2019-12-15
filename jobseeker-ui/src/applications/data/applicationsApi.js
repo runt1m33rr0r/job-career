@@ -3,13 +3,15 @@ import { BASE_ROUTE } from "../../shared/config";
 
 const APPLICATIONS_ROUTE = `${BASE_ROUTE}applications\\`;
 
-export async function getApplications({ authorId: personId, company }) {
-  console.log({ personId, company });
+export async function getApplications({ personId }) {
+  console.log({ personId });
 
   try {
     const response = await axios.get(APPLICATIONS_ROUTE, {
-      data: { personId, company }
+      data: { personId }
     });
+
+    console.log(response.data);
 
     return response.data;
   } catch ({ message }) {

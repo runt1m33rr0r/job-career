@@ -11,7 +11,8 @@ const getInitialState = () => ({
   companyName: getString("companyName"),
   email: getString("email"),
   phoneNumber: getString("phoneNumber"),
-  isAuthenticated: !!getItem("token")
+  isAuthenticated: !!getItem("token"),
+  token: getItem("token")
 });
 
 const authSlice = createSlice({

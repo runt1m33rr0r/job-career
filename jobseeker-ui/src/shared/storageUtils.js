@@ -11,7 +11,7 @@ export const getItem = itemName => {
 };
 
 export const getString = itemName =>
-  getItem(itemName) !== null ? getItem(itemName) : "";
+  getItem(itemName) ? getItem(itemName) : "";
 
 export const setItem = (itemName, data) =>
   localStorage.setItem(itemName, JSON.stringify(data));

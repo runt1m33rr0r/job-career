@@ -94,9 +94,19 @@ export async function editNotice({
   content: description,
   closed,
   approved,
-  company
+  company,
+  token
 }) {
-  console.log({ id, category, title, description, closed, approved, company });
+  console.log({
+    id,
+    category,
+    title,
+    description,
+    closed,
+    approved,
+    company,
+    token
+  });
 
   let status;
   if (closed !== undefined) {
@@ -122,7 +132,8 @@ export async function editNotice({
       category,
       title,
       description,
-      status
+      status,
+      token
     });
 
     if (response.data.success) {

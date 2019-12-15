@@ -80,6 +80,7 @@ function NoticeModal(props) {
 
   const handleUpdateNotice = () =>
     props.editNoticeRequest({
+      token: props.token,
       id: props.id,
       closed: props.closed,
       approved: props.approved,
@@ -113,7 +114,7 @@ function NoticeModal(props) {
       title={title}
       category={category}
       content={content}
-      company={props.companyName}
+      company={props.companyName ? props.companyName : props.company}
     >
       {isApplicationNotice && (
         <Fragment>
@@ -192,7 +193,8 @@ NoticeModal.propTypes = {
   approved: PropTypes.bool,
   content: PropTypes.string,
   company: PropTypes.string,
-  id: PropTypes.any
+  id: PropTypes.any,
+  token: PropTypes.string
 };
 
 NoticeModal.defaultProps = {

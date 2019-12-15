@@ -105,10 +105,10 @@ NoticeModal.propTypes = {
   categories: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string.isRequired })
   ).isRequired,
-  category: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-  company: PropTypes.string.isRequired,
+  category: PropTypes.string,
+  title: PropTypes.string,
+  content: PropTypes.string,
+  company: PropTypes.string,
   readOnly: PropTypes.bool
 };
 
@@ -116,7 +116,7 @@ NoticeModal.defaultProps = {
   onCategoryChange: () => null,
   onDescriptionChange: () => null,
   onTitleChange: () => null,
-  notice: { content: "" }
+  content: ""
 };
 
 export default NoticeModal;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -30,6 +30,12 @@ function Applications(props) {
 
   const handleFilterChange = event => setNoticeFilter(event.target.value);
 
+  const { userId, getApplicationsRequest } = props;
+
+  useEffect(() => {
+    getApplicationsRequest({ personId: userId });
+  }, [getApplicationsRequest, userId]);
+
   return (
     <div className={classes.container}>
       {props.userType === userTypes.COMPANY && (
@@ -56,7 +62,8 @@ function Applications(props) {
 
 Applications.propTypes = {
   applications: PropTypes.array.isRequired,
-  userType: PropTypes.string.isRequired
+  userType: PropTypes.string.isRequired,
+  getApplicationsRequest: PropTypes.func.isRequired
 };
 
 export default Applications;
