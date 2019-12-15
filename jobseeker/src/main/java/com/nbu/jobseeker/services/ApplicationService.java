@@ -37,8 +37,12 @@ public class ApplicationService {
     public List<JobApplication> getApplications(ApplicationSearchDTO applicationSearchDTO) {
         if(applicationSearchDTO.getPersonId() != null) {
             return getByPersonId(applicationSearchDTO.getPersonId());
-        } else if (applicationSearchDTO.getNoticeId() != null) {
+        }
+        else if (applicationSearchDTO.getNoticeId() != null) {
             return getByNoticeId(applicationSearchDTO.getNoticeId());
+        }
+        else if (applicationSearchDTO.getCompanyId() != null){
+            return getByCompanyId(applicationSearchDTO.getCompanyId());
         }
         return null;
     }
@@ -49,6 +53,10 @@ public class ApplicationService {
 
     private List<JobApplication> getByNoticeId(Long noticeId) {
         return applicationRepository.findByJobNoticeId(noticeId);
+    }
+
+    private List<JobApplication> getByCompanyId(Long noticeId) {
+        return applicationRepository.findByCompanyId(noticeId);
     }
 
     public boolean updateApplication(Long id, ApplicationUpdateDTO applicationUpdateDTO) {
