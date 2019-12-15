@@ -57,24 +57,20 @@ function NoticeModal(props) {
 
   const makeApprovalRequest = approved =>
     props.editNoticeRequest({
+      token: props.token,
       id: props.id,
       approved
     });
 
   const makeNoticeStatusRequest = closed =>
     props.editNoticeRequest({
+      token: props.token,
       id: props.id,
       closed
     });
 
-  const onApproved = () => makeApprovalRequest(true);
-  const onDisapproved = () => makeApprovalRequest(false);
-  const handleCategoryChange = category => setCategory(category);
-  const handleTitleChange = title => setTitle(title);
-  const handleDescriptionChange = content => setDescription(content);
-
   const handlePublishNotice = () => {
-    props.createNoticeRequest({ category, title, content });
+    props.createNoticeRequest({ token: props.token, category, title, content });
     props.onClose();
   };
 
@@ -90,15 +86,20 @@ function NoticeModal(props) {
       content
     });
 
-  const handleNoticeOpen = () => makeNoticeStatusRequest(false);
-  const handleNoticeClose = () => makeNoticeStatusRequest(true);
   const handleNoticeDelete = () => {
-    props.deleteNoticeRequest({ id: props.id });
+    props.deleteNoticeRequest({ token: props.token, id: props.id });
     props.onClose();
   };
 
+  const handleNoticeOpen = () => makeNoticeStatusRequest(false);
+  const handleNoticeClose = () => makeNoticeStatusRequest(true);
   const handleApplicationWindowOpen = () => setIsApplicationOpen(true);
   const handleApplicationWindowClose = () => setIsApplicationOpen(false);
+  const onApproved = () => makeApprovalRequest(true);
+  const onDisapproved = () => makeApprovalRequest(false);
+  const handleCategoryChange = category => setCategory(category);
+  const handleTitleChange = title => setTitle(title);
+  const handleDescriptionChange = content => setDescription(content);
 
   if (!category) {
     return null;
