@@ -7,10 +7,20 @@ public class ApplicationSearchDTO implements Serializable {
     public ApplicationSearchDTO(Long personId, Long noticeId) {
         this.personId = personId;
         this.noticeId = noticeId;
+        this.companyId = companyId;
     }
 
     private Long personId;
     private Long noticeId;
+    private Long companyId;
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
 
     public Long getPersonId() {
         return personId;

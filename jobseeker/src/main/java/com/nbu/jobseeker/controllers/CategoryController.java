@@ -18,7 +18,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     //retrieves all
-    @GetMapping(path = "/categories", produces = "application/json")
+    @PostMapping(path = "/categories/search", produces = "application/json")
     public ResponseEntity<CategoryDTO> getAll() {
         return new ResponseEntity<>(new CategoryDTO(true,"Categories successfully acquired", categoryService.getAll()), HttpStatus.OK);
     }

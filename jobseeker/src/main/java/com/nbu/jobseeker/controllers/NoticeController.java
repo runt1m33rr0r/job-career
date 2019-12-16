@@ -19,9 +19,9 @@ public class NoticeController {
     private NoticeService noticeService;
 
     //retrieve by keywords
-    @GetMapping(path = "/notices", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/notices/search", consumes = "application/json", produces = "application/json")
     public ResponseEntity<NoticeDTO> returnNotices(@RequestBody(required = false) NoticeSearchDTO parameters) {
-        return new ResponseEntity<>(new NoticeDTO(true, "Success", noticeService.retrieveNotices(null, parameters)), HttpStatus.OK);
+        return new ResponseEntity<>(new NoticeDTO(true, "Success", noticeService.retrieveNotices(parameters)), HttpStatus.OK);
     }
 
     //create notice

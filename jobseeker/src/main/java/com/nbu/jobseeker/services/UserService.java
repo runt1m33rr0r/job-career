@@ -126,15 +126,18 @@ public class UserService {
     }
 
     public boolean updateUser(Long id, UserUpdateDTO userUpdateDTO) {
-        User user = userRepository.getOne(id);
-        if(user != null) {
-            if(user instanceof Company) {
-                updateCompany(userUpdateDTO, user);
-            } else if (user instanceof Person) {
-                updatePerson(userUpdateDTO, user);
+        if(userUpdateDTO.getToken() != null) {
+            User currentUser = userRepository.findByToken(userUpdateDTO.getToken());
+            User user = userRepository.getOne(id);
+            if (user != null && user == currentUser) {
+                if (user instanceof Company) {
+                    updateCompany(userUpdateDTO, user);
+                } else if (user instanceof Person) {
+                    updatePerson(userUpdateDTO, user);
+                }
+                userRepository.save(user);
+                return true;
             }
-            userRepository.save(user);
-            return true;
         }
         return false;
     }

@@ -31,27 +31,55 @@ public class NoticeService {
         this.userRepository = userRepository;
     }
 
-    public List<JobNotice> retrieveNotices(JobNoticeStatus status, NoticeSearchDTO parameters) {
+    public HashSet<JobNoticeStatus> convertStatusFromString(List<String> statuses){
+        HashSet<JobNoticeStatus> listOfStatuses = new HashSet<>();
+        if(statuses == null || statuses.isEmpty()){
+            return listOfStatuses;
+        }
+        else{
+            for (String status:statuses) {
+                if("closed".equals(status.toLowerCase())){
+                    listOfStatuses.add(JobNoticeStatus.CLOSED);
+                }
+                else if("pending".equals(status.toLowerCase())){
+                    listOfStatuses.add(JobNoticeStatus.PENDING);
+                }
+                else if("open".equals(status.toLowerCase())){
+                    listOfStatuses.add(JobNoticeStatus.OPEN);
+                }
+                else if("denied".equals(status.toLowerCase())){
+                    listOfStatuses.add(JobNoticeStatus.DENIED);
+                }
+            }
+        }
+        return listOfStatuses;
+    }
+
+    public List<JobNotice> retrieveNotices(NoticeSearchDTO parameters) {
         HashSet<JobNotice> notices = new HashSet<>();
+        HashSet<JobNoticeStatus> statuses = convertStatusFromString(parameters.getStatuses());
+        if(statuses.isEmpty()){
+            return new ArrayList<>();
+        }
         if(parameters == null || ((parameters.getKeywords() == null || parameters.getKeywords().isEmpty()) && (parameters.getCategory() == null || "".equals(parameters.getCategory())))){
             notices.addAll(noticeRepository.findAll());
-            return notices.stream().filter(Objects::nonNull).filter(e-> e.getStatus().equals(JobNoticeStatus.PENDING)).collect(Collectors.toList());
+            return notices.stream().filter(Objects::nonNull).filter(e-> statuses.contains(e.getStatus())).collect(Collectors.toList());
         }
         if(parameters.getCategory() == null || "".equals(parameters.getCategory())){
             for(String keyword : parameters.getKeywords()) {
                 notices.addAll(noticeRepository.findByTitleContains(keyword));
             }
-            return notices.stream().filter(Objects::nonNull).filter(e-> e.getStatus().equals(JobNoticeStatus.PENDING)).collect(Collectors.toList());
+            return notices.stream().filter(Objects::nonNull).filter(e-> statuses.contains(e.getStatus())).collect(Collectors.toList());
         }
         JobCategory categoryNew = categoryService.getByName(parameters.getCategory());
         if(parameters.getKeywords() == null || parameters.getKeywords().isEmpty()){
             notices.addAll(noticeRepository.findByCategory(categoryNew));
-            return notices.stream().filter(Objects::nonNull).filter(e-> e.getStatus().equals(JobNoticeStatus.PENDING)).collect(Collectors.toList());
+            return notices.stream().filter(Objects::nonNull).filter(e-> statuses.contains(e.getStatus())).collect(Collectors.toList());
         }
         for(String keyword : parameters.getKeywords()) {
             notices.addAll(noticeRepository.findByTitleContainsAndCategory(keyword, categoryNew));
         }
-        return notices.stream().filter(Objects::nonNull).filter(e-> e.getStatus().equals(JobNoticeStatus.PENDING)).collect(Collectors.toList());
+        return notices.stream().filter(Objects::nonNull).filter(e-> statuses.contains(e.getStatus())).collect(Collectors.toList());
     }
 
     public boolean updateNotice(Long id, NoticeUpdateDTO noticeUpdateDTO) {

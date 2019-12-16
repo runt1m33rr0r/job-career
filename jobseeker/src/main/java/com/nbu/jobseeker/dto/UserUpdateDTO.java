@@ -3,12 +3,21 @@ package com.nbu.jobseeker.dto;
 import java.io.Serializable;
 
 public class UserUpdateDTO implements Serializable {
+    private String token;
     private String firstName;
     private String lastName;
     private String companyName;
     private String email;
     private String number;
     private String password;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getFirstName() {
         return firstName;

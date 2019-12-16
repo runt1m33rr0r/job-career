@@ -5,6 +5,15 @@ import java.util.List;
 public class NoticeSearchDTO {
     private List<String> keywords;
     private String category;
+    private List<String> statuses;
+
+    public List<String> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(List<String> statuses) {
+        this.statuses = statuses;
+    }
 
     public String getCategory() {
         return category;

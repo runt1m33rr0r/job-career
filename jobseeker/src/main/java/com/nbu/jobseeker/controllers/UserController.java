@@ -57,7 +57,7 @@ public class UserController {
         if(userService.updateUser(id, userUpdateDTO)) {
             return new ResponseEntity<>(new ResponseDTO(true,"User update successful"), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ResponseDTO(true,"User does not exist"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ResponseDTO(true,"Invalid User"), HttpStatus.NOT_FOUND);
     }
 
 }

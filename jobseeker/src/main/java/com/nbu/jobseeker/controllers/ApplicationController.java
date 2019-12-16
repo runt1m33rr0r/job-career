@@ -21,7 +21,7 @@ public class ApplicationController {
         return new ResponseEntity<>(new ResponseDTO(false,"Application does not exist"), HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(path = "/applications", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/applications/search", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ApplicationDTO> applicationsForPerson(@RequestBody ApplicationSearchDTO applicationSearchDTO) {
         return new ResponseEntity<>(new ApplicationDTO(true, "Applications acquired successfully", applicationService.getApplications(applicationSearchDTO)),HttpStatus.OK);
     }
