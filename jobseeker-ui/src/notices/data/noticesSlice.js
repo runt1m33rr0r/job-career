@@ -28,17 +28,20 @@ export const getCompanyNoticesRequest = () => async (dispatch, getState) =>
   dispatch(
     makeRequest({
       requestFunction: getCompanyNotices,
-      requestData: { company: getState().auth.companyName },
+      requestData: {
+        company: getState().auth.companyName,
+        token: getState().auth.token
+      },
       successAction: getNoticesSuccess,
       shouldAlert: false
     })
   );
 
-export const getNoticesRequest = noticesData => async dispatch =>
+export const getNoticesRequest = noticesData => async (dispatch, getState) =>
   dispatch(
     makeRequest({
       requestFunction: getNotices,
-      requestData: noticesData,
+      requestData: { ...noticesData, token: getState().auth.token },
       successAction: getNoticesSuccess,
       shouldAlert: false
     })
@@ -48,7 +51,11 @@ export const createNoticeRequest = noticeData => async (dispatch, getState) =>
   dispatch(
     makeRequest({
       requestFunction: createNotice,
-      requestData: { ...noticeData, companyName: getState().auth.companyName },
+      requestData: {
+        ...noticeData,
+        companyName: getState().auth.companyName,
+        token: getState().auth.token
+      },
       successAction: getNoticesSuccess
     })
   );
@@ -57,7 +64,11 @@ export const editNoticeRequest = noticeData => async (dispatch, getState) =>
   dispatch(
     makeRequest({
       requestFunction: editNotice,
-      requestData: { ...noticeData, company: getState().auth.companyName },
+      requestData: {
+        ...noticeData,
+        company: getState().auth.companyName,
+        token: getState().auth.token
+      },
       successAction: getNoticesSuccess,
       shouldAlert: false
     })
@@ -67,7 +78,11 @@ export const deleteNoticeRequest = noticeData => async (dispatch, getState) =>
   dispatch(
     makeRequest({
       requestFunction: deleteNotice,
-      requestData: { ...noticeData, company: getState().auth.companyName },
+      requestData: {
+        ...noticeData,
+        company: getState().auth.companyName,
+        token: getState().auth.token
+      },
       successAction: getNoticesSuccess
     })
   );

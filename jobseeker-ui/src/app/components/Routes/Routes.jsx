@@ -23,7 +23,7 @@ const Routes = ({ isLoggedIn, userType }) => (
     </Route>
     <Route path="/notices/mine">
       {userType === userTypes.COMPANY && <Notices showCompanyNotices={true} />}
-      {userType === userTypes.ADMIN && <Notices approved={false} />}
+      {userType === userTypes.ADMIN && <Notices />}
       {userType === userTypes.USER && <Notices approved={true} keywords={[]} />}
     </Route>
     <Route path="/notices" component={Notices} />

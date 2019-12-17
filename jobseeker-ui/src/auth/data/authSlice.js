@@ -28,6 +28,7 @@ const authSlice = createSlice({
       state.companyName = action.payload.companyName;
       state.phoneNumber = action.payload.phoneNumber;
       state.email = action.payload.email;
+      state.token = action.payload.token;
     },
     loginFailure: state => {
       state.isAuthenticated = false;
@@ -85,13 +86,13 @@ export const loginRequest = loginData => async dispatch =>
     })
   );
 
-export const profileChangeRequest = profileData => async dispatch =>
+export const profileChangeRequest = profileData => async (dispatch, getState) =>
   dispatch(
     makeRequest({
       requestFunction: changeProfile,
       successAction: profileChangeSuccess,
       failAction: profileChangeFailure,
-      requestData: profileData
+      requestData: { ...profileData, token: getState().auth.token }
     })
   );
 
@@ -102,7 +103,8 @@ export const logoutRequest = () => async (dispatch, getState) =>
       successAction: logoutSuccess,
       failAction: logoutFailure,
       requestData: {
-        email: getState().email
+        email: getState().auth.email,
+        token: getState().auth.token
       }
     })
   );

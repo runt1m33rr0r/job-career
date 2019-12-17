@@ -3,12 +3,13 @@ import { BASE_ROUTE } from "../../shared/config";
 
 const APPLICATIONS_ROUTE = `${BASE_ROUTE}applications\\`;
 
-export async function getApplications({ personId }) {
-  console.log({ personId });
+export async function getApplications({ personId, token }) {
+  console.log({ personId, token });
 
   try {
-    const response = await axios.get(APPLICATIONS_ROUTE, {
-      data: { personId }
+    const response = await axios.post(`${APPLICATIONS_ROUTE}search`, {
+      personId,
+      token
     });
 
     console.log(response.data);
@@ -19,19 +20,20 @@ export async function getApplications({ personId }) {
   }
 }
 
-export async function editApplication({ id, number, email, letter }) {
-  console.log({ id, number, email, letter });
+export async function editApplication({ id, number, email, letter, token }) {
+  console.log({ id, number, email, letter, token });
 
   try {
     const response = await axios.patch(`${APPLICATIONS_ROUTE}${id}`, {
       id,
       number,
       email,
-      letter
+      letter,
+      token
     });
 
     if (response.data.success) {
-      let res = await getApplications({ email });
+      let res = await getApplications({ email, token });
       res.message = response.data.message;
 
       return res;
@@ -48,7 +50,8 @@ export async function createApplication({
   noticeId,
   phone,
   email,
-  letter
+  letter,
+  token
 }) {
   try {
     console.log({
@@ -56,7 +59,8 @@ export async function createApplication({
       noticeId,
       phone,
       email,
-      letter
+      letter,
+      token
     });
 
     const response = await axios.post(APPLICATIONS_ROUTE, {
@@ -64,11 +68,12 @@ export async function createApplication({
       noticeId,
       number: phone,
       email,
-      letter
+      letter,
+      token
     });
 
     if (response.data.success) {
-      let res = await getApplications({ email });
+      let res = await getApplications({ email, token });
       res.message = response.data.message;
 
       return res;
@@ -80,12 +85,14 @@ export async function createApplication({
   }
 }
 
-export async function deleteApplication({ id, email }) {
+export async function deleteApplication({ id, email, token }) {
   try {
-    const response = await axios.delete(`${APPLICATIONS_ROUTE}${id}`);
+    const response = await axios.delete(`${APPLICATIONS_ROUTE}${id}`, {
+      data: { token }
+    });
 
     if (response.data.success) {
-      let res = await getApplications({ email });
+      let res = await getApplications({ email, token });
       res.message = response.data.message;
 
       return res;

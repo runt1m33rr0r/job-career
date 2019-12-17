@@ -57,26 +57,23 @@ function NoticeModal(props) {
 
   const makeApprovalRequest = approved =>
     props.editNoticeRequest({
-      token: props.token,
       id: props.id,
       approved
     });
 
   const makeNoticeStatusRequest = closed =>
     props.editNoticeRequest({
-      token: props.token,
       id: props.id,
       closed
     });
 
   const handlePublishNotice = () => {
-    props.createNoticeRequest({ token: props.token, category, title, content });
+    props.createNoticeRequest({ category, title, content });
     props.onClose();
   };
 
   const handleUpdateNotice = () =>
     props.editNoticeRequest({
-      token: props.token,
       id: props.id,
       closed: props.closed,
       approved: props.approved,
@@ -87,7 +84,7 @@ function NoticeModal(props) {
     });
 
   const handleNoticeDelete = () => {
-    props.deleteNoticeRequest({ token: props.token, id: props.id });
+    props.deleteNoticeRequest({ id: props.id });
     props.onClose();
   };
 
@@ -194,8 +191,7 @@ NoticeModal.propTypes = {
   approved: PropTypes.bool,
   content: PropTypes.string,
   company: PropTypes.string,
-  id: PropTypes.any,
-  token: PropTypes.string
+  id: PropTypes.any
 };
 
 NoticeModal.defaultProps = {

@@ -3,17 +3,21 @@ import { BASE_ROUTE } from "../../shared/config";
 
 const NOTICES_ROUTE = `${BASE_ROUTE}notices\\`;
 
-export async function getNotices({ keywords, approved }) {
+export async function getNotices({ keywords, approved, token }) {
+  console.log({ keywords, approved, token });
+
   try {
     let status;
-    if (approved) {
+    if (approved === true) {
       status = "APPROVED";
-    } else {
+    } else if (approved === false) {
       status = "PENDING";
     }
 
-    const response = await axios.get(NOTICES_ROUTE, {
-      data: { keywords, status }
+    const response = await axios.post(`${NOTICES_ROUTE}search`, {
+      keywords,
+      status,
+      token
     });
 
     const processedNotices = response.data.notices.map(notice => ({
@@ -39,9 +43,11 @@ export async function getNotices({ keywords, approved }) {
   }
 }
 
-export async function getCompanyNotices({ company }) {
+export async function getCompanyNotices({ company, token }) {
+  console.log({ company, token });
+
   try {
-    const res = await getNotices({ keywords: [] });
+    const res = await getNotices({ keywords: [], token });
 
     if (res.success) {
       const notices = res.notices;
@@ -62,20 +68,22 @@ export async function createNotice({
   title,
   category,
   content: description,
-  companyName
+  companyName,
+  token
 }) {
-  console.log({ title, category, description, companyName });
+  console.log({ title, category, description, companyName, token });
 
   try {
     const response = await axios.post(NOTICES_ROUTE, {
       title,
       category,
       description,
-      companyName
+      companyName,
+      token
     });
 
     if (response.data.success) {
-      let res = await getCompanyNotices({ company: companyName });
+      let res = await getCompanyNotices({ company: companyName, token });
       res.message = response.data.message;
 
       return res;
@@ -95,7 +103,9 @@ export async function editNotice({
   closed,
   approved,
   company,
-  token
+  token,
+  keywords,
+  showApproved
 }) {
   console.log({
     id,
@@ -137,7 +147,11 @@ export async function editNotice({
     });
 
     if (response.data.success) {
-      return await getCompanyNotices({ company });
+      if (company) {
+        return await getCompanyNotices({ company, token });
+      }
+
+      return await getNotices({ keywords, approved: showApproved, token });
     } else {
       return response.data;
     }
@@ -146,12 +160,14 @@ export async function editNotice({
   }
 }
 
-export async function deleteNotice({ id, company }) {
+export async function deleteNotice({ id, company, token }) {
   try {
-    const response = await axios.delete(`${NOTICES_ROUTE}${id}`, { data: {} });
+    const response = await axios.delete(`${NOTICES_ROUTE}${id}`, {
+      data: { token }
+    });
 
     if (response.data.success) {
-      let res = await getCompanyNotices({ company });
+      let res = await getCompanyNotices({ company, token });
       res.message = response.data.message;
 
       return res;

@@ -47,38 +47,50 @@ export const {
 
 export default applicationsSlice.reducer;
 
-export const getApplicationsRequest = requestData => async dispatch =>
+export const getApplicationsRequest = requestData => async (
+  dispatch,
+  getState
+) =>
   dispatch(
     makeRequest({
       requestFunction: getApplications,
-      requestData,
+      requestData: { ...requestData, token: getState().auth.token },
       successAction: getApplicationsSuccess,
       shouldAlert: false
     })
   );
 
-export const editApplicationRequest = applicationData => async dispatch =>
+export const editApplicationRequest = applicationData => async (
+  dispatch,
+  getState
+) =>
   dispatch(
     makeRequest({
       requestFunction: editApplication,
-      requestData: applicationData,
+      requestData: { ...applicationData, token: getState().auth.token },
       successAction: editApplicationSuccess
     })
   );
 
-export const createApplicationRequest = applicationData => async dispatch =>
+export const createApplicationRequest = applicationData => async (
+  dispatch,
+  getState
+) =>
   dispatch(
     makeRequest({
       requestFunction: createApplication,
-      requestData: applicationData
+      requestData: { ...applicationData, token: getState().auth.token }
     })
   );
 
-export const deleteApplicationRequest = applicationData => async dispatch =>
+export const deleteApplicationRequest = applicationData => async (
+  dispatch,
+  getState
+) =>
   dispatch(
     makeRequest({
       requestFunction: deleteApplication,
-      requestData: applicationData,
+      requestData: { ...applicationData, token: getState().auth.token },
       successAction: deleteApplicationSuccess
     })
   );

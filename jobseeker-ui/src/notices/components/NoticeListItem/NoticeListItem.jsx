@@ -29,7 +29,7 @@ NoticeListItem.propTypes = {
     lastModified: PropTypes.string.isRequired
   }).isRequired,
   userType: PropTypes.string.isRequired,
-  companyName: PropTypes.string.isRequired
+  companyName: PropTypes.string
 };
 
 export default NoticeListItem;

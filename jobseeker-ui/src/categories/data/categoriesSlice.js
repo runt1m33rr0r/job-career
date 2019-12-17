@@ -41,41 +41,51 @@ export const {
 
 export default categoriesSlice.reducer;
 
-export const createCategoryRequest = categoryData => async dispatch =>
+export const createCategoryRequest = categoryData => async (
+  dispatch,
+  getState
+) =>
   dispatch(
     makeRequest({
       requestFunction: createCategory,
       successAction: createCategorySuccess,
-      requestData: categoryData,
+      requestData: { ...categoryData, token: getState().auth.token },
       shouldAlert: false
     })
   );
 
-export const getAllCategoriesRequest = () => async dispatch =>
+export const getAllCategoriesRequest = () => async (dispatch, getState) =>
   dispatch(
     makeRequest({
       requestFunction: getAllCategories,
       successAction: getAllCategoriesSuccess,
+      requestData: { token: getState().auth.token },
       shouldAlert: false
     })
   );
 
-export const deleteCategoryRequest = categoryData => async dispatch =>
+export const deleteCategoryRequest = categoryData => async (
+  dispatch,
+  getState
+) =>
   dispatch(
     makeRequest({
       requestFunction: deleteCategory,
       successAction: deleteCategorySuccess,
-      requestData: categoryData,
+      requestData: { ...categoryData, token: getState().auth.token },
       shouldAlert: false
     })
   );
 
-export const modifyCategoryRequest = categoryData => async dispatch =>
+export const modifyCategoryRequest = categoryData => async (
+  dispatch,
+  getState
+) =>
   dispatch(
     makeRequest({
       requestFunction: modifyCategory,
       successAction: modifyCategorySuccess,
-      requestData: categoryData,
+      requestData: { ...categoryData, token: getState().auth.token },
       shouldAlert: false
     })
   );
