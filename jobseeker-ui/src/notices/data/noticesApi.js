@@ -3,20 +3,13 @@ import { BASE_ROUTE } from "../../shared/config";
 
 const NOTICES_ROUTE = `${BASE_ROUTE}notices\\`;
 
-export async function getNotices({ keywords, approved, token }) {
-  console.log({ keywords, approved, token });
+export async function getNotices({ keywords, statuses, token }) {
+  console.log({ keywords, statuses, token });
 
   try {
-    let status;
-    if (approved === true) {
-      status = "APPROVED";
-    } else if (approved === false) {
-      status = "PENDING";
-    }
-
     const response = await axios.post(`${NOTICES_ROUTE}search`, {
       keywords,
-      status,
+      statuses,
       token
     });
 
@@ -26,8 +19,7 @@ export async function getNotices({ keywords, approved, token }) {
       category: notice.category.name,
       company: notice.company.name,
       content: notice.description,
-      closed: notice.status === "CLOSED",
-      approved: notice.status === "APPROVED",
+      status: notice.status,
       lastModified: notice.lastModified
         ? notice.lastModified
         : new Date().toLocaleDateString("en-US")
@@ -47,7 +39,11 @@ export async function getCompanyNotices({ company, token }) {
   console.log({ company, token });
 
   try {
-    const res = await getNotices({ keywords: [], token });
+    const res = await getNotices({
+      keywords: [],
+      statuses: ["OPEN", "CLOSED", "PENDING", "DENIED"],
+      token
+    });
 
     if (res.success) {
       const notices = res.notices;
@@ -100,42 +96,17 @@ export async function editNotice({
   category,
   title,
   content: description,
-  closed,
-  approved,
-  company,
-  token,
-  keywords,
-  showApproved
+  status,
+  token
 }) {
   console.log({
     id,
     category,
     title,
-    description,
-    closed,
-    approved,
-    company,
+    content: description,
+    status,
     token
   });
-
-  let status;
-  if (closed !== undefined) {
-    if (closed) {
-      status = "CLOSED";
-    } else if (!closed) {
-      status = "OPEN";
-    }
-  }
-
-  if (approved !== undefined) {
-    if (approved) {
-      status = "APPROVED";
-    } else {
-      status = "PENDING";
-    }
-  }
-
-  console.log(status);
 
   try {
     const response = await axios.patch(`${NOTICES_ROUTE}${id}`, {
@@ -146,15 +117,7 @@ export async function editNotice({
       token
     });
 
-    if (response.data.success) {
-      if (company) {
-        return await getCompanyNotices({ company, token });
-      }
-
-      return await getNotices({ keywords, approved: showApproved, token });
-    } else {
-      return response.data;
-    }
+    return response.data;
   } catch ({ message }) {
     return { sucess: false, message };
   }

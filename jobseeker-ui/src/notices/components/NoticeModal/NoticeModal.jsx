@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import BaseNoticeModal from "../BaseNoticeModal";
 import Button from "../NoticeModalButton";
 import ApplicationModal from "../../../applications/components/ApplicationModal";
-import { userTypes } from "../../../shared/constants";
+import { userTypes, noticeStatuses } from "../../../shared/constants";
 
 function NoticeModal(props) {
   const isApprovalNotice = props.userType === userTypes.ADMIN;
@@ -55,17 +55,33 @@ function NoticeModal(props) {
     }
   }, [categories, propsCategory, isCreationNotice]);
 
-  const makeApprovalRequest = approved =>
-    props.editNoticeRequest({
-      id: props.id,
-      approved
-    });
+  const makeApprovalRequest = approved => {
+    if (approved) {
+      props.editNoticeRequest({
+        id: props.id,
+        status: noticeStatuses.OPEN
+      });
+    } else {
+      props.editNoticeRequest({
+        id: props.id,
+        status: noticeStatuses.DENIED
+      });
+    }
+  };
 
-  const makeNoticeStatusRequest = closed =>
-    props.editNoticeRequest({
-      id: props.id,
-      closed
-    });
+  const makeNoticeStatusRequest = closed => {
+    if (closed) {
+      props.editNoticeRequest({
+        id: props.id,
+        status: noticeStatuses.CLOSED
+      });
+    } else {
+      props.editNoticeRequest({
+        id: props.id,
+        status: noticeStatuses.PENDING
+      });
+    }
+  };
 
   const handlePublishNotice = () => {
     props.createNoticeRequest({ category, title, content });
@@ -75,9 +91,7 @@ function NoticeModal(props) {
   const handleUpdateNotice = () =>
     props.editNoticeRequest({
       id: props.id,
-      closed: props.closed,
-      approved: props.approved,
-      lastModified: props.lastModified,
+      status: noticeStatuses.PENDING,
       category,
       title,
       content
@@ -130,12 +144,14 @@ function NoticeModal(props) {
           <Button
             text="Approve"
             onClick={onApproved}
-            disabled={props.isFetching || props.approved}
+            disabled={props.isFetching || props.status === noticeStatuses.OPEN}
           />
           <Button
             text="Disapprove"
             onClick={onDisapproved}
-            disabled={props.isFetching || !props.approved}
+            disabled={
+              props.isFetching || props.status === noticeStatuses.DENIED
+            }
           />
         </Fragment>
       )}
@@ -157,12 +173,18 @@ function NoticeModal(props) {
           <Button
             text="Open"
             onClick={handleNoticeOpen}
-            disabled={!props.closed || props.isFetching}
+            disabled={
+              props.isFetching ||
+              props.status === noticeStatuses.PENDING ||
+              props.status === noticeStatuses.OPEN
+            }
           />
           <Button
             text="Close"
             onClick={handleNoticeClose}
-            disabled={props.closed || props.isFetching}
+            disabled={
+              props.isFetching || props.status === noticeStatuses.CLOSED
+            }
           />
         </Fragment>
       )}
@@ -187,8 +209,7 @@ NoticeModal.propTypes = {
   viewNotice: PropTypes.bool,
   category: PropTypes.string,
   title: PropTypes.string,
-  closed: PropTypes.bool,
-  approved: PropTypes.bool,
+  status: PropTypes.string,
   content: PropTypes.string,
   company: PropTypes.string,
   id: PropTypes.any

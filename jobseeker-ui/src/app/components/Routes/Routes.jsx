@@ -9,7 +9,7 @@ import Search from "../../../search/components/Search";
 import Categories from "../../../categories/components/Categories";
 import Profile from "../../../auth/components/Profile";
 import Notices from "../../../notices/components/Notices";
-import { userTypes } from "../../../shared/constants";
+import { userTypes, noticeStatuses } from "../../../shared/constants";
 
 const Routes = ({ isLoggedIn, userType }) => (
   <Switch>
@@ -23,10 +23,26 @@ const Routes = ({ isLoggedIn, userType }) => (
     </Route>
     <Route path="/notices/mine">
       {userType === userTypes.COMPANY && <Notices showCompanyNotices={true} />}
-      {userType === userTypes.ADMIN && <Notices />}
-      {userType === userTypes.USER && <Notices approved={true} keywords={[]} />}
+      {userType === userTypes.ADMIN && (
+        <Notices statuses={[noticeStatuses.PENDING]} keywords={[]} />
+      )}
     </Route>
-    <Route path="/notices" component={Notices} />
+    <Route path="/notices" component={Notices}>
+      {userType === userTypes.USER && (
+        <Notices statuses={[noticeStatuses.OPEN]} keywords={[]} />
+      )}
+      {userType === userTypes.ADMIN && (
+        <Notices
+          statuses={[
+            noticeStatuses.OPEN,
+            noticeStatuses.CLOSED,
+            noticeStatuses.PENDING,
+            noticeStatuses.DENIED
+          ]}
+          keywords={[]}
+        />
+      )}
+    </Route>
     <Route path="/applications" component={Applications} />
     <Route path="/search" component={Search} />
     <Route path="/categories" component={Categories} />

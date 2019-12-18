@@ -2,11 +2,11 @@ import React from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import PropTypes from "prop-types";
 import BasicListItem from "../../../shared/components/BasicListItem";
-import { userTypes } from "../../../shared/constants";
+import { userTypes, noticeStatuses } from "../../../shared/constants";
 
 const NoticeListItem = ({
   handleClick,
-  item: { closed, lastModified, title, company },
+  item: { status, lastModified, title, company },
   userType,
   companyName
 }) => (
@@ -16,7 +16,7 @@ const NoticeListItem = ({
     {(userType !== userTypes.COMPANY || company !== companyName) && (
       <ListItemText primary={company} />
     )}
-    {closed && <ListItemText primary="closed" />}
+    {status === noticeStatuses.CLOSED && <ListItemText primary="closed" />}
   </BasicListItem>
 );
 
@@ -25,7 +25,7 @@ NoticeListItem.propTypes = {
   item: PropTypes.shape({
     title: PropTypes.string.isRequired,
     company: PropTypes.string.isRequired,
-    closed: PropTypes.bool.isRequired,
+    status: PropTypes.string.isRequired,
     lastModified: PropTypes.string.isRequired
   }).isRequired,
   userType: PropTypes.string.isRequired,

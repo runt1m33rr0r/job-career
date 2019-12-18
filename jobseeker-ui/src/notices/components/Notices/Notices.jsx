@@ -5,10 +5,8 @@ import NoticeListItem from "../NoticeListItem";
 import NoticeModal from "../NoticeModal";
 
 function Notices({
-  userType,
   keywords,
-  approved,
-  closed,
+  statuses,
   showCompanyNotices,
   notices,
   getCompanyNoticesRequest,
@@ -21,17 +19,15 @@ function Notices({
     if (showCompanyNotices) {
       getCompanyNoticesRequest();
     } else {
-      getNoticesRequest({ approved, closed, keywords });
+      getNoticesRequest({ statuses, keywords });
     }
   }, [
     getCompanyNoticesRequest,
     getAllCategoriesRequest,
     getNoticesRequest,
     showCompanyNotices,
-    approved,
-    closed,
-    keywords,
-    userType
+    statuses,
+    keywords
   ]);
 
   if (notices.length === 0) {
@@ -53,13 +49,13 @@ Notices.propTypes = {
   getCompanyNoticesRequest: PropTypes.func.isRequired,
   getNoticesRequest: PropTypes.func.isRequired,
   getAllCategoriesRequest: PropTypes.func.isRequired,
-  approved: PropTypes.bool,
-  closed: PropTypes.bool,
+  statuses: PropTypes.arrayOf(PropTypes.string),
   showCompanyNotices: PropTypes.bool
 };
 
 Notices.defaultProps = {
-  keywords: []
+  keywords: [],
+  statuses: []
 };
 
 export default Notices;
