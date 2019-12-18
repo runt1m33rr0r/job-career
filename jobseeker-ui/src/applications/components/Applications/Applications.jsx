@@ -26,15 +26,23 @@ const useStyles = makeStyles(theme => ({
 
 function Applications(props) {
   const classes = useStyles();
-  const [noticeFilter, setNoticeFilter] = useState(1);
+  const [noticeFilter, setNoticeFilter] = useState(null);
 
   const handleFilterChange = event => setNoticeFilter(event.target.value);
 
-  const { userId, getApplicationsRequest } = props;
+  const { userId, getApplicationsRequest, applications } = props;
+
+  useEffect(() => {
+    setNoticeFilter(applications.length >= 0 ? applications[0] : null);
+  }, [applications]);
 
   useEffect(() => {
     getApplicationsRequest({ personId: userId });
   }, [getApplicationsRequest, userId]);
+
+  if (props.applications.length === 0) {
+    return null;
+  }
 
   return (
     <div className={classes.container}>
@@ -44,7 +52,7 @@ function Applications(props) {
 
           <Select value={noticeFilter} onChange={handleFilterChange}>
             {props.applications.map(application => (
-              <MenuItem key={application.id} value={application.jobNotice.id}>
+              <MenuItem key={application.id} value={application.jobNotice}>
                 {application.jobNotice.title}
               </MenuItem>
             ))}
