@@ -26,23 +26,35 @@ const useStyles = makeStyles(theme => ({
 
 function Applications(props) {
   const classes = useStyles();
-  const [noticeFilter, setNoticeFilter] = useState(null);
+  const ALL_FILTERS = "all";
+  const [noticeFilter, setNoticeFilter] = useState(ALL_FILTERS);
 
   const handleFilterChange = event => setNoticeFilter(event.target.value);
 
-  const { userId, getApplicationsRequest, applications } = props;
+  const {
+    userId,
+    getApplicationsRequest,
+    getCompanyNoticesRequest,
+    userType
+  } = props;
 
   useEffect(() => {
-    setNoticeFilter(applications.length >= 0 ? applications[0] : null);
-  }, [applications]);
+    if (userType === userTypes.COMPANY) {
+      getCompanyNoticesRequest();
+    }
+  }, [getCompanyNoticesRequest, userType]);
 
   useEffect(() => {
-    getApplicationsRequest({ personId: userId });
-  }, [getApplicationsRequest, userId]);
-
-  if (props.applications.length === 0) {
-    return null;
-  }
+    if (userType === userTypes.COMPANY) {
+      if (noticeFilter !== ALL_FILTERS) {
+        getApplicationsRequest({ noticeId: noticeFilter });
+      } else {
+        getApplicationsRequest({ companyId: userId });
+      }
+    } else if (userType === userTypes.USER) {
+      getApplicationsRequest({ personId: userId });
+    }
+  }, [getApplicationsRequest, userId, userType, noticeFilter]);
 
   return (
     <div className={classes.container}>
@@ -51,9 +63,12 @@ function Applications(props) {
           <InputLabel>Notice filter</InputLabel>
 
           <Select value={noticeFilter} onChange={handleFilterChange}>
-            {props.applications.map(application => (
-              <MenuItem key={application.id} value={application.jobNotice}>
-                {application.jobNotice.title}
+            <MenuItem key={ALL_FILTERS} value={ALL_FILTERS}>
+              All
+            </MenuItem>
+            {props.notices.map(notice => (
+              <MenuItem key={notice.id} value={notice.id}>
+                {notice.title}
               </MenuItem>
             ))}
           </Select>
@@ -70,8 +85,10 @@ function Applications(props) {
 
 Applications.propTypes = {
   applications: PropTypes.array.isRequired,
+  notices: PropTypes.array.isRequired,
   userType: PropTypes.string.isRequired,
-  getApplicationsRequest: PropTypes.func.isRequired
+  getApplicationsRequest: PropTypes.func.isRequired,
+  getCompanyNoticesRequest: PropTypes.func.isRequired
 };
 
 export default Applications;

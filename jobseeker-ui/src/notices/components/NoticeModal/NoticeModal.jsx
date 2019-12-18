@@ -16,7 +16,8 @@ function NoticeModal(props) {
       !isCreationNotice);
   const isEditNotice =
     props.userType === userTypes.COMPANY &&
-    props.company.name === props.companyName;
+    props.company.name === props.companyName &&
+    !isViewNotice;
   const isApplicationNotice =
     !isViewNotice && props.userType === userTypes.USER;
 

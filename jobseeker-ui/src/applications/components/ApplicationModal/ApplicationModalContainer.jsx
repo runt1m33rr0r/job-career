@@ -1,4 +1,3 @@
-import React from "react";
 import { connect } from "react-redux";
 import ApplicationModal from "./ApplicationModal";
 import {
@@ -6,13 +5,6 @@ import {
   editApplicationRequest,
   deleteApplicationRequest
 } from "../../data/applicationsSlice";
-
-const ApplicationModalContainer = props => (
-  <ApplicationModal
-    application={props.application ? props.application : props.item}
-    {...props}
-  />
-);
 
 const mapStateToProps = state => ({
   userType: state.auth.userType,
@@ -29,7 +21,4 @@ const mapDispatchToProps = {
   deleteApplicationRequest
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ApplicationModalContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationModal);

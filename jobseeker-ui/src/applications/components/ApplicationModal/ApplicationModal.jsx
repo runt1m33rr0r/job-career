@@ -24,13 +24,13 @@ function ApplicationModal(props) {
   const classes = useStyles();
   const [isJobDetailsOpen, setIsJobDetails] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(
-    isEditApplication ? props.number : props.phoneNumber
+    props.number ? props.number : props.phoneNumber
   );
   const [email, setEmail] = useState(
-    isEditApplication ? props.email : props.userEmail
+    props.email ? props.email : props.userEmail
   );
   const [letter, setLetter] = useState(
-    isEditApplication ? props.motivationalLetter : ""
+    props.motivationalLetter ? props.motivationalLetter : ""
   );
 
   const handleJobDetailsClose = () => setIsJobDetails(false);
@@ -62,21 +62,18 @@ function ApplicationModal(props) {
     props.onClose();
 
     props.deleteApplicationRequest({
-      id: props.id,
-      email: props.email
+      id: props.id
     });
   };
 
   return (
     <LargeModal {...props}>
-      {isEditApplication && (
-        <NoticeModal
-          isOpen={isJobDetailsOpen}
-          onClose={handleJobDetailsClose}
-          viewNotice={true}
-          {...props.jobNotice}
-        />
-      )}
+      <NoticeModal
+        isOpen={isJobDetailsOpen}
+        onClose={handleJobDetailsClose}
+        viewNotice={true}
+        {...props.jobNotice}
+      />
       <Grid container item justify="center" alignItems="center" spacing={3}>
         <Grid container item xs={12} spacing={3} justify="center">
           <Grid item>
@@ -93,12 +90,14 @@ function ApplicationModal(props) {
         <Grid container item xs={12} spacing={3} justify="center">
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              {isEditApplication ? props.person.firstName : props.firstName}
+              {props.person.firstName
+                ? props.person.firstName
+                : props.firstName}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              {isEditApplication ? props.person.lastName : props.lastName}
+              {props.person.lastName ? props.person.lastName : props.lastName}
             </Typography>
           </Grid>
         </Grid>
@@ -180,12 +179,12 @@ function ApplicationModal(props) {
 
 ApplicationModal.propTypes = {
   userType: PropTypes.string.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
   candidateId: PropTypes.any.isRequired,
   createApplicationRequest: PropTypes.func.isRequired,
   editApplicationRequest: PropTypes.func.isRequired,
   deleteApplicationRequest: PropTypes.func.isRequired,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
   phoneNumber: PropTypes.string,
   userEmail: PropTypes.string,
   person: PropTypes.object,
