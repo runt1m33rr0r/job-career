@@ -18,6 +18,8 @@ const mapStateToProps = state => ({
   userType: state.auth.userType,
   firstName: state.auth.firstName,
   lastName: state.auth.lastName,
+  phoneNumber: state.auth.phoneNumber,
+  userEmail: state.auth.email,
   candidateId: state.auth.userId
 });
 

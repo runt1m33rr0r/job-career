@@ -13,23 +13,7 @@ export async function getNotices({ keywords, statuses, token }) {
       token
     });
 
-    const processedNotices = response.data.notices.map(notice => ({
-      id: notice.id,
-      title: notice.title,
-      category: notice.category.name,
-      company: notice.company.name,
-      content: notice.description,
-      status: notice.status,
-      lastModified: notice.lastModified
-        ? notice.lastModified
-        : new Date().toLocaleDateString("en-US")
-    }));
-
-    return {
-      success: true,
-      message: "Notices gathered successfully!",
-      notices: processedNotices
-    };
+    return response.data;
   } catch ({ message }) {
     return { sucess: false, message };
   }
@@ -47,7 +31,7 @@ export async function getCompanyNotices({ company, token }) {
 
     if (res.success) {
       const notices = res.notices;
-      const companyNotices = notices.filter(el => el.company === company);
+      const companyNotices = notices.filter(el => el.company.name === company);
 
       return {
         success: true,
@@ -63,7 +47,7 @@ export async function getCompanyNotices({ company, token }) {
 export async function createNotice({
   title,
   category,
-  content: description,
+  description,
   companyName,
   token
 }) {
@@ -95,7 +79,7 @@ export async function editNotice({
   id,
   category,
   title,
-  content: description,
+  description,
   status,
   token
 }) {
@@ -103,7 +87,7 @@ export async function editNotice({
     id,
     category,
     title,
-    content: description,
+    description,
     status,
     token
   });

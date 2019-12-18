@@ -21,8 +21,7 @@ const applicationsSlice = createSlice({
       { payload: { id, phone, email, letter } }
     ) => {
       const applicationIdx = state.applications.findIndex(el => el.id === id);
-
-      if (applicationIdx > 0) {
+      if (applicationIdx >= 0) {
         state.applications[applicationIdx].id = id;
         state.applications[applicationIdx].phone = phone;
         state.applications[applicationIdx].email = email;
@@ -30,8 +29,11 @@ const applicationsSlice = createSlice({
       }
     },
     deleteApplicationSuccess: (state, action) => {
-      const applicationIdx = state.applications.findIndex(action.payload.id);
-      if (applicationIdx > 0) {
+      const applicationIdx = state.applications.findIndex(
+        el => el.id === action.payload.id
+      );
+
+      if (applicationIdx >= 0) {
         state.applications.splice(applicationIdx, 1);
       }
     }

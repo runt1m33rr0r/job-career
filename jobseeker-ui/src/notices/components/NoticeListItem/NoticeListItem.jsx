@@ -13,8 +13,8 @@ const NoticeListItem = ({
   <BasicListItem onClick={handleClick}>
     <ListItemText primary={lastModified} />
     <ListItemText primary={title} />
-    {(userType !== userTypes.COMPANY || company !== companyName) && (
-      <ListItemText primary={company} />
+    {(userType !== userTypes.COMPANY || company.name !== companyName) && (
+      <ListItemText primary={company.name} />
     )}
     {status === noticeStatuses.CLOSED && <ListItemText primary="closed" />}
   </BasicListItem>
@@ -24,7 +24,7 @@ NoticeListItem.propTypes = {
   handleClick: PropTypes.func.isRequired,
   item: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    company: PropTypes.string.isRequired,
+    company: PropTypes.object.isRequired,
     status: PropTypes.string.isRequired,
     lastModified: PropTypes.string.isRequired
   }).isRequired,

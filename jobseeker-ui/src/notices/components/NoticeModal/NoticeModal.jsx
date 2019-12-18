@@ -12,10 +12,11 @@ function NoticeModal(props) {
   const isViewNotice =
     props.viewNotice ||
     (props.userType === userTypes.COMPANY &&
-      props.company !== props.companyName &&
+      props.company.name !== props.companyName &&
       !isCreationNotice);
   const isEditNotice =
-    props.userType === userTypes.COMPANY && props.company === props.companyName;
+    props.userType === userTypes.COMPANY &&
+    props.company.name === props.companyName;
   const isApplicationNotice =
     !isViewNotice && props.userType === userTypes.USER;
 
@@ -23,35 +24,37 @@ function NoticeModal(props) {
     if (!isEditNotice && props.categories.length > 0) {
       return props.categories[0].name;
     } else {
-      return props.category;
+      return props.category.name;
     }
   };
 
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [title, setTitle] = useState(isCreationNotice ? "" : props.title);
   const [category, setCategory] = useState(getDefaultCategory());
-  const [content, setDescription] = useState(
-    isCreationNotice ? "" : props.content
+  const [description, setDescription] = useState(
+    isCreationNotice ? "" : props.description
   );
 
   const {
     category: propsCategory,
     title: propsTitle,
-    content: propsContent,
+    description: propsDescription,
     categories
   } = props;
 
   useEffect(() => {
     if (isEditNotice) {
-      setCategory(propsCategory);
+      setCategory(propsCategory.name);
       setTitle(propsTitle);
-      setDescription(propsContent);
+      setDescription(propsDescription);
     }
-  }, [isEditNotice, propsCategory, propsTitle, propsContent]);
+  }, [isEditNotice, propsCategory, propsTitle, propsDescription]);
 
   useEffect(() => {
     if (isCreationNotice) {
-      setCategory(categories.length > 0 ? categories[0].name : propsCategory);
+      setCategory(
+        categories.length > 0 ? categories[0].name : propsCategory.name
+      );
     }
   }, [categories, propsCategory, isCreationNotice]);
 
@@ -84,7 +87,7 @@ function NoticeModal(props) {
   };
 
   const handlePublishNotice = () => {
-    props.createNoticeRequest({ category, title, content });
+    props.createNoticeRequest({ category, title, description });
     props.onClose();
   };
 
@@ -94,7 +97,7 @@ function NoticeModal(props) {
       status: noticeStatuses.PENDING,
       category,
       title,
-      content
+      description
     });
 
   const handleNoticeDelete = () => {
@@ -125,8 +128,8 @@ function NoticeModal(props) {
       onDescriptionChange={handleDescriptionChange}
       title={title}
       category={category}
-      content={content}
-      company={props.companyName ? props.companyName : props.company}
+      content={description}
+      company={props.companyName ? props.companyName : props.company.name}
     >
       {isApplicationNotice && (
         <Fragment>
@@ -134,7 +137,11 @@ function NoticeModal(props) {
             createApplication={true}
             isOpen={isApplicationOpen}
             onClose={handleApplicationWindowClose}
-            noticeId={props.id}
+            jobNotice={{
+              id: props.id,
+              company: props.company,
+              description: props.description
+            }}
           />
           <Button text="Apply" onClick={handleApplicationWindowOpen} />
         </Fragment>
@@ -207,16 +214,18 @@ NoticeModal.propTypes = {
   companyName: PropTypes.string,
   creationNotice: PropTypes.bool,
   viewNotice: PropTypes.bool,
-  category: PropTypes.string,
+  category: PropTypes.object,
   title: PropTypes.string,
   status: PropTypes.string,
-  content: PropTypes.string,
-  company: PropTypes.string,
+  description: PropTypes.string,
+  company: PropTypes.object,
   id: PropTypes.any
 };
 
 NoticeModal.defaultProps = {
-  categories: []
+  categories: [],
+  company: {},
+  category: {}
 };
 
 export default NoticeModal;

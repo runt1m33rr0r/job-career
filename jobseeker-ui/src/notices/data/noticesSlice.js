@@ -22,20 +22,22 @@ const noticesSlice = createSlice({
       { payload: { id, category, title, content, status } }
     ) => {
       const noticeIdx = state.notices.findIndex(el => el.id === id);
-      if (category) {
-        state.notices[noticeIdx].category = category;
-      }
+      if (noticeIdx >= 0) {
+        if (category) {
+          state.notices[noticeIdx].category = category;
+        }
 
-      if (title) {
-        state.notices[noticeIdx].title = title;
-      }
+        if (title) {
+          state.notices[noticeIdx].title = title;
+        }
 
-      if (content) {
-        state.notices[noticeIdx].content = content;
-      }
+        if (content) {
+          state.notices[noticeIdx].content = content;
+        }
 
-      if (status) {
-        state.notices[noticeIdx].status = status;
+        if (status) {
+          state.notices[noticeIdx].status = status;
+        }
       }
     }
   }

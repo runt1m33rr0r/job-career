@@ -44,8 +44,8 @@ function Applications(props) {
 
           <Select value={noticeFilter} onChange={handleFilterChange}>
             {props.applications.map(application => (
-              <MenuItem key={application.id} value={application.notice.id}>
-                {application.notice.title}
+              <MenuItem key={application.id} value={application.jobNotice.id}>
+                {application.jobNotice.title}
               </MenuItem>
             ))}
           </Select>

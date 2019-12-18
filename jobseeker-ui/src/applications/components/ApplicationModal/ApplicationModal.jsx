@@ -24,13 +24,13 @@ function ApplicationModal(props) {
   const classes = useStyles();
   const [isJobDetailsOpen, setIsJobDetails] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(
-    isEditApplication ? props.application.phone : ""
+    isEditApplication ? props.number : props.phoneNumber
   );
   const [email, setEmail] = useState(
-    isEditApplication ? props.application.email : ""
+    isEditApplication ? props.email : props.userEmail
   );
   const [letter, setLetter] = useState(
-    isEditApplication ? props.application.letter : ""
+    isEditApplication ? props.motivationalLetter : ""
   );
 
   const handleJobDetailsClose = () => setIsJobDetails(false);
@@ -43,7 +43,7 @@ function ApplicationModal(props) {
 
     props.createApplicationRequest({
       candidateId: props.candidateId,
-      noticeId: props.noticeId,
+      noticeId: props.jobNotice.id,
       phone: phoneNumber,
       email,
       letter
@@ -52,7 +52,7 @@ function ApplicationModal(props) {
 
   const handleApplicationUpdate = () =>
     props.editApplicationRequest({
-      id: props.application.id,
+      id: props.id,
       number: phoneNumber,
       email,
       letter
@@ -62,8 +62,8 @@ function ApplicationModal(props) {
     props.onClose();
 
     props.deleteApplicationRequest({
-      id: props.application.id,
-      email: props.application.email
+      id: props.id,
+      email: props.email
     });
   };
 
@@ -74,33 +74,31 @@ function ApplicationModal(props) {
           isOpen={isJobDetailsOpen}
           onClose={handleJobDetailsClose}
           viewNotice={true}
-          notice={props.application.notice}
+          {...props.jobNotice}
         />
       )}
       <Grid container item justify="center" alignItems="center" spacing={3}>
         <Grid container item xs={12} spacing={3} justify="center">
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              {props.application.notice.title}
+              {props.jobNotice.title}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              {props.application.notice.company}
+              {props.jobNotice.company.name}
             </Typography>
           </Grid>
         </Grid>
         <Grid container item xs={12} spacing={3} justify="center">
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              {isEditApplication
-                ? props.application.firstName
-                : props.firstName}
+              {isEditApplication ? props.person.firstName : props.firstName}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="h6" gutterBottom>
-              {isEditApplication ? props.application.lastName : props.lastName}
+              {isEditApplication ? props.person.lastName : props.lastName}
             </Typography>
           </Grid>
         </Grid>
@@ -185,16 +183,21 @@ ApplicationModal.propTypes = {
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   candidateId: PropTypes.any.isRequired,
-  noticeId: PropTypes.any.isRequired,
   createApplicationRequest: PropTypes.func.isRequired,
   editApplicationRequest: PropTypes.func.isRequired,
   deleteApplicationRequest: PropTypes.func.isRequired,
-  application: PropTypes.object,
+  phoneNumber: PropTypes.string.isRequired,
+  userEmail: PropTypes.string.isRequired,
+  person: PropTypes.object,
+  jobNotice: PropTypes.object,
+  motivationalLetter: PropTypes.string,
+  email: PropTypes.string,
+  number: PropTypes.string,
   createApplication: PropTypes.bool
 };
 
 ApplicationModal.defaultProps = {
-  application: { notice: {} }
+  jobNotice: { company: {} }
 };
 
 export default ApplicationModal;

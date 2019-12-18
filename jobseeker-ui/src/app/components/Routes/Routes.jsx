@@ -27,7 +27,7 @@ const Routes = ({ isLoggedIn, userType }) => (
         <Notices statuses={[noticeStatuses.PENDING]} keywords={[]} />
       )}
     </Route>
-    <Route path="/notices" component={Notices}>
+    <Route path="/notices">
       {userType === userTypes.USER && (
         <Notices statuses={[noticeStatuses.OPEN]} keywords={[]} />
       )}
