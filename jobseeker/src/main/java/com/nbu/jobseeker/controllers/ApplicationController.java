@@ -27,7 +27,7 @@ public class ApplicationController {
     }
 
     @PatchMapping(path = "/applications/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ResponseDTO> updateApplication(@PathVariable Long id, ApplicationUpdateDTO applicationUpdateDTO) {
+    public ResponseEntity<ResponseDTO> updateApplication(@PathVariable Long id, @RequestBody ApplicationUpdateDTO applicationUpdateDTO) {
         if(applicationService.updateApplication(id,applicationUpdateDTO)) {
             return new ResponseEntity<>(new ResponseDTO(true,"Application modified successfully"), HttpStatus.OK);
         }
