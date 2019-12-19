@@ -8,7 +8,7 @@ import { getAllCategoriesRequest } from "../../../categories/data/categoriesSlic
 
 const mapStateToProps = state => ({
   notices: state.notices.notices,
-  userType: state.auth.userType
+  isFetching: state.network.isFetching
 });
 
 const mapDispatchToProps = {

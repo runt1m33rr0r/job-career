@@ -1,41 +1,48 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
 import ItemsList from "../../../shared/components/ItemsList";
 import NoticeListItem from "../NoticeListItem";
 import NoticeModal from "../NoticeModal";
-import { userTypes } from "../../../shared/constants";
 
 function Notices({
-  userType,
   keywords,
-  approved,
+  statuses,
   showCompanyNotices,
   notices,
   getCompanyNoticesRequest,
   getNoticesRequest,
-  getAllCategoriesRequest
+  getAllCategoriesRequest,
+  isFetching
 }) {
   useEffect(() => {
+    getAllCategoriesRequest();
+
     if (showCompanyNotices) {
       getCompanyNoticesRequest();
     } else {
-      if (userType === userTypes.USER) {
-        getNoticesRequest({ approved: true, keywords });
-      } else {
-        getNoticesRequest({ approved, keywords });
-      }
+      getNoticesRequest({ statuses, keywords });
     }
-
-    getAllCategoriesRequest();
   }, [
     getCompanyNoticesRequest,
     getAllCategoriesRequest,
     getNoticesRequest,
     showCompanyNotices,
-    approved,
-    keywords,
-    userType
+    statuses,
+    keywords
   ]);
+
+  if (notices.length === 0) {
+    if (isFetching) {
+      return null;
+    }
+
+    return (
+      <Typography variant="h3" gutterBottom>
+        You don't have any notices!
+      </Typography>
+    );
+  }
 
   return (
     <ItemsList
@@ -48,17 +55,18 @@ function Notices({
 
 Notices.propTypes = {
   notices: PropTypes.arrayOf(PropTypes.object).isRequired,
-  userType: PropTypes.string.isRequired,
   keywords: PropTypes.arrayOf(PropTypes.string).isRequired,
   getCompanyNoticesRequest: PropTypes.func.isRequired,
   getNoticesRequest: PropTypes.func.isRequired,
   getAllCategoriesRequest: PropTypes.func.isRequired,
-  approved: PropTypes.bool,
+  isFetching: PropTypes.bool.isRequired,
+  statuses: PropTypes.arrayOf(PropTypes.string),
   showCompanyNotices: PropTypes.bool
 };
 
 Notices.defaultProps = {
-  keywords: []
+  keywords: [],
+  statuses: []
 };
 
 export default Notices;

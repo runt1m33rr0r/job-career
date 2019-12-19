@@ -3,9 +3,11 @@ import { BASE_ROUTE } from "../../shared/config";
 
 const CATEGORIES_ROUTE = `${BASE_ROUTE}categories\\`;
 
-export async function getAllCategories() {
+export async function getAllCategories({ token }) {
+  console.log({ token });
+
   try {
-    const response = await axios.get(CATEGORIES_ROUTE);
+    const response = await axios.post(`${CATEGORIES_ROUTE}search`, { token });
 
     console.log(response.data);
 
@@ -15,9 +17,14 @@ export async function getAllCategories() {
   }
 }
 
-export async function modifyCategory({ id, name }) {
+export async function modifyCategory({ id, name, token }) {
+  console.log({ id, name, token });
+
   try {
-    const response = await axios.patch(`${CATEGORIES_ROUTE}${id}`, { name });
+    const response = await axios.patch(`${CATEGORIES_ROUTE}${id}`, {
+      name,
+      token
+    });
 
     console.log(response.data);
 
@@ -27,9 +34,13 @@ export async function modifyCategory({ id, name }) {
   }
 }
 
-export async function deleteCategory({ id }) {
+export async function deleteCategory({ id, token }) {
+  console.log({ id, token });
+
   try {
-    const response = await axios.delete(`${CATEGORIES_ROUTE}${id}`);
+    const response = await axios.delete(`${CATEGORIES_ROUTE}${id}`, {
+      data: { token }
+    });
 
     console.log(response.data);
 
@@ -39,14 +50,16 @@ export async function deleteCategory({ id }) {
   }
 }
 
-export async function createCategory({ name }) {
+export async function createCategory({ name, token }) {
+  console.log({ name, token });
+
   try {
-    const response = await axios.post(`${CATEGORIES_ROUTE}`, { name });
+    const response = await axios.post(`${CATEGORIES_ROUTE}`, { name, token });
 
     console.log(response.data);
 
     if (response.data.success) {
-      return await getAllCategories();
+      return await getAllCategories({ token });
     }
 
     return response.data;

@@ -4,13 +4,15 @@ import { register, login, changeProfile, logOut } from "./authApi";
 import { getString, getItem } from "../../shared/storageUtils";
 
 const getInitialState = () => ({
+  userId: getString("userId"),
   userType: getString("userType"),
   firstName: getString("firstName"),
   lastName: getString("lastName"),
   companyName: getString("companyName"),
   email: getString("email"),
   phoneNumber: getString("phoneNumber"),
-  isAuthenticated: !!getItem("token")
+  isAuthenticated: !!getItem("token"),
+  token: getItem("token")
 });
 
 const authSlice = createSlice({
@@ -19,12 +21,14 @@ const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action) => {
       state.isAuthenticated = true;
+      state.userId = action.payload.id;
       state.userType = action.payload.userType;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
       state.companyName = action.payload.companyName;
       state.phoneNumber = action.payload.phoneNumber;
       state.email = action.payload.email;
+      state.token = action.payload.token;
     },
     loginFailure: state => {
       state.isAuthenticated = false;
@@ -82,13 +86,13 @@ export const loginRequest = loginData => async dispatch =>
     })
   );
 
-export const profileChangeRequest = profileData => async dispatch =>
+export const profileChangeRequest = profileData => async (dispatch, getState) =>
   dispatch(
     makeRequest({
       requestFunction: changeProfile,
       successAction: profileChangeSuccess,
       failAction: profileChangeFailure,
-      requestData: profileData
+      requestData: { ...profileData, token: getState().auth.token }
     })
   );
 
@@ -99,7 +103,8 @@ export const logoutRequest = () => async (dispatch, getState) =>
       successAction: logoutSuccess,
       failAction: logoutFailure,
       requestData: {
-        email: getState().email
+        email: getState().auth.email,
+        token: getState().auth.token
       }
     })
   );

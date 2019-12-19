@@ -1,90 +1,127 @@
-const notices = [
-  {
-    id: 1,
-    title: "some title1",
-    category: "category1",
-    company: "company",
-    content: "content1",
-    closed: false,
-    approved: true,
-    lastModified: "some date1"
-  },
-  {
-    id: 2,
-    title: "some title2",
-    category: "category2",
-    company: "company",
-    content: "content2",
-    closed: false,
-    approved: true,
-    lastModified: "some date2"
+import axios from "axios";
+import { BASE_ROUTE } from "../../shared/config";
+
+const NOTICES_ROUTE = `${BASE_ROUTE}notices\\`;
+
+export async function getNotices({ keywords, statuses, token }) {
+  console.log({ keywords, statuses, token });
+
+  try {
+    const response = await axios.post(`${NOTICES_ROUTE}search`, {
+      keywords,
+      statuses,
+      token
+    });
+
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
   }
-];
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function getNotices({ keywords, approved }) {
-  console.log({ keywords, approved });
+export async function getCompanyNotices({ company, token }) {
+  console.log({ company, token });
 
-  await sleep(1000);
+  try {
+    const res = await getNotices({
+      keywords: [],
+      statuses: ["OPEN", "CLOSED", "PENDING", "DENIED"],
+      token
+    });
 
-  return {
-    success: true,
-    message: "Notices gathered successfully!",
-    notices
-  };
+    if (res.success) {
+      const notices = res.notices;
+      const companyNotices = notices.filter(el => el.company.name === company);
+
+      return {
+        success: true,
+        message: "Notices gathered successfully!",
+        notices: companyNotices
+      };
+    }
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
 
-export async function getCompanyNotices({ company }) {
-  console.log({ company });
+export async function createNotice({
+  title,
+  category,
+  description,
+  companyName,
+  token
+}) {
+  console.log({ title, category, description, companyName, token });
 
-  await sleep(1000);
+  try {
+    const response = await axios.post(NOTICES_ROUTE, {
+      title,
+      category,
+      description,
+      companyName,
+      token
+    });
 
-  return {
-    success: true,
-    message: "Notices gathered successfully!",
-    notices
-  };
-}
+    if (response.data.success) {
+      let res = await getCompanyNotices({ company: companyName, token });
+      res.message = response.data.message;
 
-export async function createNotice({ title, category, content, companyName }) {
-  console.log({ title, category, content, companyName });
-
-  await sleep(1000);
-
-  return {
-    success: true,
-    message: "Notice created successfully!"
-  };
+      return res;
+    } else {
+      return response.data;
+    }
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
 
 export async function editNotice({
   id,
   category,
   title,
-  content,
-  closed,
-  approved
+  description,
+  status,
+  token
 }) {
-  console.log({ id, category, title, content, closed, approved });
+  console.log({
+    id,
+    category,
+    title,
+    description,
+    status,
+    token
+  });
 
-  await sleep(1000);
+  try {
+    const response = await axios.patch(`${NOTICES_ROUTE}${id}`, {
+      category,
+      title,
+      description,
+      status,
+      token
+    });
 
-  return {
-    success: true,
-    message: "Notice edited successfully!"
-  };
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
 
-export async function deleteNotice({ id }) {
-  console.log({ id });
+export async function deleteNotice({ id, company, token }) {
+  try {
+    const response = await axios.delete(`${NOTICES_ROUTE}${id}`, {
+      data: { token }
+    });
 
-  await sleep(1000);
+    if (response.data.success) {
+      let res = await getCompanyNotices({ company, token });
+      res.message = response.data.message;
 
-  return {
-    success: true,
-    message: "Notice deleted successfully!"
-  };
+      return res;
+    } else {
+      return response.data;
+    }
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }

@@ -17,6 +17,15 @@ export async function register({
   email,
   password
 }) {
+  console.log({
+    userType,
+    firstName,
+    lastName,
+    companyName,
+    email,
+    password
+  });
+
   try {
     let requestData = { companyName, email, password };
 
@@ -56,6 +65,7 @@ export async function login({ email, password }) {
       const userData = {
         success: response.data.success,
         message: response.data.message,
+        id: response.data.user.id,
         email: response.data.user.email,
         firstName: response.data.user.firstName,
         lastName: response.data.user.lastName,
@@ -65,9 +75,8 @@ export async function login({ email, password }) {
         token: response.data.user.token
       };
 
-      console.log(userData);
-
-      setItem("email", email);
+      setItem("userId", userData.id);
+      setItem("email", userData.email);
       setItem("firstName", userData.firstName);
       setItem("lastName", userData.lastName);
       setItem("companyName", userData.companyName);
@@ -86,9 +95,11 @@ export async function login({ email, password }) {
   }
 }
 
-export async function logOut({ email }) {
+export async function logOut({ email, token }) {
+  console.log({ email, token });
+
   try {
-    const response = await axios.post(`${USERS_ROUTE}logout`, { email });
+    const response = await axios.post(`${USERS_ROUTE}logout`, { email, token });
 
     if (response.data.success) {
       removeAll();
@@ -108,7 +119,8 @@ export async function changeProfile({
   companyName,
   phoneNumber,
   eMail,
-  password
+  password,
+  token
 }) {
   console.log({
     firstName,
@@ -116,7 +128,8 @@ export async function changeProfile({
     companyName,
     phoneNumber,
     eMail,
-    password
+    password,
+    token
   });
 
   await sleep(1000);

@@ -7,13 +7,12 @@ import {
   createNoticeRequest
 } from "../../data/noticesSlice";
 
-const NoticeModalContainer = props => (
-  <NoticeModal notice={props.notice ? props.notice : props.item} {...props} />
-);
+const NoticeModalContainer = props => <NoticeModal {...props} />;
 
 const mapStateToProps = state => ({
   userType: state.auth.userType,
   companyName: state.auth.companyName,
+  token: state.auth.token,
   isFetching: state.network.isFetching,
   categories: state.categories.categories
 });

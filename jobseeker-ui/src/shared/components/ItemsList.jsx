@@ -10,7 +10,8 @@ const useStyles = makeStyles(() => ({
     width: "90%",
     height: "80vh",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    overflow: "auto"
   },
   paginationContainer: {
     alignSelf: "flex-end",
@@ -26,11 +27,24 @@ function ItemsList(props) {
 
   const classes = useStyles();
   const [popupItem, setPopupItem] = useState(null);
+  const [popupData, setPopupData] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
   const [currentPage, setCurrentpage] = useState(0);
 
-  const itemsPerPage = 1;
+  let itemsPerPage = 10;
+  if (itemsPerPage > items.length) {
+    itemsPerPage = items.length;
+  }
+
   const pagesCount = items.length / itemsPerPage;
+
+  const getCurrentPage = () => {
+    if (currentPage >= pagesCount) {
+      return 0;
+    }
+
+    return currentPage;
+  };
 
   const handlePopupClose = () => {
     setPopupOpen(false);
@@ -46,13 +60,20 @@ function ItemsList(props) {
     }
   }, [popupItem]);
 
+  useEffect(() => {
+    if (popupItem) {
+      const item = items.find(item => item.id === popupItem);
+      setPopupData(item);
+    }
+  }, [items, popupItem]);
+
   return (
     <Paper className={classes.container}>
-      {popupItem && (
+      {popupData && (
         <PopupItem
           isOpen={popupOpen}
           onClose={handlePopupClose}
-          item={popupItem}
+          {...popupData}
         />
       )}
       {items.length > 0 && (
@@ -60,13 +81,13 @@ function ItemsList(props) {
           <List>
             {items
               .slice(
-                currentPage * itemsPerPage,
-                currentPage * itemsPerPage + itemsPerPage
+                getCurrentPage() * itemsPerPage,
+                getCurrentPage() * itemsPerPage + itemsPerPage
               )
               .map(i => (
                 <ListItem
                   key={i.id}
-                  handleClick={handlePopupOpen(i)}
+                  handleClick={handlePopupOpen(i.id)}
                   item={i}
                 />
               ))}
@@ -74,7 +95,7 @@ function ItemsList(props) {
           <div className={classes.paginationContainer}>
             <TablePagination
               component="nav"
-              page={currentPage}
+              page={getCurrentPage()}
               rowsPerPage={itemsPerPage}
               count={pagesCount}
               rowsPerPageOptions={[]}
@@ -90,7 +111,8 @@ function ItemsList(props) {
 ItemsList.propTypes = {
   popupElement: PropTypes.any.isRequired,
   listItemElement: PropTypes.any.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.any.isRequired }))
+    .isRequired
 };
 
 ItemsList.defaultProps = {

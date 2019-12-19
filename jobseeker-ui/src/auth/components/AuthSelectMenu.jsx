@@ -23,7 +23,7 @@ AuthSelectMenu.propTypes = {
   name: PropTypes.string.isRequired,
   userType: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  usertTypes: PropTypes.arrayOf(PropTypes.string).isRequired
+  userTypes: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 export default AuthSelectMenu;

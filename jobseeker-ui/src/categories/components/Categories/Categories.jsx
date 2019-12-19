@@ -48,7 +48,7 @@ function Categories({
   }, [getAllCategoriesRequest]);
 
   const handleCategoryTextChange = event => setCategoryText(event.target.value);
-  const handleAddKeyword = () => createCategoryRequest({ name: categoryText });
+  const handleAddCategory = () => createCategoryRequest({ name: categoryText });
   const handleCategoryRemove = id => () => deleteCategoryRequest({ id });
 
   const handleCategoryChange = () => {
@@ -86,7 +86,7 @@ function Categories({
           <Button
             onClick={handleCategoryChange}
             color="primary"
-            disabled={isFetching}
+            disabled={isFetching || !newCategoryName}
           >
             Change
           </Button>
@@ -111,8 +111,8 @@ function Categories({
         <Grid item xs={4}>
           <Button
             variant="contained"
-            onClick={handleAddKeyword}
-            disabled={isFetching}
+            onClick={handleAddCategory}
+            disabled={isFetching || !categoryText}
           >
             Add
           </Button>

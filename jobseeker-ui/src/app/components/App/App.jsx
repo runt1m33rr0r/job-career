@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,6 +20,7 @@ import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import Routes from "../Routes";
 import DrawerItem from "../DrawerItem";
 import Notification from "../Notification";
@@ -82,13 +83,19 @@ function App({
   companyName,
   email,
   isAuthenticated,
-  requestLogout
+  requestLogout,
+  history,
+  getAllCategoriesRequest
 }) {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isCreateNoticeOpen, setIsCreateNoticeOpen] = useState(false);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    getAllCategoriesRequest();
+  }, [getAllCategoriesRequest]);
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const handleMenu = event => setAnchorEl(event.currentTarget);
@@ -97,6 +104,7 @@ function App({
     setIsCreateNoticeOpen(!isCreateNoticeOpen);
 
   const handleLogoutPress = () => {
+    history.push("/");
     requestLogout();
     handleClose();
   };
@@ -120,7 +128,6 @@ function App({
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <DrawerItem text="Home" linkTo="/" />
         {userType === userTypes.COMPANY && (
           <ListItem button onClick={handleCreateNoticeToggle}>
             <ListItemText primary="Create notice" />
@@ -129,14 +136,11 @@ function App({
         {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
           <DrawerItem text="My notices" linkTo="/notices/mine" />
         )}
-        {userType === userTypes.USER && (
-          <DrawerItem text="Notices" linkTo="/notices" />
-        )}
         {(userType === userTypes.COMPANY || userType === userTypes.USER) && (
-          <DrawerItem text="Applications" linkTo="/applications" />
+          <DrawerItem text="My applications" linkTo="/applications" />
         )}
         <DrawerItem text="Search notices" linkTo="/search" />
-        {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
+        {userType === userTypes.ADMIN && (
           <DrawerItem text="Categories" linkTo="/categories" />
         )}
       </List>
@@ -270,4 +274,4 @@ App.propTypes = {
   requestLogout: PropTypes.func.isRequired
 };
 
-export default App;
+export default withRouter(App);
