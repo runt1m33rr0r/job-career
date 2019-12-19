@@ -128,7 +128,6 @@ function App({
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <DrawerItem text="Home" linkTo="/" />
         {userType === userTypes.COMPANY && (
           <ListItem button onClick={handleCreateNoticeToggle}>
             <ListItemText primary="Create notice" />
@@ -137,14 +136,11 @@ function App({
         {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
           <DrawerItem text="My notices" linkTo="/notices/mine" />
         )}
-        {userType === userTypes.USER && (
-          <DrawerItem text="Notices" linkTo="/notices" />
-        )}
         {(userType === userTypes.COMPANY || userType === userTypes.USER) && (
-          <DrawerItem text="Applications" linkTo="/applications" />
+          <DrawerItem text="My applications" linkTo="/applications" />
         )}
         <DrawerItem text="Search notices" linkTo="/search" />
-        {(userType === userTypes.COMPANY || userType === userTypes.ADMIN) && (
+        {userType === userTypes.ADMIN && (
           <DrawerItem text="Categories" linkTo="/categories" />
         )}
       </List>

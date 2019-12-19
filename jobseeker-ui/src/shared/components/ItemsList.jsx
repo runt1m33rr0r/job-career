@@ -30,7 +30,11 @@ function ItemsList(props) {
   const [popupOpen, setPopupOpen] = useState(false);
   const [currentPage, setCurrentpage] = useState(0);
 
-  const itemsPerPage = 1;
+  let itemsPerPage = 10;
+  if (itemsPerPage > items.length) {
+    itemsPerPage = items.length;
+  }
+
   const pagesCount = items.length / itemsPerPage;
 
   const getCurrentPage = () => {

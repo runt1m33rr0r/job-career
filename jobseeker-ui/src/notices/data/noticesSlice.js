@@ -24,7 +24,7 @@ const noticesSlice = createSlice({
       const noticeIdx = state.notices.findIndex(el => el.id === id);
       if (noticeIdx >= 0) {
         if (category) {
-          state.notices[noticeIdx].category = category;
+          state.notices[noticeIdx].category.name = category;
         }
 
         if (title) {
