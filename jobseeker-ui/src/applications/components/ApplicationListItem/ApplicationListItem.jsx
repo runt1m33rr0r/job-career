@@ -14,6 +14,15 @@ const ApplicationListItem = ({ item, handleClick, userType }) => (
     {item.jobNotice.status === noticeStatuses.CLOSED && (
       <ListItemText primary="closed" />
     )}
+    {item.jobNotice.status === noticeStatuses.OPEN && (
+      <ListItemText primary="approved" />
+    )}
+    {item.jobNotice.status === noticeStatuses.DENIED && (
+      <ListItemText primary="denied" />
+    )}
+    {item.jobNotice.status === noticeStatuses.PENDING && (
+      <ListItemText primary="pending" />
+    )}
   </BasicListItem>
 );
 

@@ -17,6 +17,9 @@ const NoticeListItem = ({
       <ListItemText primary={company.name} />
     )}
     {status === noticeStatuses.CLOSED && <ListItemText primary="closed" />}
+    {status === noticeStatuses.OPEN && <ListItemText primary="approved" />}
+    {status === noticeStatuses.DENIED && <ListItemText primary="denied" />}
+    {status === noticeStatuses.PENDING && <ListItemText primary="pending" />}
   </BasicListItem>
 );
 

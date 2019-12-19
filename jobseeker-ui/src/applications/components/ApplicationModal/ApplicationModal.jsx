@@ -146,22 +146,23 @@ function ApplicationModal(props) {
         {isUserApplication && (
           <Fragment>
             {isEditApplication && (
-              <Grid item>
-                <Button variant="contained" onClick={handleApplicationUpdate}>
-                  Send new version
-                </Button>
-              </Grid>
+              <Fragment>
+                <Grid item>
+                  <Button variant="contained" onClick={handleApplicationUpdate}>
+                    Send new version
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="contained" onClick={handleApplicationDelete}>
+                    Delete
+                  </Button>
+                </Grid>
+              </Fragment>
             )}
-            {props.createApplication ? (
+            {props.createApplication && (
               <Grid item>
                 <Button variant="contained" onClick={handleApplicationSend}>
                   Send
-                </Button>
-              </Grid>
-            ) : (
-              <Grid item>
-                <Button variant="contained" onClick={handleApplicationDelete}>
-                  Delete
                 </Button>
               </Grid>
             )}
