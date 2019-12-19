@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 @Service("applicationService")
 public class ApplicationService {
@@ -60,7 +62,7 @@ public class ApplicationService {
     }
 
     public boolean updateApplication(Long id, ApplicationUpdateDTO applicationUpdateDTO) {
-        JobApplication application = applicationRepository.getOne(id);
+        JobApplication application = applicationRepository.findById(id).orElse(null);
         if(application != null) {
             if(applicationUpdateDTO.getEmail() != null) {
                 if(!"".equals(applicationUpdateDTO.getEmail().trim())) {

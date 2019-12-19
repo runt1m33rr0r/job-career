@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ApplicationSearchDTO implements Serializable {
 
-    public ApplicationSearchDTO(Long personId, Long noticeId) {
+    public ApplicationSearchDTO(Long personId, Long noticeId, Long companyId) {
         this.personId = personId;
         this.noticeId = noticeId;
         this.companyId = companyId;
