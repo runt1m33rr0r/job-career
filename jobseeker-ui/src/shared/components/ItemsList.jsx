@@ -10,7 +10,8 @@ const useStyles = makeStyles(() => ({
     width: "90%",
     height: "80vh",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    overflow: "auto"
   },
   paginationContainer: {
     alignSelf: "flex-end",
