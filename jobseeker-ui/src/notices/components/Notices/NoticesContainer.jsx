@@ -7,7 +7,8 @@ import {
 import { getAllCategoriesRequest } from "../../../categories/data/categoriesSlice";
 
 const mapStateToProps = state => ({
-  notices: state.notices.notices
+  notices: state.notices.notices,
+  isFetching: state.network.isFetching
 });
 
 const mapDispatchToProps = {

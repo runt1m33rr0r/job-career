@@ -12,7 +12,8 @@ const mapStateToProps = state => ({
   lastName: state.auth.lastName,
   phoneNumber: state.auth.phoneNumber,
   userEmail: state.auth.email,
-  candidateId: state.auth.userId
+  candidateId: state.auth.userId,
+  isFetching: state.network.isFetching
 });
 
 const mapDispatchToProps = {

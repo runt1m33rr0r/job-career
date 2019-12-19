@@ -36,6 +36,9 @@ function NoticeModal(props) {
     isCreationNotice ? "" : props.description
   );
 
+  const shouldDisable = () =>
+    props.isFetching || !category || !title || !description;
+
   const {
     category: propsCategory,
     title: propsTitle,
@@ -164,14 +167,18 @@ function NoticeModal(props) {
         </Fragment>
       )}
       {isCreationNotice && (
-        <Button text="Publish" onClick={handlePublishNotice} />
+        <Button
+          text="Publish"
+          onClick={handlePublishNotice}
+          disabled={shouldDisable()}
+        />
       )}
       {isEditNotice && (
         <Fragment>
           <Button
             text="Update"
             onClick={handleUpdateNotice}
-            disabled={props.isFetching}
+            disabled={shouldDisable()}
           />
           <Button
             text="Delete"

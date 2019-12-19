@@ -33,6 +33,9 @@ function ApplicationModal(props) {
     props.motivationalLetter ? props.motivationalLetter : ""
   );
 
+  const shouldDisable = () =>
+    props.isFetching || !phoneNumber || !email || !letter;
+
   const handleJobDetailsClose = () => setIsJobDetails(false);
   const handleJobDetailsOpen = () => setIsJobDetails(true);
   const handlePhoneNumberChange = event => setPhoneNumber(event.target.value);
@@ -148,12 +151,20 @@ function ApplicationModal(props) {
             {isEditApplication && (
               <Fragment>
                 <Grid item>
-                  <Button variant="contained" onClick={handleApplicationUpdate}>
+                  <Button
+                    variant="contained"
+                    onClick={handleApplicationUpdate}
+                    disabled={shouldDisable()}
+                  >
                     Send new version
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" onClick={handleApplicationDelete}>
+                  <Button
+                    variant="contained"
+                    onClick={handleApplicationDelete}
+                    disabled={props.isFetching}
+                  >
                     Delete
                   </Button>
                 </Grid>
@@ -161,7 +172,11 @@ function ApplicationModal(props) {
             )}
             {props.createApplication && (
               <Grid item>
-                <Button variant="contained" onClick={handleApplicationSend}>
+                <Button
+                  variant="contained"
+                  onClick={handleApplicationSend}
+                  disabled={shouldDisable()}
+                >
                   Send
                 </Button>
               </Grid>
@@ -184,6 +199,7 @@ ApplicationModal.propTypes = {
   createApplicationRequest: PropTypes.func.isRequired,
   editApplicationRequest: PropTypes.func.isRequired,
   deleteApplicationRequest: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   phoneNumber: PropTypes.string,

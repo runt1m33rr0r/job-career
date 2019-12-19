@@ -3,6 +3,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import ApplicationModal from "../ApplicationModal";
@@ -56,6 +57,18 @@ function Applications(props) {
     }
   }, [getApplicationsRequest, userId, userType, noticeFilter]);
 
+  if (props.applications.length === 0) {
+    if (props.isFetching) {
+      return null;
+    }
+
+    return (
+      <Typography variant="h3" gutterBottom>
+        You don't have any applications!
+      </Typography>
+    );
+  }
+
   return (
     <div className={classes.container}>
       {props.userType === userTypes.COMPANY && (
@@ -88,7 +101,8 @@ Applications.propTypes = {
   notices: PropTypes.array.isRequired,
   userType: PropTypes.string.isRequired,
   getApplicationsRequest: PropTypes.func.isRequired,
-  getCompanyNoticesRequest: PropTypes.func.isRequired
+  getCompanyNoticesRequest: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired
 };
 
 export default Applications;

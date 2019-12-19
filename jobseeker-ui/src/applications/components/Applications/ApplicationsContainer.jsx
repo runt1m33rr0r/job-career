@@ -7,7 +7,8 @@ const mapStateToProps = state => ({
   applications: state.applications.applications,
   userType: state.auth.userType,
   userId: state.auth.userId,
-  notices: state.notices.notices
+  notices: state.notices.notices,
+  isFetching: state.network.isFetching
 });
 
 const mapDispatchToProps = { getApplicationsRequest, getCompanyNoticesRequest };
