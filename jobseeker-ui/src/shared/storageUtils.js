@@ -19,8 +19,11 @@ export const getString = itemName => {
   return "";
 };
 
-export const setItem = (itemName, data) =>
-  localStorage.setItem(itemName, JSON.stringify(data));
+export const setItem = (itemName, data) => {
+  if (data) {
+    localStorage.setItem(itemName, JSON.stringify(data));
+  }
+};
 
 export const removeItem = itemName => localStorage.removeItem(itemName);
 
