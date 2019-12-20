@@ -17,7 +17,7 @@ import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import { noticeStatuses } from "../../../shared/constants";
+import { noticeStatuses, userTypes } from "../../../shared/constants";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -38,21 +38,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const APPROVED = "approved";
+const WAITING = "waiting";
+const BOTH = "both";
+
 function Search(props) {
   const classes = useStyles();
   const history = useHistory();
   const [chosenCategories, setChosenCategories] = useState([]);
-  const [noticeType, setNoticeType] = useState([
-    noticeStatuses.OPEN,
-    noticeStatuses.PENDING
-  ]);
+  const [noticeType, setNoticeType] = useState(APPROVED);
   const [keywords, setKeywords] = useState([]);
   const [keywordText, setKeywordText] = useState("");
 
   const handleCategoriesChange = event =>
     setChosenCategories(event.target.value);
 
-  const handleNoticeTypeChange = event => setNoticeType(event.target.value);
+  const handleNoticeTypeChange = event => {
+    setNoticeType(event.target.value);
+  };
+
   const handleKeywordTextChange = event => setKeywordText(event.target.value);
   const handleAddKeyword = () => {
     if (!keywords.includes(keywordText)) {
@@ -65,10 +69,20 @@ function Search(props) {
   };
 
   const handleSearchPress = () => {
+    let statuses = [];
+
+    if (noticeType === APPROVED) {
+      statuses = [noticeStatuses.OPEN];
+    } else if (noticeType === WAITING) {
+      statuses = [noticeStatuses.PENDING];
+    } else if (noticeType === BOTH) {
+      statuses = [noticeStatuses.OPEN, noticeStatuses.PENDING];
+    }
+
     history.push("/notices", {
       keywords,
-      category: chosenCategories.length > 0 ? chosenCategories[0] : null,
-      statuses: noticeType
+      statuses,
+      category: chosenCategories.length > 0 ? chosenCategories[0] : null
     });
   };
 
@@ -128,29 +142,31 @@ function Search(props) {
           ))}
         </Grid>
       </Grid>
-      <FormControl component="fieldset" className={classes.formControl}>
-        <RadioGroup
-          name="noticeType"
-          value={noticeType}
-          onChange={handleNoticeTypeChange}
-        >
-          <FormControlLabel
-            value={[noticeStatuses.OPEN]}
-            control={<Radio color="primary" />}
-            label="approved"
-          />
-          <FormControlLabel
-            value={[noticeStatuses.PENDING]}
-            control={<Radio color="primary" />}
-            label="waiting for approval"
-          />
-          <FormControlLabel
-            value={[noticeStatuses.OPEN, noticeStatuses.PENDING]}
-            control={<Radio color="primary" />}
-            label="both"
-          />
-        </RadioGroup>
-      </FormControl>
+      {props.userType === userTypes.ADMIN && (
+        <FormControl component="fieldset" className={classes.formControl}>
+          <RadioGroup
+            name="noticeType"
+            value={noticeType}
+            onChange={handleNoticeTypeChange}
+          >
+            <FormControlLabel
+              value={APPROVED}
+              control={<Radio color="primary" />}
+              label="approved"
+            />
+            <FormControlLabel
+              value={WAITING}
+              control={<Radio color="primary" />}
+              label="waiting for approval"
+            />
+            <FormControlLabel
+              value={BOTH}
+              control={<Radio color="primary" />}
+              label="both"
+            />
+          </RadioGroup>
+        </FormControl>
+      )}
       <Button
         variant="contained"
         className={classes.searchButton}
@@ -163,7 +179,8 @@ function Search(props) {
 }
 
 Search.propTypes = {
-  categories: PropTypes.array.isRequired
+  categories: PropTypes.array.isRequired,
+  userType: PropTypes.string.isRequired
 };
 
 Search.defaultProps = {

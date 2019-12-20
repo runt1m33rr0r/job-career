@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { getAllCategoriesRequest } from "../../../categories/data/categoriesSlice";
 
 const mapStateToProps = state => ({
-  categories: state.categories.categories
+  categories: state.categories.categories,
+  userType: state.auth.userType
 });
 
 const mapDispatchToProps = {
