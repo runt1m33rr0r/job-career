@@ -15,8 +15,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
-
-const categories = ["category1", "category2", "category3"];
+import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
+import { noticeStatuses } from "../../../shared/constants";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -37,10 +38,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Search() {
+function Search(props) {
   const classes = useStyles();
+  const history = useHistory();
   const [chosenCategories, setChosenCategories] = useState([]);
-  const [noticeType, setNoticeType] = useState("both");
+  const [noticeType, setNoticeType] = useState([
+    noticeStatuses.OPEN,
+    noticeStatuses.PENDING
+  ]);
   const [keywords, setKeywords] = useState([]);
   const [keywordText, setKeywordText] = useState("");
 
@@ -59,6 +64,14 @@ function Search() {
     setKeywords(keywords.filter(keyword => keyword !== name));
   };
 
+  const handleSearchPress = () => {
+    history.push("/notices", {
+      keywords,
+      category: chosenCategories.length > 0 ? chosenCategories[0] : null,
+      statuses: noticeType
+    });
+  };
+
   return (
     <Paper className={classes.container}>
       <FormControl className={classes.formControl}>
@@ -70,13 +83,13 @@ function Search() {
           input={<Input />}
           renderValue={selected => selected.join(", ")}
         >
-          {categories.map(name => (
-            <MenuItem key={name} value={name}>
+          {props.categories.map(category => (
+            <MenuItem key={category.id} value={category.name}>
               <Checkbox
-                checked={chosenCategories.indexOf(name) > -1}
+                checked={chosenCategories.indexOf(category.name) > -1}
                 color="primary"
               />
-              <ListItemText primary={name} />
+              <ListItemText primary={category.name} />
             </MenuItem>
           ))}
         </Select>
@@ -122,27 +135,39 @@ function Search() {
           onChange={handleNoticeTypeChange}
         >
           <FormControlLabel
-            value="approved"
+            value={[noticeStatuses.OPEN]}
             control={<Radio color="primary" />}
             label="approved"
           />
           <FormControlLabel
-            value="waiting"
+            value={[noticeStatuses.PENDING]}
             control={<Radio color="primary" />}
             label="waiting for approval"
           />
           <FormControlLabel
-            value="both"
+            value={[noticeStatuses.OPEN, noticeStatuses.PENDING]}
             control={<Radio color="primary" />}
             label="both"
           />
         </RadioGroup>
       </FormControl>
-      <Button variant="contained" className={classes.searchButton}>
+      <Button
+        variant="contained"
+        className={classes.searchButton}
+        onClick={handleSearchPress}
+      >
         Search
       </Button>
     </Paper>
   );
 }
+
+Search.propTypes = {
+  categories: PropTypes.array.isRequired
+};
+
+Search.defaultProps = {
+  categories: []
+};
 
 export default Search;
