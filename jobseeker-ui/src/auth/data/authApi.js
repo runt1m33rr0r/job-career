@@ -154,3 +154,19 @@ export async function changeProfile({
     return { sucess: false, message };
   }
 }
+
+export async function requestForgottenPassword({ email }) {
+  console.log({ email });
+
+  try {
+    const response = await axios.post(`${USERS_ROUTE}reset-password`, {
+      email
+    });
+
+    console.log(response.data);
+
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
+}

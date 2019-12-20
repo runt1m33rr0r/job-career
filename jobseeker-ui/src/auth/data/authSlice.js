@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { makeRequest } from "../../app/data/networkSlice";
-import { register, login, changeProfile, logOut } from "./authApi";
+import {
+  register,
+  login,
+  changeProfile,
+  logOut,
+  requestForgottenPassword
+} from "./authApi";
 import { getString, getItem } from "../../shared/storageUtils";
 
 const getInitialState = () => ({
@@ -110,4 +116,9 @@ export const logoutRequest = () => async (dispatch, getState) =>
         token: getState().auth.token
       }
     })
+  );
+
+export const forgottenPasswordRequest = requestData => async dispatch =>
+  dispatch(
+    makeRequest({ requestFunction: requestForgottenPassword, requestData })
   );

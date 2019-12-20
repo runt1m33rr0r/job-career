@@ -8,6 +8,7 @@ import Search from "../../../search/components/Search";
 import Categories from "../../../categories/components/Categories";
 import Profile from "../../../auth/components/Profile";
 import Notices from "../../../notices/components/Notices";
+import ForgottenPassword from "../../../auth/components/ForgottenPassword";
 import { userTypes, noticeStatuses } from "../../../shared/constants";
 
 function Routes({ isLoggedIn, userType }) {
@@ -63,6 +64,7 @@ function Routes({ isLoggedIn, userType }) {
       <Route path="/profile">
         {!isLoggedIn ? <Redirect to="/login" /> : <Profile />}
       </Route>
+      <Route path="/forgotten" component={ForgottenPassword} />
       <Route path="/notices/mine">
         {!isLoggedIn && <Redirect to="/login" />}
         {userType === userTypes.COMPANY && (
