@@ -22,8 +22,8 @@ export async function getApplications({
     console.log(response.data);
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -40,8 +40,8 @@ export async function editApplication({ id, number, email, letter, token }) {
     });
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -73,8 +73,8 @@ export async function createApplication({
     });
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -85,7 +85,7 @@ export async function deleteApplication({ id, token }) {
     });
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }

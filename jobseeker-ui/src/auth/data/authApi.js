@@ -43,8 +43,8 @@ export async function register({
     }
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -86,8 +86,8 @@ export async function login({ email, password }) {
     console.log(response.data);
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -104,8 +104,8 @@ export async function logOut({ email, token }) {
     console.log(response.data);
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -150,8 +150,8 @@ export async function changeProfile({
     setItem("phoneNumber", phoneNumber);
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -166,7 +166,7 @@ export async function requestForgottenPassword({ email }) {
     console.log(response.data);
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }

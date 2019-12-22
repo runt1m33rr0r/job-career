@@ -12,8 +12,8 @@ export async function getAllCategories({ token }) {
     console.log(response.data);
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -29,8 +29,8 @@ export async function modifyCategory({ id, name, token }) {
     console.log(response.data);
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -45,8 +45,8 @@ export async function deleteCategory({ id, token }) {
     console.log(response.data);
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -63,7 +63,7 @@ export async function createCategory({ name, token }) {
     }
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }

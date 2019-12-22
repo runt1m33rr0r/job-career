@@ -15,8 +15,8 @@ export async function getNotices({ keywords, statuses, category, token }) {
     });
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -40,8 +40,8 @@ export async function getCompanyNotices({ company, token }) {
         notices: companyNotices
       };
     }
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -71,8 +71,8 @@ export async function createNotice({
     } else {
       return response.data;
     }
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -103,8 +103,8 @@ export async function editNotice({
     });
 
     return response.data;
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
 
@@ -122,7 +122,7 @@ export async function deleteNotice({ id, company, token }) {
     } else {
       return response.data;
     }
-  } catch ({ message }) {
-    return { sucess: false, message };
+  } catch ({ message, response: { data } }) {
+    return { sucess: false, message: data.message ? data.message : message };
   }
 }
