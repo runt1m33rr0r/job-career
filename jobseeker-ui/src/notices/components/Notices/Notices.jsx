@@ -8,6 +8,7 @@ import NoticeModal from "../NoticeModal";
 function Notices({
   keywords,
   statuses,
+  category,
   showCompanyNotices,
   notices,
   getCompanyNoticesRequest,
@@ -21,7 +22,7 @@ function Notices({
     if (showCompanyNotices) {
       getCompanyNoticesRequest();
     } else {
-      getNoticesRequest({ statuses, keywords });
+      getNoticesRequest({ statuses, keywords, category });
     }
   }, [
     getCompanyNoticesRequest,
@@ -29,7 +30,8 @@ function Notices({
     getNoticesRequest,
     showCompanyNotices,
     statuses,
-    keywords
+    keywords,
+    category
   ]);
 
   if (notices.length === 0) {
@@ -55,12 +57,13 @@ function Notices({
 
 Notices.propTypes = {
   notices: PropTypes.arrayOf(PropTypes.object).isRequired,
-  keywords: PropTypes.arrayOf(PropTypes.string).isRequired,
   getCompanyNoticesRequest: PropTypes.func.isRequired,
   getNoticesRequest: PropTypes.func.isRequired,
   getAllCategoriesRequest: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  statuses: PropTypes.arrayOf(PropTypes.string),
+  statuses: PropTypes.array,
+  keywords: PropTypes.array,
+  category: PropTypes.string,
   showCompanyNotices: PropTypes.bool
 };
 

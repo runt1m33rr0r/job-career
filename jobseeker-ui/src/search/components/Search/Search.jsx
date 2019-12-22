@@ -15,8 +15,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
-
-const categories = ["category1", "category2", "category3"];
+import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
+import { noticeStatuses, userTypes } from "../../../shared/constants";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -37,17 +38,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Search() {
+const APPROVED = "approved";
+const WAITING = "waiting";
+const BOTH = "both";
+
+function Search(props) {
   const classes = useStyles();
+  const history = useHistory();
   const [chosenCategories, setChosenCategories] = useState([]);
-  const [noticeType, setNoticeType] = useState("both");
+  const [noticeType, setNoticeType] = useState(APPROVED);
   const [keywords, setKeywords] = useState([]);
   const [keywordText, setKeywordText] = useState("");
 
   const handleCategoriesChange = event =>
     setChosenCategories(event.target.value);
 
-  const handleNoticeTypeChange = event => setNoticeType(event.target.value);
+  const handleNoticeTypeChange = event => {
+    setNoticeType(event.target.value);
+  };
+
   const handleKeywordTextChange = event => setKeywordText(event.target.value);
   const handleAddKeyword = () => {
     if (!keywords.includes(keywordText)) {
@@ -57,6 +66,24 @@ function Search() {
 
   const handleKeywordRemove = name => event => {
     setKeywords(keywords.filter(keyword => keyword !== name));
+  };
+
+  const handleSearchPress = () => {
+    let statuses = [];
+
+    if (noticeType === APPROVED) {
+      statuses = [noticeStatuses.OPEN];
+    } else if (noticeType === WAITING) {
+      statuses = [noticeStatuses.PENDING];
+    } else if (noticeType === BOTH) {
+      statuses = [noticeStatuses.OPEN, noticeStatuses.PENDING];
+    }
+
+    history.push("/notices", {
+      keywords,
+      statuses,
+      category: chosenCategories.length > 0 ? chosenCategories[0] : null
+    });
   };
 
   return (
@@ -70,13 +97,13 @@ function Search() {
           input={<Input />}
           renderValue={selected => selected.join(", ")}
         >
-          {categories.map(name => (
-            <MenuItem key={name} value={name}>
+          {props.categories.map(category => (
+            <MenuItem key={category.id} value={category.name}>
               <Checkbox
-                checked={chosenCategories.indexOf(name) > -1}
+                checked={chosenCategories.indexOf(category.name) > -1}
                 color="primary"
               />
-              <ListItemText primary={name} />
+              <ListItemText primary={category.name} />
             </MenuItem>
           ))}
         </Select>
@@ -115,34 +142,49 @@ function Search() {
           ))}
         </Grid>
       </Grid>
-      <FormControl component="fieldset" className={classes.formControl}>
-        <RadioGroup
-          name="noticeType"
-          value={noticeType}
-          onChange={handleNoticeTypeChange}
-        >
-          <FormControlLabel
-            value="approved"
-            control={<Radio color="primary" />}
-            label="approved"
-          />
-          <FormControlLabel
-            value="waiting"
-            control={<Radio color="primary" />}
-            label="waiting for approval"
-          />
-          <FormControlLabel
-            value="both"
-            control={<Radio color="primary" />}
-            label="both"
-          />
-        </RadioGroup>
-      </FormControl>
-      <Button variant="contained" className={classes.searchButton}>
+      {props.userType === userTypes.ADMIN && (
+        <FormControl component="fieldset" className={classes.formControl}>
+          <RadioGroup
+            name="noticeType"
+            value={noticeType}
+            onChange={handleNoticeTypeChange}
+          >
+            <FormControlLabel
+              value={APPROVED}
+              control={<Radio color="primary" />}
+              label="approved"
+            />
+            <FormControlLabel
+              value={WAITING}
+              control={<Radio color="primary" />}
+              label="waiting for approval"
+            />
+            <FormControlLabel
+              value={BOTH}
+              control={<Radio color="primary" />}
+              label="both"
+            />
+          </RadioGroup>
+        </FormControl>
+      )}
+      <Button
+        variant="contained"
+        className={classes.searchButton}
+        onClick={handleSearchPress}
+      >
         Search
       </Button>
     </Paper>
   );
 }
+
+Search.propTypes = {
+  categories: PropTypes.array.isRequired,
+  userType: PropTypes.string.isRequired
+};
+
+Search.defaultProps = {
+  categories: []
+};
 
 export default Search;
