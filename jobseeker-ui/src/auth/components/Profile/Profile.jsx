@@ -1,21 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import Button from "../AuthButton";
 import TextField from "../AuthTextField";
 import Form from "../AuthForm";
 import RepeatedTextField from "../RepeatedTextField";
+import { userTypes } from "../../../shared/constants";
 
-function Profile({ profileChangeRequest, isFetching }) {
+function Profile({
+  profileChangeRequest,
+  isFetching,
+  userType,
+  firstName,
+  lastName,
+  companyName,
+  phoneNumber,
+  email
+}) {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    companyName: "",
-    phoneNumber: "",
-    email: "",
+    firstName: firstName ? firstName : "",
+    lastName: lastName ? lastName : "",
+    companyName: companyName ? companyName : "",
+    phoneNumber: phoneNumber ? phoneNumber : "",
+    email: email ? email : "",
     password: ""
   });
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(false);
+
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isEmailValid, setIsEmailValid] = useState(true);
 
   const setDataField = (fieldName, value) =>
     setFormData({
@@ -28,57 +39,80 @@ function Profile({ profileChangeRequest, isFetching }) {
 
   const handleEmailValidation = ({ value, isValid }) => {
     setDataField("email", value);
-    setIsEmailValid(isValid);
+
+    if (value) {
+      setIsEmailValid(isValid);
+    } else {
+      setIsEmailValid(true);
+    }
   };
 
   const handlePasswordValidation = ({ value, isValid }) => {
     setDataField("password", value);
-    setIsPasswordValid(isValid);
+
+    if (value) {
+      setIsPasswordValid(isValid);
+    } else {
+      setIsPasswordValid(true);
+    }
   };
 
   const handleSave = () => profileChangeRequest(formData);
 
-  const isFormValid = () =>
-    formData.firstName &&
-    formData.lastName &&
-    formData.companyName &&
-    formData.phoneNumber;
+  const isFormValid = () => {
+    if (userType === userTypes.USER) {
+      return formData.firstName && formData.lastName && formData.email;
+    } else if (userType === userTypes.COMPANY) {
+      return formData.companyName && formData.email;
+    }
+
+    return formData.email && true;
+  };
 
   return (
     <Form>
-      <TextField
-        name="firstName"
-        label="first name"
-        onChange={handleFieldChange}
+      {userType === userTypes.USER && (
+        <Fragment>
+          <TextField
+            name="firstName"
+            label="first name"
+            onChange={handleFieldChange}
+            value={formData.firstName}
+          />
+          <TextField
+            name="lastName"
+            label="last name"
+            onChange={handleFieldChange}
+            value={formData.lastName}
+          />
+        </Fragment>
+      )}
+      {userType === userTypes.COMPANY && (
+        <TextField
+          name="companyName"
+          label="company name"
+          onChange={handleFieldChange}
+          value={formData.companyName}
+        />
+      )}
+      {userType !== userTypes.ADMIN && (
+        <TextField
+          name="phoneNumber"
+          label="phone number"
+          onChange={handleFieldChange}
+          value={formData.phoneNumber}
+        />
+      )}
+      <RepeatedTextField
+        label="e-mail"
+        onValidation={handleEmailValidation}
+        value={formData.email}
       />
-      <TextField
-        name="lastName"
-        label="last name"
-        onChange={handleFieldChange}
-      />
-      <TextField
-        name="companyName"
-        label="company name"
-        onChange={handleFieldChange}
-      />
-      <TextField
-        name="phoneNumber"
-        label="phone number"
-        onChange={handleFieldChange}
-      />
-      <RepeatedTextField label="e-mail" onValidation={handleEmailValidation} />
       <RepeatedTextField
         label="password"
         type="password"
         onValidation={handlePasswordValidation}
       />
-      <TextField
-        name="password"
-        label="password"
-        type="password"
-        onChange={handleFieldChange}
-      />
-      <TextField label="repeat password" type="password" />
       <Button
         disabled={
           !isPasswordValid || !isEmailValid || !isFormValid || isFetching
@@ -93,7 +127,13 @@ function Profile({ profileChangeRequest, isFetching }) {
 
 Profile.propTypes = {
   profileChangeRequest: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired
+  isFetching: PropTypes.bool.isRequired,
+  userType: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  companyName: PropTypes.string,
+  phoneNumber: PropTypes.string
 };
 
 export default Profile;

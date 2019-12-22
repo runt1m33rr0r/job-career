@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { makeRequest } from "../../app/data/networkSlice";
-import { register, login, changeProfile, logOut } from "./authApi";
+import {
+  register,
+  login,
+  changeProfile,
+  logOut,
+  requestForgottenPassword
+} from "./authApi";
 import { getString, getItem } from "../../shared/storageUtils";
 
 const getInitialState = () => ({
@@ -40,16 +46,16 @@ const authSlice = createSlice({
     registerFailure: state => {
       state.isAuthenticated = false;
     },
-    profileChangeSuccess: (state, action) => {
+    profileChangeSuccess: (
+      state,
+      { payload: { firstName, lastName, companyName, email, phoneNumber } }
+    ) => {
       state.isAuthenticated = true;
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
-      state.companyName = action.payload.companyName;
-      state.email = action.payload.email;
-      state.phoneNumber = action.payload.phoneNumber;
-    },
-    profileChangeFailure: state => {
-      state.isAuthenticated = true;
+      state.firstName = firstName ? firstName : state.firstName;
+      state.lastName = lastName ? lastName : state.lastName;
+      state.companyName = companyName ? companyName : state.companyName;
+      state.email = email ? email : state.email;
+      state.phoneNumber = phoneNumber ? phoneNumber : state.phoneNumber;
     }
   }
 });
@@ -91,8 +97,11 @@ export const profileChangeRequest = profileData => async (dispatch, getState) =>
     makeRequest({
       requestFunction: changeProfile,
       successAction: profileChangeSuccess,
-      failAction: profileChangeFailure,
-      requestData: { ...profileData, token: getState().auth.token }
+      requestData: {
+        ...profileData,
+        id: getState().auth.userId,
+        token: getState().auth.token
+      }
     })
   );
 
@@ -107,4 +116,9 @@ export const logoutRequest = () => async (dispatch, getState) =>
         token: getState().auth.token
       }
     })
+  );
+
+export const forgottenPasswordRequest = requestData => async dispatch =>
+  dispatch(
+    makeRequest({ requestFunction: requestForgottenPassword, requestData })
   );

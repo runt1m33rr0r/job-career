@@ -198,6 +198,14 @@ function App({
                   onClick={handleClose}
                 >
                   Register
+                </MenuItem>,
+                <MenuItem
+                  key={3}
+                  component={Link}
+                  to="/forgotten"
+                  onClick={handleClose}
+                >
+                  Forgotten password
                 </MenuItem>
               ]}
               {isAuthenticated && [

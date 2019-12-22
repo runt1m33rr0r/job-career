@@ -5,10 +5,6 @@ import { usualUserTypes } from "../../shared/constants";
 
 const USERS_ROUTE = `${BASE_ROUTE}users\\`;
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export async function register({
   userType,
   firstName,
@@ -114,29 +110,63 @@ export async function logOut({ email, token }) {
 }
 
 export async function changeProfile({
+  id,
   firstName,
   lastName,
   companyName,
   phoneNumber,
-  eMail,
+  email,
   password,
   token
 }) {
   console.log({
+    id,
     firstName,
     lastName,
     companyName,
     phoneNumber,
-    eMail,
+    email,
     password,
     token
   });
 
-  await sleep(1000);
+  try {
+    const response = await axios.patch(`${USERS_ROUTE}${id}`, {
+      firstName,
+      lastName,
+      companyName,
+      number: phoneNumber,
+      email,
+      password,
+      token
+    });
 
-  return {
-    success: true,
-    message: "Profile change successful!",
-    token: "123456"
-  };
+    console.log(response.data);
+
+    setItem("email", email);
+    setItem("firstName", firstName);
+    setItem("lastName", lastName);
+    setItem("companyName", companyName);
+    setItem("phoneNumber", phoneNumber);
+
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
+}
+
+export async function requestForgottenPassword({ email }) {
+  console.log({ email });
+
+  try {
+    const response = await axios.post(`${USERS_ROUTE}reset-password`, {
+      email
+    });
+
+    console.log(response.data);
+
+    return response.data;
+  } catch ({ message }) {
+    return { sucess: false, message };
+  }
 }
