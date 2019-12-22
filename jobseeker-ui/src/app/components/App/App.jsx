@@ -162,7 +162,7 @@ function App({
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              Jobs Finder
+              Job careers
             </Typography>
             <Typography variant="h6">{getUserName()}</Typography>
             <IconButton color="inherit" onClick={handleMenu}>
