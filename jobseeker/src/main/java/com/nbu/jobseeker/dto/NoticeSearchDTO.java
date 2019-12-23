@@ -4,7 +4,7 @@ import java.util.List;
 
 public class NoticeSearchDTO {
     private List<String> keywords;
-    private String category;
+    private List<String> categories;
     private List<String> statuses;
 
     public List<String> getStatuses() {
@@ -15,12 +15,12 @@ public class NoticeSearchDTO {
         this.statuses = statuses;
     }
 
-    public String getCategory() {
-        return category;
+    public List<String> getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 
     public List<String> getKeywords() {
