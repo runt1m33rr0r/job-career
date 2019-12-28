@@ -38,10 +38,10 @@ function Routes({ isLoggedIn, userType }) {
     return [];
   };
 
-  const getHistoryCategory = () => {
+  const getHistoryCategories = () => {
     if (history.location.state) {
-      if (history.location.state.category) {
-        return history.location.state.category;
+      if (history.location.state.categories) {
+        return history.location.state.categories;
       }
 
       return null;
@@ -78,7 +78,7 @@ function Routes({ isLoggedIn, userType }) {
         <Notices
           statuses={getHistoryStatuses()}
           keywords={getHistoryKeywords()}
-          category={getHistoryCategory()}
+          categories={getHistoryCategories()}
         />
       </Route>
       <Route path="/applications">

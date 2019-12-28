@@ -82,7 +82,7 @@ function Search(props) {
     history.push("/notices", {
       keywords,
       statuses,
-      category: chosenCategories.length > 0 ? chosenCategories[0] : null
+      categories: chosenCategories
     });
   };
 

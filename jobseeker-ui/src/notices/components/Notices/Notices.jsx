@@ -8,7 +8,7 @@ import NoticeModal from "../NoticeModal";
 function Notices({
   keywords,
   statuses,
-  category,
+  categories,
   showCompanyNotices,
   notices,
   getCompanyNoticesRequest,
@@ -22,7 +22,7 @@ function Notices({
     if (showCompanyNotices) {
       getCompanyNoticesRequest();
     } else {
-      getNoticesRequest({ statuses, keywords, category });
+      getNoticesRequest({ statuses, keywords, categories });
     }
   }, [
     getCompanyNoticesRequest,
@@ -31,7 +31,7 @@ function Notices({
     showCompanyNotices,
     statuses,
     keywords,
-    category
+    categories
   ]);
 
   if (notices.length === 0) {
@@ -69,7 +69,8 @@ Notices.propTypes = {
 
 Notices.defaultProps = {
   keywords: [],
-  statuses: []
+  statuses: [],
+  categories: []
 };
 
 export default Notices;

@@ -3,14 +3,14 @@ import { BASE_ROUTE } from "../../shared/config";
 
 const NOTICES_ROUTE = `${BASE_ROUTE}notices\\`;
 
-export async function getNotices({ keywords, statuses, category, token }) {
+export async function getNotices({ keywords, statuses, categories, token }) {
   console.log({ keywords, statuses, token });
 
   try {
     const response = await axios.post(`${NOTICES_ROUTE}search`, {
       keywords,
       statuses,
-      category,
+      categories,
       token
     });
 

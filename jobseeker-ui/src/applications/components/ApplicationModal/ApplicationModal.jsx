@@ -213,7 +213,8 @@ ApplicationModal.propTypes = {
 };
 
 ApplicationModal.defaultProps = {
-  jobNotice: { company: {} }
+  jobNotice: { company: {} },
+  person: {}
 };
 
 export default ApplicationModal;
