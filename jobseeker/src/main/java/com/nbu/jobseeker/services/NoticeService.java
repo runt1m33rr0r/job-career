@@ -3,6 +3,7 @@ package com.nbu.jobseeker.services;
 import com.nbu.jobseeker.dto.NoticeSearchDTO;
 import com.nbu.jobseeker.dto.NoticeUpdateDTO;
 import com.nbu.jobseeker.model.*;
+import com.nbu.jobseeker.repositories.CategoryRepository;
 import com.nbu.jobseeker.repositories.CompanyRepository;
 import com.nbu.jobseeker.repositories.NoticeRepository;
 import com.nbu.jobseeker.repositories.UserRepository;
@@ -19,16 +20,19 @@ public class NoticeService {
     private NoticeRepository noticeRepository;
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
+    private CategoryRepository categoryRepository;
     @Autowired
     private CategoryService categoryService;
 
     @Autowired
     private NoticeService(@Qualifier("noticeRepository")NoticeRepository noticeRepository,
                           @Qualifier("companyRepository")CompanyRepository companyRepository,
-                          @Qualifier("userRepository")UserRepository userRepository) {
+                          @Qualifier("userRepository")UserRepository userRepository,
+                          @Qualifier("categoryRepository")CategoryRepository categoryRepository) {
         this.noticeRepository = noticeRepository;
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public HashSet<JobNoticeStatus> convertStatusFromString(List<String> statuses){
@@ -55,30 +59,46 @@ public class NoticeService {
         return listOfStatuses;
     }
 
+    public HashSet<JobCategory> convertCategoryFromString(List<String> categories){
+        HashSet<JobCategory> listOfCategories = new HashSet<>();
+        if(categories == null || categories.isEmpty()){
+            return listOfCategories;
+        }
+        else{
+            for (String category:categories) {
+                listOfCategories.add(categoryRepository.findByName(category));
+            }
+        }
+        return listOfCategories;
+    }
+
     public List<JobNotice> retrieveNotices(NoticeSearchDTO parameters) {
         HashSet<JobNotice> notices = new HashSet<>();
         HashSet<JobNoticeStatus> statuses = convertStatusFromString(parameters.getStatuses());
+        HashSet<JobCategory> categories = convertCategoryFromString(parameters.getCategories());
         if(statuses.isEmpty()){
             return new ArrayList<>();
         }
-        if(parameters == null || ((parameters.getKeywords() == null || parameters.getKeywords().isEmpty()) && (parameters.getCategory() == null || "".equals(parameters.getCategory())))){
+        if(parameters == null || ((parameters.getKeywords() == null || parameters.getKeywords().isEmpty()) && (parameters.getCategories() == null || parameters.getCategories().isEmpty()))){
             notices.addAll(noticeRepository.findAll());
             return notices.stream().filter(Objects::nonNull).filter(e-> statuses.contains(e.getStatus())).collect(Collectors.toList());
         }
-        if(parameters.getCategory() == null || "".equals(parameters.getCategory())){
+        if(parameters.getCategories() == null || parameters.getCategories().isEmpty()){
             for(String keyword : parameters.getKeywords()) {
                 notices.addAll(noticeRepository.findByTitleContains(keyword));
             }
             return notices.stream().filter(Objects::nonNull).filter(e-> statuses.contains(e.getStatus())).collect(Collectors.toList());
         }
-        JobCategory categoryNew = categoryService.getByName(parameters.getCategory());
         if(parameters.getKeywords() == null || parameters.getKeywords().isEmpty()){
-            notices.addAll(noticeRepository.findByCategory(categoryNew));
+            for(JobCategory category : categories) {
+                notices.addAll(noticeRepository.findByCategory(category));
+            }
             return notices.stream().filter(Objects::nonNull).filter(e-> statuses.contains(e.getStatus())).collect(Collectors.toList());
         }
         for(String keyword : parameters.getKeywords()) {
-            notices.addAll(noticeRepository.findByTitleContainsAndCategory(keyword, categoryNew));
+            notices.addAll(noticeRepository.findByTitleContains(keyword));
         }
+
         return notices.stream().filter(Objects::nonNull).filter(e-> statuses.contains(e.getStatus())).collect(Collectors.toList());
     }
 

@@ -27,7 +27,7 @@ public class UserController {
                 }
                 return new ResponseEntity<>(new ResponseDTO(false,"Wrong password for email: " + loginDTO.getEmail()), HttpStatus.NOT_ACCEPTABLE);
             }
-            return new ResponseEntity<>(new ResponseDTO(false,"Failed to find users for: " + loginDTO.getEmail()), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new ResponseDTO(false,"Failed to find users for: " + loginDTO.getEmail()), HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<>(new ResponseDTO(false,"Email or password is null"), HttpStatus.NOT_ACCEPTABLE);
     }
