@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    width: 400
+    minWidth: 300
   },
   searchButton: {
     alignSelf: "center",
