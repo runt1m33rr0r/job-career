@@ -3,31 +3,20 @@ import PropTypes from "prop-types";
 import TextField from "./AuthTextField";
 
 function RepeatedTextField({ label, type, onValidation, value }) {
-  const [valueData, setValueData] = useState({
-    value: value ? value : "",
-    repeatValue: ""
-  });
-
-  const handleFieldChange = (fieldName, value) => {
-    setValueData({
-      ...valueData,
-      [fieldName]: value
-    });
-  };
+  const [inputValue, setInputValue] = useState("");
+  const [repeatValue, setRepeatValue] = useState("");
 
   const handleChange = event => {
-    handleFieldChange(event.target.name, event.target.value);
+    setInputValue(event.target.value);
 
-    // const isValid =
-    //   event.target.value && event.target.value === valueData.repeatValue;
-    // onValidation({ value: event.target.value, isValid });
+    const isValid = event.target.value && event.target.value === repeatValue;
+    onValidation({ value: event.target.value, isValid });
   };
 
   const handleRepeatChange = event => {
-    handleFieldChange(event.target.name, event.target.value);
+    setRepeatValue(event.target.value);
 
-    const isValid =
-      event.target.value && event.target.value === valueData.value;
+    const isValid = event.target.value && event.target.value === inputValue;
     onValidation({ value: event.target.value, isValid });
   };
 
@@ -38,14 +27,14 @@ function RepeatedTextField({ label, type, onValidation, value }) {
         label={label}
         type={type}
         onChange={handleChange}
-        value={valueData.value}
+        value={inputValue}
       />
       <TextField
         name="repeatValue"
         label={`repeat ${label}`}
         type={type}
         onChange={handleRepeatChange}
-        value={valueData.repeatValue}
+        value={repeatValue}
       />
     </Fragment>
   );

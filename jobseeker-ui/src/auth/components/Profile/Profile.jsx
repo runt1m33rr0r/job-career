@@ -64,7 +64,11 @@ function Profile({
         isEmailValid
       );
     } else if (userType === userTypes.COMPANY) {
-      return checkName(formData.companyName) && isEmailValid;
+      return (
+        checkName(formData.companyName) &&
+        checkPhoneNumber(formData.phoneNumber) &&
+        isEmailValid
+      );
     }
 
     return isEmailValid;
