@@ -3,6 +3,10 @@ import PropTypes from "prop-types";
 import Button from "../AuthButton";
 import TextField from "../AuthTextField";
 import Form from "../AuthForm";
+import {
+  isEmailValid as checkEmail,
+  isPasswordValid as checkPassword
+} from "../../../shared/helpers";
 
 function Login({ loginRequest, isFetching }) {
   const [formData, setFormData] = useState({
@@ -30,7 +34,11 @@ function Login({ loginRequest, isFetching }) {
         onChange={handleFieldChange}
       />
       <Button
-        disabled={!formData.email || !formData.password || isFetching}
+        disabled={
+          !checkEmail(formData.email) ||
+          !checkPassword(formData.password) ||
+          isFetching
+        }
         onClick={handleLoginClick}
       >
         Log in

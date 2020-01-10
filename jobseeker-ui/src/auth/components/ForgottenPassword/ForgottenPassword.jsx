@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Button from "../AuthButton";
 import TextField from "../AuthTextField";
 import Form from "../AuthForm";
+import { isEmailValid } from "../../../shared/helpers";
 
 function ForgottenPassword({ forgottenPasswordRequest, isFetching }) {
   const [email, setEmail] = useState("");
@@ -16,7 +17,10 @@ function ForgottenPassword({ forgottenPasswordRequest, isFetching }) {
   return (
     <Form>
       <TextField name="email" label="e-mail" onChange={handleEmailChange} />
-      <Button disabled={!email || isFetching} onClick={handleSendClick}>
+      <Button
+        disabled={!isEmailValid(email) || isFetching}
+        onClick={handleSendClick}
+      >
         Send
       </Button>
     </Form>

@@ -8,6 +8,10 @@ import PropTypes from "prop-types";
 import LargeModal from "../../../shared/components/LargeModal";
 import NoticeModal from "../../../notices/components/NoticeModal";
 import { userTypes } from "../../../shared/constants";
+import {
+  isEmailValid as checkEmail,
+  checkPhoneNumber
+} from "../../../shared/helpers";
 
 const useStyles = makeStyles(() => ({
   description: {
@@ -34,7 +38,10 @@ function ApplicationModal(props) {
   );
 
   const shouldDisable = () =>
-    props.isFetching || !phoneNumber || !email || !letter;
+    props.isFetching ||
+    !checkPhoneNumber(phoneNumber) ||
+    !checkEmail(email) ||
+    !letter;
 
   const handleJobDetailsClose = () => setIsJobDetails(false);
   const handleJobDetailsOpen = () => setIsJobDetails(true);
