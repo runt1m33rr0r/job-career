@@ -5,6 +5,12 @@ import TextField from "../AuthTextField";
 import Form from "../AuthForm";
 import RepeatedTextField from "../RepeatedTextField";
 import { userTypes } from "../../../shared/constants";
+import {
+  isEmailValid as checkEmail,
+  isPasswordValid as checkPassword,
+  isNameValid as checkName,
+  checkPhoneNumber
+} from "../../../shared/helpers";
 
 function Profile({
   profileChangeRequest,
@@ -39,34 +45,29 @@ function Profile({
 
   const handleEmailValidation = ({ value, isValid }) => {
     setDataField("email", value);
-
-    if (value) {
-      setIsEmailValid(isValid);
-    } else {
-      setIsEmailValid(true);
-    }
+    setIsEmailValid(isValid && checkEmail(value));
   };
 
   const handlePasswordValidation = ({ value, isValid }) => {
     setDataField("password", value);
-
-    if (value) {
-      setIsPasswordValid(isValid);
-    } else {
-      setIsPasswordValid(true);
-    }
+    setIsPasswordValid(isValid && checkPassword(value));
   };
 
   const handleSave = () => profileChangeRequest(formData);
 
   const isFormValid = () => {
     if (userType === userTypes.USER) {
-      return formData.firstName && formData.lastName && formData.email;
+      return (
+        checkName(formData.firstName) &&
+        checkName(formData.lastName) &&
+        checkPhoneNumber(formData.phoneNumber) &&
+        isEmailValid
+      );
     } else if (userType === userTypes.COMPANY) {
-      return formData.companyName && formData.email;
+      return checkName(formData.companyName) && isEmailValid;
     }
 
-    return formData.email && true;
+    return isEmailValid;
   };
 
   return (
@@ -115,7 +116,7 @@ function Profile({
       />
       <Button
         disabled={
-          !isPasswordValid || !isEmailValid || !isFormValid || isFetching
+          !isPasswordValid || !isEmailValid || !isFormValid() || isFetching
         }
         onClick={handleSave}
       >

@@ -15,7 +15,12 @@ const noticesSlice = createSlice({
   },
   reducers: {
     getNoticesSuccess: (state, action) => {
-      state.notices = action.payload.notices;
+      const processedNotices = action.payload.notices.map(notice => ({
+        ...notice,
+        lastModified: new Date(notice.lastModified).toLocaleDateString()
+      }));
+
+      state.notices = processedNotices;
     },
     editNoticeSuccess: (
       state,
@@ -38,6 +43,8 @@ const noticesSlice = createSlice({
         if (status) {
           state.notices[noticeIdx].status = status;
         }
+
+        state.notices[noticeIdx].lastModified = new Date().toLocaleDateString();
       }
     }
   }

@@ -39,21 +39,15 @@ function NoticeModal(props) {
   const shouldDisable = () =>
     props.isFetching || !category || !title || !description;
 
-  const {
-    category: propsCategory,
-    title: propsTitle,
-    description: propsDescription,
-    categories
-  } = props;
-
   useEffect(() => {
-    if (isEditNotice) {
-      setCategory(propsCategory.name);
-      setTitle(propsTitle);
-      setDescription(propsDescription);
+    if (!isCreationNotice) {
+      setCategory(props.category.name);
+      setDescription(props.description);
+      setTitle(props.title);
     }
-  }, [isEditNotice, propsCategory, propsTitle, propsDescription]);
+  }, [props, isCreationNotice]);
 
+  const { category: propsCategory, categories } = props;
   useEffect(() => {
     if (isCreationNotice) {
       setCategory(
@@ -133,7 +127,11 @@ function NoticeModal(props) {
       title={title}
       category={category}
       content={description}
-      company={props.companyName ? props.companyName : props.company.name}
+      company={
+        isCreationNotice && props.companyName
+          ? props.companyName
+          : props.company.name
+      }
     >
       {isApplicationNotice && (
         <Fragment>

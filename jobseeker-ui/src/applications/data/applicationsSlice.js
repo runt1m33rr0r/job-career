@@ -14,7 +14,14 @@ const applicationsSlice = createSlice({
   },
   reducers: {
     getApplicationsSuccess: (state, action) => {
-      state.applications = action.payload.applications;
+      const processedApplications = action.payload.applications.map(
+        application => ({
+          ...application,
+          lastModified: new Date(application.lastModified).toLocaleDateString()
+        })
+      );
+
+      state.applications = processedApplications;
     },
     editApplicationSuccess: (
       state,
@@ -26,6 +33,9 @@ const applicationsSlice = createSlice({
         state.applications[applicationIdx].phone = phone;
         state.applications[applicationIdx].email = email;
         state.applications[applicationIdx].letter = letter;
+        state.applications[
+          applicationIdx
+        ].lastModified = new Date().toLocaleDateString();
       }
     },
     deleteApplicationSuccess: (state, action) => {

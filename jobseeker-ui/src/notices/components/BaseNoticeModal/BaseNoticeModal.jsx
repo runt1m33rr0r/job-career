@@ -25,19 +25,24 @@ function NoticeModal(props) {
   const handleDescriptionChange = text => props.onDescriptionChange(text);
   const handleDescriptionButtonPress = () => setIsEditing(!isEditing);
 
+  const handleClose = () => {
+    setIsEditing(false);
+    props.onClose();
+  };
+
   if (props.categories.length === 0) {
     return null;
   }
 
   return (
-    <LargeModal {...props}>
+    <LargeModal {...props} onClose={handleClose}>
       <Grid container item justify="center" alignItems="center" spacing={3}>
         <Grid item>
           <TextField
             InputProps={{ readOnly: props.readOnly }}
-            label="job title"
+            label="Job title"
             margin="dense"
-            value={props.title}
+            value={props.title ? props.title : ""}
             onChange={handleTitleChange}
           />
         </Grid>
@@ -45,7 +50,7 @@ function NoticeModal(props) {
           <TextField
             InputProps={{ readOnly: props.readOnly }}
             select
-            label="Select"
+            label="Category"
             className={classes.textField}
             value={props.category}
             onChange={handleCategoryChange}
@@ -92,7 +97,7 @@ function NoticeModal(props) {
           </Fragment>
         )}
         {props.children}
-        <Button onClick={props.onClose} text="Back" />
+        <Button onClick={handleClose} text="Back" />
       </Grid>
     </LargeModal>
   );

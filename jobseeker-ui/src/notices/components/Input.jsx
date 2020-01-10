@@ -46,7 +46,7 @@ function Input(props) {
 
   return (
     <div className={classes.editor}>
-      <textarea ref={textArea} {...props} />
+      <textarea ref={textArea} />
     </div>
   );
 }

@@ -6,6 +6,11 @@ import AuthSelectMenu from "../AuthSelectMenu";
 import AuthForm from "../AuthForm";
 import RepeatedTextField from "../RepeatedTextField";
 import { usualUserTypes } from "../../../shared/constants";
+import {
+  isEmailValid as checkEmail,
+  isPasswordValid as checkPassword,
+  isNameValid as checkName
+} from "../../../shared/helpers";
 
 function Register({ registerRequest, isFetching }) {
   const userTypes = Object.values(usualUserTypes);
@@ -36,18 +41,18 @@ function Register({ registerRequest, isFetching }) {
 
   const handleEmailValidation = ({ value, isValid }) => {
     setDataField("email", value);
-    setIsEmailValid(isValid);
+    setIsEmailValid(isValid && checkEmail(value));
   };
 
   const handlePasswordValidation = ({ value, isValid }) => {
     setDataField("password", value);
-    setIsPasswordValid(isValid);
+    setIsPasswordValid(isValid && checkPassword(value));
   };
 
   const isUserDataValid = () =>
     formData.userType === usualUserTypes.USER
-      ? formData.firstName && formData.lastName
-      : formData.companyName;
+      ? checkName(formData.firstName) && checkName(formData.lastName)
+      : checkName(formData.companyName);
 
   return (
     <AuthForm>

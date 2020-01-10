@@ -4,24 +4,37 @@ import PropTypes from "prop-types";
 import BasicListItem from "../../../shared/components/BasicListItem";
 import { userTypes, noticeStatuses } from "../../../shared/constants";
 
-const NoticeListItem = ({
+function NoticeListItem({
   handleClick,
   item: { status, lastModified, title, company },
   userType,
   companyName
-}) => (
-  <BasicListItem onClick={handleClick}>
-    <ListItemText primary={lastModified} />
-    <ListItemText primary={title} />
-    {(userType !== userTypes.COMPANY || company.name !== companyName) && (
-      <ListItemText primary={company.name} />
-    )}
-    {status === noticeStatuses.CLOSED && <ListItemText primary="closed" />}
-    {status === noticeStatuses.OPEN && <ListItemText primary="approved" />}
-    {status === noticeStatuses.DENIED && <ListItemText primary="denied" />}
-    {status === noticeStatuses.PENDING && <ListItemText primary="pending" />}
-  </BasicListItem>
-);
+}) {
+  const noticeBelongsToCompany =
+    userType === userTypes.COMPANY && company.name === companyName;
+
+  let noticeStatus;
+  if (userType === userTypes.ADMIN || noticeBelongsToCompany) {
+    if (status === noticeStatuses.CLOSED) {
+      noticeStatus = <ListItemText primary="closed" />;
+    } else if (status === noticeStatuses.OPEN) {
+      noticeStatus = <ListItemText primary="approved" />;
+    } else if (status === noticeStatuses.DENIED) {
+      noticeStatus = <ListItemText primary="denied" />;
+    } else if (status === noticeStatuses.PENDING) {
+      noticeStatus = <ListItemText primary="pending" />;
+    }
+  }
+
+  return (
+    <BasicListItem onClick={handleClick}>
+      <ListItemText primary={lastModified} />
+      <ListItemText primary={title} />
+      {!noticeBelongsToCompany && <ListItemText primary={company.name} />}
+      {noticeStatus}
+    </BasicListItem>
+  );
+}
 
 NoticeListItem.propTypes = {
   handleClick: PropTypes.func.isRequired,

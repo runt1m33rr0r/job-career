@@ -109,7 +109,7 @@ function ApplicationModal(props) {
             InputProps={{ readOnly: isCompanyApplication }}
             label="phone number"
             margin="dense"
-            value={phoneNumber}
+            value={phoneNumber ? phoneNumber : ""}
             onChange={handlePhoneNumberChange}
           />
         </Grid>
