@@ -13,15 +13,6 @@ export async function register({
   email,
   password
 }) {
-  console.log({
-    userType,
-    firstName,
-    lastName,
-    companyName,
-    email,
-    password
-  });
-
   try {
     let requestData = { companyName, email, password };
 
@@ -36,8 +27,6 @@ export async function register({
 
     const response = await axios.post(`${USERS_ROUTE}register`, requestData);
 
-    console.log(response.data);
-
     if (response.data.success) {
       return await login({ email, password });
     }
@@ -49,8 +38,6 @@ export async function register({
 }
 
 export async function login({ email, password }) {
-  console.log({ email, password });
-
   try {
     const response = await axios.post(`${USERS_ROUTE}login`, {
       email,
@@ -83,8 +70,6 @@ export async function login({ email, password }) {
       return userData;
     }
 
-    console.log(response.data);
-
     return response.data;
   } catch ({ message, response: { data } }) {
     return { sucess: false, message: data.message ? data.message : message };
@@ -92,16 +77,12 @@ export async function login({ email, password }) {
 }
 
 export async function logOut({ email, token }) {
-  console.log({ email, token });
-
   try {
     const response = await axios.post(`${USERS_ROUTE}logout`, { email, token });
 
     if (response.data.success) {
       removeAll();
     }
-
-    console.log(response.data);
 
     return response.data;
   } catch ({ message, response: { data } }) {
@@ -119,17 +100,6 @@ export async function changeProfile({
   password,
   token
 }) {
-  console.log({
-    id,
-    firstName,
-    lastName,
-    companyName,
-    phoneNumber,
-    email,
-    password,
-    token
-  });
-
   try {
     const response = await axios.patch(`${USERS_ROUTE}${id}`, {
       firstName,
@@ -140,8 +110,6 @@ export async function changeProfile({
       password,
       token
     });
-
-    console.log(response.data);
 
     setItem("email", email);
     setItem("firstName", firstName);
@@ -156,14 +124,10 @@ export async function changeProfile({
 }
 
 export async function requestForgottenPassword({ email }) {
-  console.log({ email });
-
   try {
     const response = await axios.post(`${USERS_ROUTE}reset-password`, {
       email
     });
-
-    console.log(response.data);
 
     return response.data;
   } catch ({ message, response: { data } }) {

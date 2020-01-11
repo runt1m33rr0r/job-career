@@ -9,8 +9,6 @@ export async function getApplications({
   companyId,
   token
 }) {
-  console.log({ personId, noticeId, companyId, token });
-
   try {
     const response = await axios.post(`${APPLICATIONS_ROUTE}search`, {
       personId,
@@ -19,8 +17,6 @@ export async function getApplications({
       token
     });
 
-    console.log(response.data);
-
     return response.data;
   } catch ({ message, response: { data } }) {
     return { sucess: false, message: data.message ? data.message : message };
@@ -28,8 +24,6 @@ export async function getApplications({
 }
 
 export async function editApplication({ id, number, email, letter, token }) {
-  console.log({ id, number, email, letter, token });
-
   try {
     const response = await axios.patch(`${APPLICATIONS_ROUTE}${id}`, {
       id,
@@ -54,15 +48,6 @@ export async function createApplication({
   token
 }) {
   try {
-    console.log({
-      candidateId,
-      noticeId,
-      phone,
-      email,
-      letter,
-      token
-    });
-
     const response = await axios.post(APPLICATIONS_ROUTE, {
       personId: candidateId,
       noticeId,

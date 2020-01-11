@@ -208,19 +208,21 @@ function App({
                   Forgotten password
                 </MenuItem>
               ]}
-              {isAuthenticated && [
-                <MenuItem
+              {
+                isAuthenticated && userType !== userTypes.ADMIN && <MenuItem
                   key={3}
                   component={Link}
                   to="/profile"
                   onClick={handleClose}
                 >
                   Profile
-                </MenuItem>,
-                <MenuItem key={4} onClick={handleLogoutPress}>
+                </MenuItem>}
+              { 
+                isAuthenticated &&
+                  <MenuItem key={4} onClick={handleLogoutPress}>
                   Logout
                 </MenuItem>
-              ]}
+              }
             </Menu>
           </Toolbar>
         </AppBar>

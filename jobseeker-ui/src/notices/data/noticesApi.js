@@ -4,8 +4,6 @@ import { BASE_ROUTE } from "../../shared/config";
 const NOTICES_ROUTE = `${BASE_ROUTE}notices\\`;
 
 export async function getNotices({ keywords, statuses, categories, token }) {
-  console.log({ keywords, statuses, token });
-
   try {
     const response = await axios.post(`${NOTICES_ROUTE}search`, {
       keywords,
@@ -21,8 +19,6 @@ export async function getNotices({ keywords, statuses, categories, token }) {
 }
 
 export async function getCompanyNotices({ company, token }) {
-  console.log({ company, token });
-
   try {
     const res = await getNotices({
       keywords: [],
@@ -52,8 +48,6 @@ export async function createNotice({
   companyName,
   token
 }) {
-  console.log({ title, category, description, companyName, token });
-
   try {
     const response = await axios.post(NOTICES_ROUTE, {
       title,
@@ -84,15 +78,6 @@ export async function editNotice({
   status,
   token
 }) {
-  console.log({
-    id,
-    category,
-    title,
-    description,
-    status,
-    token
-  });
-
   try {
     const response = await axios.patch(`${NOTICES_ROUTE}${id}`, {
       category,
