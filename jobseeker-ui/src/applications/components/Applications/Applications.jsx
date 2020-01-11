@@ -57,18 +57,6 @@ function Applications(props) {
     }
   }, [getApplicationsRequest, userId, userType, noticeFilter]);
 
-  if (props.applications.length === 0) {
-    if (props.isFetching) {
-      return null;
-    }
-
-    return (
-      <Typography variant="h3" gutterBottom>
-        You don't have any applications!
-      </Typography>
-    );
-  }
-
   return (
     <div className={classes.container}>
       {props.userType === userTypes.COMPANY && (
