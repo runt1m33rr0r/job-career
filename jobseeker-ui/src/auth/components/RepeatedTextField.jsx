@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import TextField from "./AuthTextField";
 
 function RepeatedTextField({ label, type, onValidation, value }) {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(value ? value : "");
   const [repeatValue, setRepeatValue] = useState("");
 
   const handleChange = event => {
