@@ -161,9 +161,9 @@ function App({
             >
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" noWrap>
-              Job careers
-            </Typography>
+            <div className={classes.title}>
+              <img src="logo.png" height="60" alt="logo" />
+            </div>
             <Typography variant="h6">{getUserName()}</Typography>
             <IconButton color="inherit" onClick={handleMenu}>
               <AccountCircle />
@@ -208,21 +208,21 @@ function App({
                   Forgotten password
                 </MenuItem>
               ]}
-              {
-                isAuthenticated && userType !== userTypes.ADMIN && <MenuItem
+              {isAuthenticated && userType !== userTypes.ADMIN && (
+                <MenuItem
                   key={3}
                   component={Link}
                   to="/profile"
                   onClick={handleClose}
                 >
                   Profile
-                </MenuItem>}
-              { 
-                isAuthenticated &&
-                  <MenuItem key={4} onClick={handleLogoutPress}>
+                </MenuItem>
+              )}
+              {isAuthenticated && (
+                <MenuItem key={4} onClick={handleLogoutPress}>
                   Logout
                 </MenuItem>
-              }
+              )}
             </Menu>
           </Toolbar>
         </AppBar>
