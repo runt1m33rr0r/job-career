@@ -67,6 +67,12 @@ function Categories({
     setChosenCategory(id);
   };
 
+  const categoryExists = name => {
+    const found = categories.find(cat => cat.name === name);
+
+    return !!found;
+  };
+
   return (
     <Paper className={classes.container}>
       <Dialog open={isCategorChangeOpen} onClose={toggleCategoryChangeRequest}>
@@ -86,7 +92,9 @@ function Categories({
           <Button
             onClick={handleCategoryChange}
             color="primary"
-            disabled={isFetching || !newCategoryName}
+            disabled={
+              isFetching || !newCategoryName || categoryExists(newCategoryName)
+            }
           >
             Change
           </Button>
@@ -112,7 +120,9 @@ function Categories({
           <Button
             variant="contained"
             onClick={handleAddCategory}
-            disabled={isFetching || !categoryText}
+            disabled={
+              isFetching || !categoryText || categoryExists(categoryText)
+            }
           >
             Add
           </Button>

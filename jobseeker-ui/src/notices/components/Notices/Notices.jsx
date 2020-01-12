@@ -41,7 +41,7 @@ function Notices({
 
     return (
       <Typography variant="h3" gutterBottom>
-        You don't have any notices!
+        The are no notices here!
       </Typography>
     );
   }

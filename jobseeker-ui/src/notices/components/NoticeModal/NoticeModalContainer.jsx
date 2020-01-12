@@ -11,6 +11,7 @@ const NoticeModalContainer = props => <NoticeModal {...props} />;
 
 const mapStateToProps = state => ({
   userType: state.auth.userType,
+  isAuthenticated: state.auth.isAuthenticated,
   companyName: state.auth.companyName,
   token: state.auth.token,
   isFetching: state.network.isFetching,

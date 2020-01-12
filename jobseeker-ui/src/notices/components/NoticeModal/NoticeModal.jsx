@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import BaseNoticeModal from "../BaseNoticeModal";
 import Button from "../NoticeModalButton";
@@ -19,7 +20,8 @@ function NoticeModal(props) {
     props.company.name === props.companyName &&
     !isViewNotice;
   const isApplicationNotice =
-    !isViewNotice && props.userType === userTypes.USER;
+    (!isViewNotice && props.userType === userTypes.USER) ||
+    !props.isAuthenticated;
 
   const getDefaultCategory = () => {
     if (!isEditNotice && props.categories.length > 0) {
@@ -29,6 +31,7 @@ function NoticeModal(props) {
     }
   };
 
+  const history = useHistory();
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [title, setTitle] = useState(isCreationNotice ? "" : props.title);
   const [category, setCategory] = useState(getDefaultCategory());
@@ -39,22 +42,30 @@ function NoticeModal(props) {
   const shouldDisable = () =>
     props.isFetching || !category || !title || !description;
 
-  useEffect(() => {
-    if (!isCreationNotice) {
-      setCategory(props.category.name);
-      setDescription(props.description);
-      setTitle(props.title);
-    }
-  }, [props, isCreationNotice]);
-
-  const { category: propsCategory, categories } = props;
+  const {
+    category: propsCategory,
+    categories,
+    description: propsDescription,
+    title: propsTitle
+  } = props;
   useEffect(() => {
     if (isCreationNotice) {
       setCategory(
         categories.length > 0 ? categories[0].name : propsCategory.name
       );
+    } else {
+      setCategory(propsCategory.name);
     }
-  }, [categories, propsCategory, isCreationNotice]);
+
+    setDescription(propsDescription);
+    setTitle(propsTitle);
+  }, [
+    categories,
+    propsCategory,
+    propsDescription,
+    propsTitle,
+    isCreationNotice
+  ]);
 
   const makeApprovalRequest = approved => {
     if (approved) {
@@ -103,9 +114,17 @@ function NoticeModal(props) {
     props.onClose();
   };
 
+  const handleApplicationWindowOpen = () => {
+    if (!props.isAuthenticated) {
+      history.push("/login");
+      return;
+    }
+
+    setIsApplicationOpen(true);
+  };
+
   const handleNoticeOpen = () => makeNoticeStatusRequest(false);
   const handleNoticeClose = () => makeNoticeStatusRequest(true);
-  const handleApplicationWindowOpen = () => setIsApplicationOpen(true);
   const handleApplicationWindowClose = () => setIsApplicationOpen(false);
   const onApproved = () => makeApprovalRequest(true);
   const onDisapproved = () => makeApprovalRequest(false);
@@ -213,6 +232,7 @@ NoticeModal.propTypes = {
     })
   ).isRequired,
   userType: PropTypes.string.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
   editNoticeRequest: PropTypes.func.isRequired,
   createNoticeRequest: PropTypes.func.isRequired,
   deleteNoticeRequest: PropTypes.func.isRequired,
