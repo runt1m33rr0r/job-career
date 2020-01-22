@@ -38,8 +38,6 @@ function Input(props) {
     change(initialText.current);
 
     return () => {
-      console.log("unload codemirror");
-
       cm.toTextArea();
     };
   }, []);

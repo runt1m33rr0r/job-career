@@ -101,15 +101,21 @@ export async function changeProfile({
   token
 }) {
   try {
-    const response = await axios.patch(`${USERS_ROUTE}${id}`, {
-      firstName,
-      lastName,
-      companyName,
-      number: phoneNumber,
-      email,
-      password,
-      token
-    });
+    let params = { token };
+    const addParam = (param, paramName) => {
+      if (param) {
+        params = { ...params, [paramName]: param };
+      }
+    };
+
+    addParam(firstName, "firstName");
+    addParam(lastName, "lastName");
+    addParam(companyName, "companyName");
+    addParam(phoneNumber, "number");
+    addParam(email, "email");
+    addParam(password, "password");
+
+    const response = await axios.patch(`${USERS_ROUTE}${id}`, params);
 
     setItem("email", email);
     setItem("firstName", firstName);

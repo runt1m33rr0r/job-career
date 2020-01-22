@@ -13,5 +13,13 @@ export const isPasswordValid = password => password && password.length >= 6;
 
 export const isNameValid = name => name && name.length >= 2;
 
-export const checkPhoneNumber = phoneNumber =>
-  !phoneNumber || phoneNumber.length === 10;
+export const checkPhoneNumber = phoneNumber => {
+  if (!phoneNumber || phoneNumber === "") {
+    return false;
+  }
+
+  const re = /\d\d\d\d\d\d\d\d\d\d/;
+  const isPhoneValid = re.test(phoneNumber);
+
+  return isPhoneValid;
+};

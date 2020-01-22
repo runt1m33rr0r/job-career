@@ -56,22 +56,22 @@ function Profile({
   const handleSave = () => profileChangeRequest(formData);
 
   const isFormValid = () => {
+    const phoneCheck =
+      formData.phoneNumber.length > 0
+        ? checkPhoneNumber(formData.phoneNumber)
+        : true;
+
     if (userType === userTypes.USER) {
       return (
         checkName(formData.firstName) &&
         checkName(formData.lastName) &&
-        checkPhoneNumber(formData.phoneNumber) &&
-        isEmailValid
+        phoneCheck
       );
     } else if (userType === userTypes.COMPANY) {
-      return (
-        checkName(formData.companyName) &&
-        checkPhoneNumber(formData.phoneNumber) &&
-        isEmailValid
-      );
+      return checkName(formData.companyName) && phoneCheck;
     }
 
-    return isEmailValid;
+    return true;
   };
 
   return (
